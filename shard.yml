@@ -1,0 +1,13 @@
+name: snipline_cli
+version: 0.1.0
+
+authors:
+  - Mitchell Stanley <mitchell.stanley@isev.co.uk>
+
+targets:
+  snipline_cli:
+    main: src/snipline_cli.cr
+
+crystal: 0.27.0
+
+license: MIT
