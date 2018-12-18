@@ -1,0 +1,10 @@
+version: 1.0
+shards:
+  admiral:
+    github: jwaldrip/admiral.cr
+    version: 1.8.0
+
+  crest:
+    github: mamantoha/crest
+    version: 0.17.0
+
