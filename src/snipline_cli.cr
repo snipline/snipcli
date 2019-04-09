@@ -1,6 +1,7 @@
 # TODO: Write documentation for `SniplineCli`
 require "admiral"
 require "crest"
+require "./snipline_cli/*"
 
 module SniplineCli
   VERSION = "0.1.0"
@@ -24,25 +25,24 @@ module SniplineCli
 				verification_code = gets
 				puts "Thanks!"
 				puts "Retrieving your long-life token..."
-				Crest.get(
+				Crest.post(
 					"http://localhost:4001/api/tokens/create",
-					params: {:id => email, :token => verification_code}
+					params: {
+						:id => email, 
+						:token => verification_code, 
+						:length => "year"
+					}
 				) do |response|
 					puts typeof(response.body)
 					puts response.body.inspect
+					# config_file = File.open("~/config/.snipline/config.yml")
+					# puts config_file.inspect
 				end
 			end
 		end
 
-		class Search < Admiral::Command
-			define_help description: "For searching your snippets"
-			def run
-				puts "Searching..."
-			end
-		end
 
 		register_sub_command :login, Login
-		register_sub_command :search, Search
 
 		# def run
 		# 	puts "help"
