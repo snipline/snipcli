@@ -1,9 +1,16 @@
 require "json"
+require "colorize"
 
 module SniplineCli
     class Command < Admiral::Command
 		class Search < Admiral::Command
-			define_help description: "For searching your snippets"
+            define_help description: "For searching your snippets"
+            define_argument search_term : String,
+                description: "The term to search for",
+                default: nil,
+                required: false
+            define_flag limit : UInt32, default: 5_u32, long: limit
+
 			def run
 				puts "Searching..."
                 Crest.get(
@@ -14,9 +21,27 @@ module SniplineCli
                     }) do |resp|
                         # puts response.body.inspect
                         snippets = SnippetDataWrapper.from_json resp.body
-                        puts snippets.inspect
-                        snippets.data.each do |snippet|
-                            puts "#{snippet.attributes.name} - #{snippet.attributes.is_pinned ? "✅" : "❌"}"
+                        case arguments.search_term
+                        when String
+                            snippets.data.select { |i| 
+                                i.attributes.name.includes?(arguments.search_term.as(String))   
+                            }.sort { |snippet_a, snippet_b| 
+                                if snippet_a.attributes.is_pinned && snippet_b.attributes.is_pinned
+                                    snippet_a.attributes.name <=> snippet_b.attributes.name
+                                elsif snippet_a.attributes.is_pinned
+                                    -1
+                                elsif snippet_b.attributes.is_pinned
+                                    1
+                                else
+                                    snippet_a.attributes.name <=> snippet_b.attributes.name
+                                end
+                            }.first(flags.limit).each_with_index { |snippet, index|
+                                puts "##{index + 1} #{snippet.attributes.name.colorize(:green)} #{snippet.attributes.is_pinned ? "⭐️" : ""}\n#{snippet.attributes.real_command}"
+                            }
+                        else
+                            snippets.data.first(flags.limit).each_with_index do |snippet, index|
+                                puts "##{index + 1} #{snippet.attributes.name.colorize(:green)} #{snippet.attributes.is_pinned ? "⭐️" : ""}\n#{snippet.attributes.real_command}"
+                            end
                         end
                         # snippets.each do |snippet|
                         #     puts "#{snippet.name}"

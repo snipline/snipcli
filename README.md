@@ -10,6 +10,12 @@ TODO: Write installation instructions here
 
 TODO: Write usage instructions here
 
+At the moment token needs to be put in an environment variable to run
+
+```
+env TOKEN=token ./snipline_cli search
+```
+
 ## Development
 
 TODO: Write development instructions here
