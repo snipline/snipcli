@@ -24,7 +24,8 @@ module SniplineCli
                         case arguments.search_term
                         when String
                             snippets.data.select { |i| 
-                                i.attributes.name.includes?(arguments.search_term.as(String))   
+                                lowered_search_term = arguments.search_term.as(String).downcase
+                                i.attributes.name.downcase.includes?(lowered_search_term) || i.attributes.real_command.downcase.includes?(lowered_search_term) || i.attributes.tags.includes?(lowered_search_term)
                             }.sort { |snippet_a, snippet_b| 
                                 if snippet_a.attributes.is_pinned && snippet_b.attributes.is_pinned
                                     snippet_a.attributes.name <=> snippet_b.attributes.name
@@ -36,11 +37,11 @@ module SniplineCli
                                     snippet_a.attributes.name <=> snippet_b.attributes.name
                                 end
                             }.first(flags.limit).each_with_index { |snippet, index|
-                                puts "##{index + 1} #{snippet.attributes.name.colorize(:green)} #{snippet.attributes.is_pinned ? "⭐️" : ""}\n#{snippet.attributes.real_command}"
+                                puts "##{index + 1} #{snippet.attributes.name.colorize(:green)} #{snippet.attributes.is_pinned ? "⭐️" : ""}\n#{snippet.attributes.real_command}\n[#{snippet.attributes.tags.join(",")}]"
                             }
                         else
                             snippets.data.first(flags.limit).each_with_index do |snippet, index|
-                                puts "##{index + 1} #{snippet.attributes.name.colorize(:green)} #{snippet.attributes.is_pinned ? "⭐️" : ""}\n#{snippet.attributes.real_command}"
+                                puts "##{index + 1} #{snippet.attributes.name.colorize(:green)} #{snippet.attributes.is_pinned ? "⭐️" : ""}\n#{snippet.attributes.real_command}\n[#{snippet.attributes.tags.join(",")}]"
                             end
                         end
                         # snippets.each do |snippet|
