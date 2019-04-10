@@ -37,11 +37,11 @@ module SniplineCli
                                     snippet_a.name <=> snippet_b.name
                                 end
                             }.first(flags.limit).each_with_index { |snippet, index|
-                                puts "##{index + 1} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}\n#{snippet.real_command}\n[#{snippet.tags.join(",")}]"
+                                puts "##{index + 1} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}\n#{snippet.preview_command}\n[#{snippet.tags.join(",")}]"
                             }
                         else
                             snippets.data.first(flags.limit).each_with_index do |snippet, index|
-                                puts "##{index + 1} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}\n#{snippet.real_command}\n[#{snippet.tags.join(",")}]"
+                                puts "##{index + 1} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}\n#{snippet.preview_command}\n[#{snippet.tags.join(",")}]"
                             end
                         end
                         # snippets.each do |snippet|
