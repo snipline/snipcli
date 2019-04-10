@@ -12,9 +12,40 @@ module SniplineCli
             type: String,
             attributes: SnippetAttribute
         })
+
+        def name
+            attributes.name
+        end
+
+        def documentation
+            attributes.documentation
+        end
+
+        def is_pinned
+            attributes.is_pinned
+        end
+
+        def real_command
+            attributes.real_command
+        end
+
+        def tags
+            attributes.tags
+        end
+
+        def params
+            # TODO: parse params and list them
+            [] of String
+        end
+
+        def preview_command
+            # TODO: syntax highlight and display preview command
+            ""
+        end
     end
     class SnippetAttribute
         include JSON::Serializable
+
         @[JSON::Field(key: "alias")]
         property alias : String | Nil
 
@@ -32,13 +63,6 @@ module SniplineCli
 
         @[JSON::Field(key: "tags")]
         property tags : Array(String)
-        # JSON.mapping({
-        #     alias: String | Nil,
-        #     documentation: String | Nil,
-        #     is_pinned: Bool,
-        #     name: String,
-        #     # real_command: String,
-        #     # tags: Array(String)
-        # })
+
     end
 end

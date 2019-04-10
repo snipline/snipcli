@@ -25,23 +25,23 @@ module SniplineCli
                         when String
                             snippets.data.select { |i| 
                                 lowered_search_term = arguments.search_term.as(String).downcase
-                                i.attributes.name.downcase.includes?(lowered_search_term) || i.attributes.real_command.downcase.includes?(lowered_search_term) || i.attributes.tags.includes?(lowered_search_term)
+                                i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.includes?(lowered_search_term)
                             }.sort { |snippet_a, snippet_b| 
-                                if snippet_a.attributes.is_pinned && snippet_b.attributes.is_pinned
-                                    snippet_a.attributes.name <=> snippet_b.attributes.name
-                                elsif snippet_a.attributes.is_pinned
+                                if snippet_a.is_pinned && snippet_b.is_pinned
+                                    snippet_a.name <=> snippet_b.name
+                                elsif snippet_a.is_pinned
                                     -1
-                                elsif snippet_b.attributes.is_pinned
+                                elsif snippet_b.is_pinned
                                     1
                                 else
-                                    snippet_a.attributes.name <=> snippet_b.attributes.name
+                                    snippet_a.name <=> snippet_b.name
                                 end
                             }.first(flags.limit).each_with_index { |snippet, index|
-                                puts "##{index + 1} #{snippet.attributes.name.colorize(:green)} #{snippet.attributes.is_pinned ? "⭐️" : ""}\n#{snippet.attributes.real_command}\n[#{snippet.attributes.tags.join(",")}]"
+                                puts "##{index + 1} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}\n#{snippet.real_command}\n[#{snippet.tags.join(",")}]"
                             }
                         else
                             snippets.data.first(flags.limit).each_with_index do |snippet, index|
-                                puts "##{index + 1} #{snippet.attributes.name.colorize(:green)} #{snippet.attributes.is_pinned ? "⭐️" : ""}\n#{snippet.attributes.real_command}\n[#{snippet.attributes.tags.join(",")}]"
+                                puts "##{index + 1} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}\n#{snippet.real_command}\n[#{snippet.tags.join(",")}]"
                             end
                         end
                         # snippets.each do |snippet|
