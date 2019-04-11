@@ -37,12 +37,16 @@ module SniplineCli
                                     snippet_a.name <=> snippet_b.name
                                 end
                             }.first(flags.limit).each_with_index { |snippet, index|
-                                puts "##{index + 1} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}\n#{snippet.preview_command}\n[#{snippet.tags.join(",")}]"
+                                puts "##{index + 1} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}#{(snippet.tags.size > 0) ? "[" + snippet.tags.join(",") + "]" : ""}\n#{snippet.preview_command}\n\n"
                             }
+                            puts "\nChoose a snippet"
+                            chosen_snippet_index = gets
                         else
                             snippets.data.first(flags.limit).each_with_index do |snippet, index|
-                                puts "##{index + 1} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}\n#{snippet.preview_command}\n[#{snippet.tags.join(",")}]"
+                                puts "##{index + 1} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}#{(snippet.tags.size > 0) ? "[" + snippet.tags.join(",") + "]" : ""}\n#{snippet.preview_command}\n\n"
                             end
+                            puts "\nChoose a snippet"
+                            chosen_snippet_index = gets
                         end
                         # snippets.each do |snippet|
                         #     puts "#{snippet.name}"
