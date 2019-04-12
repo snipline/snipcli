@@ -17,3 +17,6 @@ dependencies:
     github: jwaldrip/admiral.cr
   crest:
     github: mamantoha/crest
+  toml:
+    github: crystal-community/toml.cr
+    branch: master

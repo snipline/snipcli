@@ -2,6 +2,7 @@
 require "admiral"
 require "crest"
 require "./snipline_cli/*"
+require "toml"
 
 module SniplineCli
   VERSION = "0.1.0"

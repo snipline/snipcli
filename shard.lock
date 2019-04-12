@@ -6,5 +6,9 @@ shards:
 
   crest:
     github: mamantoha/crest
-    version: 0.17.0
+    version: 0.18.3
+
+  toml:
+    github: crystal-community/toml.cr
+    commit: 5935d7f5afeed8ba126418a9f85691b4067db85c
 

@@ -39,22 +39,22 @@ module SniplineCli
             real_command.scan(/#(select)?\{\[(.+?)\]\}/) do |m|
                 if m[1]? && m[1] == "select"
                     split_equals = m[2].split("=").map { |substring| substring}
-                    param_name = split_equals.pop
+                    param_name = split_equals.shift
                     unparsed_params = split_equals.join("=")
                     if unparsed_params.is_a?(String)
                         options = unparsed_params.as(String).split(",")
                         # todo
-                        # if options.is_a?(Array(String))
-                        #     options = options.as(Array(String)).map { |substring| return substring }
-                        # end
+                        if options.is_a?(Array(String))
+                            options = options.as(Array(String))
+                        end
                     else
                         options = Array(String).new
                     end
                     # default_option = options.first || ""
-                    # temp_array << SnippetParam.new(param_name, "", m[2], "select", Array(String).new)
-                elsif m[2] =~ "="
+                    temp_array << SnippetParam.new(param_name, "", m[2], "select", options)
+                elsif m[2].includes?("=")
                     split_equals = m[2].split("=").map { |substring| substring }
-                    param_name = split_equals.pop
+                    param_name = split_equals.shift
                     default_value = split_equals.join("=")
                     temp_array << SnippetParam.new(param_name, default_value, m[2], "variable", Array(String).new)
                 else
