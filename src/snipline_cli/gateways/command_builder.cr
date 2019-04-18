@@ -29,9 +29,8 @@ module SniplineCli
                         if param.default_value != ""
                             puts "Leave blank for default (#{param.default_value})"
                         end
-                        # todo: list options and let user select via number
                         if user_param_input = gets
-                            if user_param_input = ""
+                            if user_param_input == ""
                                 user_param_input = param.default_value
                             end
                             command_builder = command_builder.gsub("\#{[#{param.full}]}") { user_param_input }
