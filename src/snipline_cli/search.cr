@@ -1,5 +1,6 @@
 require "json"
 require "colorize"
+require "file_utils"
 require "toml"
 require "./gateways/command_builder"
 
@@ -16,7 +17,7 @@ module SniplineCli
             property results
 
 			def run
-				puts "Searching...\n"
+				puts "Searching...#{arguments.search_term.as(String)}\n"
 				config_file = File.read(File.expand_path("~/.config/snipline/config.toml"))
                 toml = TOML.parse(config_file)
                 api = toml["api"].as(Hash)
@@ -28,9 +29,9 @@ module SniplineCli
                     }) do |resp|
                         # puts response.body.inspect
                         snippets = SnippetDataWrapper.from_json(resp.body).data
-                        if arguments.is_a?(String)
+                        if arguments.search_term.is_a?(String)
+                            lowered_search_term = arguments.search_term.as(String).downcase
                             snippets.select! { |i| 
-                                lowered_search_term = arguments.search_term.as(String).downcase
                                 i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.includes?(lowered_search_term)
                             }
                         end
@@ -50,12 +51,14 @@ module SniplineCli
                             puts "##{index + 1} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}#{(snippet.tags.size > 0) ? "[" + snippet.tags.join(",") + "]" : ""}\n#{snippet.preview_command}\n\n"
                         }
                         puts "\nChoose a snippet"
-                        if chosen_snippet_index = gets
+                        chosen_snippet_index = gets
+                        if chosen_snippet_index
+                            if chosen_snippet_index.to_i?
                             chosen_snippet_index = (chosen_snippet_index.to_u32 - 1)
 
-                            if results.size > chosen_snippet_index
+                            if results.size > chosen_snippet_index && chosen_snippet_index >= 0
                                 output = SniplineCli::Gateways::CommandBuilder.run(results[chosen_snippet_index])
-                                puts "Do you want to run '#{output.colorize(:green)}'? (y/N)"
+                                puts "Do you want to run '#{output.colorize(:green)}' in #{FileUtils.pwd.colorize(:green)}? (y/N)"
                                 if answer = gets
                                     if answer == "y" || answer == "yes"
                                         system "#{output}"
@@ -66,8 +69,9 @@ module SniplineCli
                                 p "Snippet does not exist"
                             end
                         else
-                            p "Action cancelled"
+                            puts "You did not select a snippet."
                         end
+                    end
                 end
             end
             
