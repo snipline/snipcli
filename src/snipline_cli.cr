@@ -1,7 +1,8 @@
 # TODO: Write documentation for `SniplineCli`
 require "admiral"
 require "crest"
-require "./snipline_cli/*"
+# require "./snipline_cli/*"
+require "./snipline_cli/commands/*"
 require "toml"
 
 module SniplineCli
