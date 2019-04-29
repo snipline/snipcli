@@ -8,6 +8,10 @@ module SniplineCli
             attributes: SnippetAttribute
         })
 
+        def snippet_alias
+            attributes.snippet_alias
+        end
+
         def name
             attributes.name
         end
@@ -109,6 +113,21 @@ module SniplineCli
                 temp_command = temp_command.gsub("#password{[#{param.id}]}") { "<PW:#{param.id}>".colorize(:green) }
             end
             temp_command
+        end
+
+        def value_for_attribute(attribute : String)
+            case attribute
+            when "alias"
+                snippet_alias || ""
+            when "documentation"
+                documentation || ""
+            when "name"
+                name || ""
+            when "tags"
+                tags.join(",") || ""
+            else
+                ""
+            end
         end
     end
 

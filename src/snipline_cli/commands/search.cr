@@ -15,6 +15,11 @@ module SniplineCli
                 required: false
             define_flag limit : UInt32, default: 5_u32, long: limit
 
+            define_flag field : String,
+                description: "The field to search (alias|documentation|name|tags)",
+                default: nil,
+                required: false
+
             property results
 
 			def run
@@ -34,8 +39,16 @@ module SniplineCli
 
                 if arguments.search_term.is_a?(String)
                     lowered_search_term = arguments.search_term.as(String).downcase
+                    if flags.field != nil && !["alias", "documentation", "name", "tags"].includes?(flags.field.not_nil!) 
+                        puts "The search field entered does not exist."
+                        return
+                    end
                     snippets.select! { |i| 
-                        i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.includes?(lowered_search_term)
+                        if field = flags.field
+                            i.value_for_attribute(field).downcase.includes?(lowered_search_term)
+                        else
+                            i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.includes?(lowered_search_term)
+                        end
                     }
                 end
 

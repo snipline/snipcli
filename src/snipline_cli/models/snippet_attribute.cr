@@ -5,7 +5,7 @@ module SniplineCli
         include JSON::Serializable
 
         @[JSON::Field(key: "alias")]
-        property alias : String | Nil
+        property snippet_alias : String | Nil
 
         @[JSON::Field(key: "documentation")]
         property documentation : String | Nil
