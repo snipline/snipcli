@@ -2,6 +2,7 @@
 require "admiral"
 require "crest"
 # require "./snipline_cli/*"
+require "./snipline_cli/models/*"
 require "./snipline_cli/commands/*"
 require "toml"
 

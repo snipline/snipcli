@@ -1,11 +1,6 @@
 require "json"
 
 module SniplineCli
-    class SnippetDataWrapper 
-        JSON.mapping({
-            data: Array(Snippet)
-        })
-    end
     class Snippet
         JSON.mapping({
             id: String,
@@ -117,46 +112,6 @@ module SniplineCli
         end
     end
 
-    struct SnippetParam
-        property name : String
-        property default_value : String
-        property full : String
-        property type : String
-        property options : Array(String)
 
-        def initialize(@name : String, @default_value : String, @full : String, @type : String, @options : Array(String))
-        end
-    end
 
-    struct SnippetPasswordParam
-        property id : String
-        property length : UInt32 | UInt8
-        property full : String
-
-        def initialize(@id : String, @length : UInt32 | UInt8, @full : String)
-        end
-    end
-
-    class SnippetAttribute
-        include JSON::Serializable
-
-        @[JSON::Field(key: "alias")]
-        property alias : String | Nil
-
-        @[JSON::Field(key: "documentation")]
-        property documentation : String | Nil
-
-        @[JSON::Field(key: "is-pinned")]
-        property is_pinned : Bool
-
-        @[JSON::Field(key: "name")]
-        property name : String
-
-        @[JSON::Field(key: "real-command")]
-        property real_command : String
-
-        @[JSON::Field(key: "tags")]
-        property tags : Array(String)
-
-    end
 end

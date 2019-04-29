@@ -4,7 +4,6 @@ require "file_utils"
 require "toml"
 require "../gateways/command_builder"
 require "../config/config"
-require "../models/snippet"
 
 module SniplineCli
     class Command < Admiral::Command
@@ -53,7 +52,8 @@ module SniplineCli
                 }.first(flags.limit)
                     
                 results.each_with_index { |snippet, index|
-                    puts "##{index + 1} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}#{(snippet.tags.size > 0) ? "[" + snippet.tags.join(",") + "]" : ""}\n#{snippet.preview_command}\n\n"
+                    puts "#{(index + 1).to_s.rjust(4)} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}#{(snippet.tags.size > 0) ? "[" + snippet.tags.join(",") + "]" : ""}".colorize.mode(:bold)
+                    puts "     #{snippet.preview_command}"
                 }
 
                 puts "\nChoose a snippet"
