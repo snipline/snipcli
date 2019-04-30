@@ -20,13 +20,14 @@ module SniplineCli
                     }) do |resp|
                         # Save the response JSON into a file without the data wrapper
                         snippets = SnippetDataWrapper.from_json(resp.body).data.to_json
-                        unless File.directory?(File.expand_path("~/.config/snipline"))
-                            puts "Creating ~/.config/snipline directory"
-                            Dir.mkdir(File.expand_path("~/.config/snipline"))
+                        directory = File.dirname(File.expand_path(config.get("general.file")))
+                        unless File.directory?(directory)
+                            puts "Creating #{directory} directory"
+                            Dir.mkdir(File.expand_path(directory))
                         end
-                        File.write(File.expand_path("~/.config/snipline/snippets.json"), snippets, mode: "w")
-                        unless File.writable?(File.expand_path("~/.config/snipline/snippets.json"))
-                            puts "Sync Failed: File not writable (~/.config/snipline/snippets.json)"
+                        File.write(File.expand_path(config.get("general.file")), snippets, mode: "w")
+                        unless File.writable?(File.expand_path(config.get("general.file")))
+                            puts "Sync Failed: File not writable (#{config.get("general.file")})"
                         end
                     end
             end

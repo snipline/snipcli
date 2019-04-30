@@ -22,8 +22,9 @@ module SniplineCli
 
             property results
 
-			def run
-                puts "Searching...#{arguments.search_term.as(String)}\n"
+            def run
+                search_term : String = arguments.search_term || ""
+                puts "Searching #{search_term}...\n"
 
                 unless File.readable?(File.expand_path("~/.config/snipline/snippets.json"))
                     puts "Could not read ~/.config/snipline/snippets.json"
@@ -37,8 +38,8 @@ module SniplineCli
                     snippets = Array(Snippet).from_json(file)
                 end
 
-                if arguments.search_term.is_a?(String)
-                    lowered_search_term = arguments.search_term.as(String).downcase
+                unless search_term.empty?
+                    lowered_search_term = search_term.downcase
                     if flags.field != nil && !["alias", "documentation", "name", "tags"].includes?(flags.field.not_nil!) 
                         puts "The search field entered does not exist."
                         return
@@ -63,6 +64,11 @@ module SniplineCli
                         snippet_a.name <=> snippet_b.name
                     end
                 }.first(flags.limit)
+
+                unless results.size > 0
+                    puts "No results found."
+                    return
+                end
                     
                 results.each_with_index { |snippet, index|
                     puts "#{(index + 1).to_s.rjust(4)} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}#{(snippet.tags.size > 0) ? "[" + snippet.tags.join(",") + "]" : ""}".colorize.mode(:bold)
