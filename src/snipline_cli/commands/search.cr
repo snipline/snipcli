@@ -4,6 +4,7 @@ require "file_utils"
 require "toml"
 require "../gateways/command_builder"
 require "../config/config"
+require "../gateways/log"
 
 module SniplineCli
     class Command < Admiral::Command
@@ -23,18 +24,22 @@ module SniplineCli
             property results
 
             def run
-                search_term : String = arguments.search_term || ""
-                puts "Searching #{search_term}...\n"
+                config = SniplineCli::Config.new
+                log = SniplineCli::Gateways::Log.new
 
-                unless File.readable?(File.expand_path("~/.config/snipline/snippets.json"))
-                    puts "Could not read ~/.config/snipline/snippets.json"
+                search_term : String = arguments.search_term || ""
+
+                puts "Searching #{search_term}...\n"
+                log.debug("Looking through file #{config.get("general.file")}")
+                unless File.readable?(File.expand_path(config.get("general.file")))
+                    puts "Could not read #{config.get("general.file")}"
                     puts "Run #{"snipline-cli sync".colorize(:green)} first"
                     return
                 end
 
                 snippets = [] of Snippet
 
-                File.open(File.expand_path("~/.config/snipline/snippets.json")) do |file|
+                File.open(File.expand_path(config.get("general.file"))) do |file|
                     snippets = Array(Snippet).from_json(file)
                 end
 
