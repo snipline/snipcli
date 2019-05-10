@@ -4,8 +4,9 @@ require "file_utils"
 module SniplineCli
     class Config
         def initialize
-            if File.exists?(File.expand_path("~/.config/snipline/config.toml"))
-                config_file = File.read(File.expand_path("~/.config/snipline/config.toml"))
+            ENV["CONFIG_FILE"] ||= "~/.config/snipline/config.toml"
+            if File.exists?(File.expand_path(ENV["CONFIG_FILE"]))
+                config_file = File.read(File.expand_path(ENV["CONFIG_FILE"]))
                 toml = TOML.parse(config_file)
                 @api = toml["api"].as(Hash(String, TOML::Type))
                 @general = toml["general"].as(Hash(String, TOML::Type))
