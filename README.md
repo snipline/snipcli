@@ -13,7 +13,7 @@ Snipline CLI allows you to search and run commands from your Snipline account di
 Snipline CLI is available through Homebrew for MacOS and Linux.
 
 ```bash
-brew install snipline/snipline/snipline
+brew install snipline/snipline/snipline-cli
 ```
 
 ### Executable
