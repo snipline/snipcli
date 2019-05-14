@@ -9,14 +9,14 @@ require "toml"
 module SniplineCli
   VERSION = "0.1.0"
 
-	class Command < Admiral::Command
-		define_version "0.1.0"
-		define_help description: "Snipline CLI"
+  class Command < Admiral::Command
+    define_version "0.1.0"
+    define_help description: "Snipline CLI"
 
-		def run
-			puts "Use #{"snipline login".colorize(:green)} to get started."
-		end
-	end
+    def run
+      puts "Use #{"snipline login".colorize(:green)} to get started."
+    end
+  end
 end
 
 SniplineCli::Command.run
