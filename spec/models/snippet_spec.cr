@@ -45,16 +45,46 @@ describe SniplineCli::SnippetParam do
             snippet.interactive_params.first.type.should eq("variable")
         end
 
-        pending "should be able to parse a variable without a default value" do
+        it "should be able to parse a variable without a default value" do
+            snippet = create_test_object(%({"id":"0b36b3a1-f10f-42f9-857e-0caeb23b36c3","type":"snippets","attributes":{"alias":"git.s","is-pinned":false,"name":"Search Git history","real-command":"git log -S \#{[Test]} ","tags":[]}}))
+            snippet.has_params.should eq(true)
+            snippet.interactive_params.size.should eq(1)
+            snippet.interactive_params.first.name.should eq("Test")
+            snippet.interactive_params.first.default_value.should eq("")
+            snippet.interactive_params.first.full.should eq("Test")
+            snippet.interactive_params.first.type.should eq("variable")
         end
 
-        pending "should be able to parse multiple variables" do
+        it "should be able to parse multiple variables" do
+            snippet = create_test_object(%({"id":"0b36b3a1-f10f-42f9-857e-0caeb23b36c3","type":"snippets","attributes":{"alias":"git.s","is-pinned":false,"name":"Search Git history","real-command":"git log -S \#{[Test]} \#{[Example=test]} ","tags":[]}}))
+            snippet.has_params.should eq(true)
+            snippet.interactive_params.size.should eq(2)
+            snippet.interactive_params.first.name.should eq("Test")
+            snippet.interactive_params.first.default_value.should eq("")
+            snippet.interactive_params.first.full.should eq("Test")
+            snippet.interactive_params.first.type.should eq("variable")
+            snippet.interactive_params.last.name.should eq("Example")
+            snippet.interactive_params.last.default_value.should eq("test")
+            snippet.interactive_params.last.full.should eq("Example=test")
+            snippet.interactive_params.last.type.should eq("variable")
         end
 
-        pending "should be able to parse multiple choice variables" do
+        it "should be able to parse multiple choice variables" do
+            snippet = create_test_object(%({"id":"0b36b3a1-f10f-42f9-857e-0caeb23b36c3","type":"snippets","attributes":{"alias":"git.s","is-pinned":false,"name":"Search Git history","real-command":"git log -S #select{[Test=option 1, option 2]} ","tags":[]}}))
+            snippet.has_params.should eq(true)
+            snippet.interactive_params.size.should eq(1)
+            snippet.interactive_params.first.name.should eq("Test")
+            snippet.interactive_params.first.default_value.should eq("")
+            snippet.interactive_params.first.full.should eq("Test=option 1, option 2")
+            snippet.interactive_params.first.type.should eq("select")
+            snippet.interactive_params.first.options.should eq(["option 1", "option 2"])
         end
 
-        pending "should be able to parse password variables" do
+        it "should be able to parse password variables" do
+            snippet = create_test_object(%({"id":"0b36b3a1-f10f-42f9-857e-0caeb23b36c3","type":"snippets","attributes":{"alias":"git.s","is-pinned":false,"name":"Search Git history","real-command":"magento user:create #password{[Name,8]} #password{[Default]}","tags":[]}}))
+            snippet.has_params.should eq(true)
+            snippet.interactive_params.size.should eq(0)
+            snippet.preview_command.should eq("magento user:create \e[32m<PW:Name>\e[0m \e[32m<PW:Default>\e[0m")
         end
     end
 
