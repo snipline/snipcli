@@ -13,7 +13,7 @@ Snipline CLI allows you to search and run commands from your Snipline account di
 Snipline CLI is available through Homebrew for MacOS and Linux.
 
 ```bash
-brew install snipline/snipline/snipline-cli
+brew install snipline/snipline/snipcli
 ```
 
 ### Executable
@@ -38,7 +38,7 @@ Snipline CLI requires Crystal 0.28.0 to be installed to install from source
 # Install dependencies
 shards
 # Build app
-crystal build src/snipline_cli.cr -o snipline --release
+crystal build src/snipline_cli.cr -o snipcli --release
 ```
 
 ## Usage

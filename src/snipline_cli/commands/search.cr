@@ -2,9 +2,9 @@ require "json"
 require "colorize"
 require "file_utils"
 require "toml"
-require "../gateways/command_builder"
+require "../services/command_builder"
 require "../config/config"
-require "../gateways/log"
+require "../services/log"
 
 module SniplineCli
     class Command < Admiral::Command
@@ -25,7 +25,7 @@ module SniplineCli
 
             def run
                 config = SniplineCli::Config.new
-                log = SniplineCli::Gateways::Log.new
+                log = SniplineCli::Services::Log.new
 
                 search_term : String = arguments.search_term || ""
 
@@ -88,7 +88,7 @@ module SniplineCli
                         chosen_snippet_index = (chosen_snippet_index.to_u32 - 1)
 
                         if results.size > chosen_snippet_index && chosen_snippet_index >= 0
-                            output = SniplineCli::Gateways::CommandBuilder.run(results[chosen_snippet_index])
+                            output = SniplineCli::Services::CommandBuilder.run(results[chosen_snippet_index])
                             puts "Do you want to run '#{output.colorize(:green)}' in #{FileUtils.pwd.colorize(:green)}? (y/N)"
                             if answer = gets
                                 if answer == "y" || answer == "yes"

@@ -1,5 +1,5 @@
 module SniplineCli
-    module Gateways
+    module Services
         class CommandBuilder
             def self.run(snippet : Snippet) : String
                 unless snippet.has_params

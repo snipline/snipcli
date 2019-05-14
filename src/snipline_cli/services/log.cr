@@ -1,7 +1,7 @@
 require "logger"
 
 module SniplineCli
-    module Gateways
+    module Services
         class Log
             property logger : Logger
             def initialize
