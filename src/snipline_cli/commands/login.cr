@@ -37,23 +37,23 @@ module SniplineCli
               :token  => verification_code,
               :length => "year",
             }
-            ) do |response|
-              token = Token.from_json(response.body)
-              toml_contents = <<-TOML
-              title = "Snipline"
+          ) do |response|
+            token = Token.from_json(response.body)
+            toml_contents = <<-TOML
+            title = "Snipline"
 
-              [api]
-              url = "#{config.get("api.url")}"
-              token = "#{token.jwt}"
+            [api]
+            url = "#{config.get("api.url")}"
+            token = "#{token.jwt}"
 
-              [general]
-              file = "#{config.get("general.file")}"
-              TOML
+            [general]
+            file = "#{config.get("general.file")}"
+            TOML
 
-              File.write(File.expand_path("~/.config/snipline/config.toml"), toml_contents, mode: "w")
-              puts "Configuration saved to #{File.expand_path("~/.config/snipline/config.toml").colorize.mode(:bold)}"
-              puts "To fetch your snippets run #{"snipline sync".colorize.mode(:bold)}"
-            end
+            File.write(File.expand_path("~/.config/snipline/config.toml"), toml_contents, mode: "w")
+            puts "Configuration saved to #{File.expand_path("~/.config/snipline/config.toml").colorize.mode(:bold)}"
+            puts "To fetch your snippets run #{"snipline sync".colorize.mode(:bold)}"
+          end
         rescue ex : Crest::NotFound
           puts "404 Not Found :("
           ex.response

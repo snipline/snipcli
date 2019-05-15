@@ -20,3 +20,5 @@ dependencies:
   toml:
     github: crystal-community/toml.cr
     branch: master
+  kemal:
+    github: kemalcr/kemal
