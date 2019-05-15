@@ -4,6 +4,10 @@ shards:
     github: jwaldrip/admiral.cr
     version: 1.8.0
 
+  baked_file_system:
+    github: schovi/baked_file_system
+    version: 0.9.8
+
   crest:
     github: mamantoha/crest
     version: 0.19.1
