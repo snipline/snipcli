@@ -32,6 +32,10 @@ module SniplineCli
       attributes.tags
     end
 
+    def is_synced
+      attributes.is_synced
+    end
+
     #
     # Params such as variables or select that require input from the user
     #
