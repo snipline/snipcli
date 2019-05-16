@@ -1,8 +1,16 @@
 <ul class="list-reset mx-auto max-w-md px-3">
     <% snippets = SniplineCli::Services::LoadSnippets.run %>
     <% snippets.each do |snippet| %>
-        <li class="snippet-list-item bg-white flex relative">
-            <%= snippet.name %>
+        <li class="snippet-list-item">
+            <h5 class="snippet-list-item--heading">
+                <% if snippet.snippet_alias %>
+                    <strong class="snippet-list-item--alias">[<%= snippet.snippet_alias %>]</strong> 
+                <% end %>
+                <%= snippet.name %>
+            </h5>
+            <div class="snippet-list-item--code-wrapper">
+                <pre class="snippet-list-item--code-preview"><%= snippet.preview_command_in_html %></pre>
+            </div>
         </li>
     <% end %>
 </ul>

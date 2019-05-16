@@ -2,8 +2,6 @@
 
 @tailwind components;
 
-@tailwind utilities;
+@import "components/snipline-list-item.css";
 
-body {
-    background-color: #ebf1ef;
-}
+@tailwind utilities;
