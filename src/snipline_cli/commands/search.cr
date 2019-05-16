@@ -2,10 +2,6 @@ require "json"
 require "colorize"
 require "file_utils"
 require "toml"
-require "../services/command_builder"
-require "../config/config"
-require "../services/log"
-require "../services/load_snippets"
 
 module SniplineCli
   class Command < Admiral::Command
@@ -25,8 +21,8 @@ module SniplineCli
       property results
 
       def run
-        config = SniplineCli::Config.new
-        log = SniplineCli::Services::Log.new
+        config = SniplineCli.config
+        log = SniplineCli.log
 
         search_term : String = arguments.search_term || ""
 

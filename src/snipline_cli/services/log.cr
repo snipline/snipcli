@@ -3,11 +3,16 @@ require "logger"
 module SniplineCli
   module Services
     class Log
+      INSTANCE = Log.new
       property logger : Logger
 
       def initialize
         ENV["LOG_LEVEL"] ||= "WARN"
         @logger = Logger.new(STDOUT, level: (ENV["LOG_LEVEL"] == "DEBUG") ? Logger::DEBUG : Logger::WARN)
+      end
+
+      def self.log
+        Log::INSTANCE
       end
 
       macro define_methods(names)

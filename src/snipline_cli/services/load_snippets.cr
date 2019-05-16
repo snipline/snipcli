@@ -1,11 +1,9 @@
-require "../config/config"
-require "./log"
 module SniplineCli
   module Services
     class LoadSnippets
         def self.run : Array(Snippet)
-            config = SniplineCli::Config.new
-            log = SniplineCli::Services::Log.new
+            config = SniplineCli.config
+            log = SniplineCli.log
             log.info("Looking through file #{config.get("general.file")}")
             snippets = [] of Snippet
             unless File.readable?(File.expand_path(config.get("general.file")))

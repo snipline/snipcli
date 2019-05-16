@@ -1,11 +1,6 @@
 require "toml"
-require "../config/config"
 require "kemal"
 require "file"
-require "../services/file_storage"
-require "../services/log"
-require "../services/load_snippets"
-require "../models/snippet"
 
 module SniplineCli
   class Command < Admiral::Command
@@ -15,8 +10,6 @@ module SniplineCli
       define_flag bind : String, default: "localhost", long: bind, short: b, required: true
 
       def run
-        config = SniplineCli::Config.new
-        log = SniplineCli::Services::Log.new
         # add_context_storage_type([] of SniplineCli::Snippet)
         get "/" do |env|
           # env.set "snippets", snippets

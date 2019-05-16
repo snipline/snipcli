@@ -2,7 +2,6 @@ require "json"
 require "colorize"
 require "file_utils"
 require "toml"
-require "../config/config"
 
 module SniplineCli
   class Command < Admiral::Command
@@ -11,7 +10,7 @@ module SniplineCli
 
       def run
         puts "Syncing snippets..."
-        config = SniplineCli::Config.new
+        config = SniplineCli.config
         Crest.get(
           "#{config.get("api.url")}/snippets",
           headers: {
