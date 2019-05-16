@@ -5,6 +5,7 @@ require "toml"
 require "../services/command_builder"
 require "../config/config"
 require "../services/log"
+require "../services/load_snippets"
 
 module SniplineCli
   class Command < Admiral::Command
@@ -29,19 +30,7 @@ module SniplineCli
 
         search_term : String = arguments.search_term || ""
 
-        puts "Searching #{search_term}...\n"
-        log.debug("Looking through file #{config.get("general.file")}")
-        unless File.readable?(File.expand_path(config.get("general.file")))
-          puts "Could not read #{config.get("general.file")}"
-          puts "Run #{"snipline-cli sync".colorize(:green)} first"
-          return
-        end
-
-        snippets = [] of Snippet
-
-        File.open(File.expand_path(config.get("general.file"))) do |file|
-          snippets = Array(Snippet).from_json(file)
-        end
+        snippets = SniplineCli::Services::LoadSnippets.run
 
         unless search_term.empty?
           lowered_search_term = search_term.downcase

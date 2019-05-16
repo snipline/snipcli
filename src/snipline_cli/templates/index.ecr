@@ -1,1 +1,5 @@
 <h2>Snippets</h2>
+<% snippets = SniplineCli::Services::LoadSnippets.run %>
+<% snippets.each do |snippet| %>
+    <%= snippet.name %>
+<% end %>
