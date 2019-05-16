@@ -1,5 +1,8 @@
-<h2>Snippets</h2>
-<% snippets = SniplineCli::Services::LoadSnippets.run %>
-<% snippets.each do |snippet| %>
-    <%= snippet.name %>
-<% end %>
+<ul class="list-reset mx-auto max-w-md px-3">
+    <% snippets = SniplineCli::Services::LoadSnippets.run %>
+    <% snippets.each do |snippet| %>
+        <li class="snippet-list-item bg-white flex relative">
+            <%= snippet.name %>
+        </li>
+    <% end %>
+</ul>
