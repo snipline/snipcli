@@ -2,7 +2,33 @@ require "readline"
 module SniplineCli
   module Services
     class CommandBuilder
-      def self.run(snippet : Snippet) : String
+
+      def self.print(message, output)
+        case output
+        when IO
+          output.print(message)
+          output.flush
+        end
+      end
+
+      def self.gets(output, override_input : String | Nil, *args)
+        case override_input
+        when String
+          return override_input
+        else
+          output.gets(*args)
+        end
+      end
+
+      def self.shift_input(user_input : Array(String) | Nil)
+        if user_input && user_input.size > 0
+          {user_input.not_nil!.shift, user_input}
+        else
+          {nil, user_input}
+        end
+      end
+
+      def self.run(snippet : Snippet, input, output, user_input = [] of String) : String
         unless snippet.has_params
           return snippet.real_command
         end
@@ -11,12 +37,13 @@ module SniplineCli
         snippet.interactive_params.each_with_index do |param, index|
           case param.type
           when "select"
-            puts "Choose number for #{param.name}:"
+            print("Choose number for #{param.name}:", output)
             param.options.each_with_index do |option, option_index|
-              puts "  ##{option_index + 1} - #{option}"
+              print("  ##{option_index + 1} - #{option}", output)
             end
             # todo: list options and let user select via number
-            if user_param_input = Readline.readline
+            current_user_input, user_input = shift_input(user_input)
+            if user_param_input = gets(output, current_user_input)
               if user_param_input = user_param_input.to_u32
                 user_param_input = user_param_input - 1
                 if param.options.size > user_param_input
@@ -26,11 +53,12 @@ module SniplineCli
               end
             end
           else
-            puts "Enter #{param.name}:"
+            print("Enter #{param.name}:\n", output)
             if param.default_value != ""
-              puts "Leave blank for default (#{param.default_value})"
+              print("Leave blank for default (#{param.default_value})\n", output)
             end
-            if user_param_input = Readline.readline
+            current_user_input, user_input = shift_input(user_input)
+            if user_param_input = gets(output, current_user_input)
               if user_param_input == ""
                 user_param_input = param.default_value
               end

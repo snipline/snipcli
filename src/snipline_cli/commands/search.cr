@@ -73,7 +73,7 @@ module SniplineCli
             chosen_snippet_index = (chosen_snippet_index.to_u32 - 1)
 
             if results.size > chosen_snippet_index && chosen_snippet_index >= 0
-              output = SniplineCli::Services::CommandBuilder.run(results[chosen_snippet_index])
+              output = SniplineCli::Services::CommandBuilder.run(results[chosen_snippet_index], STDIN, STDOUT)
               puts "Do you want to run '#{output.colorize(:green)}' in #{FileUtils.pwd.colorize(:green)}? (y/N)"
               if answer = gets
                 if answer == "y" || answer == "yes"
