@@ -1,3 +1,4 @@
+require "readline"
 module SniplineCli
   module Services
     class CommandBuilder
@@ -15,7 +16,7 @@ module SniplineCli
               puts "  ##{option_index + 1} - #{option}"
             end
             # todo: list options and let user select via number
-            if user_param_input = gets
+            if user_param_input = Readline.readline
               if user_param_input = user_param_input.to_u32
                 user_param_input = user_param_input - 1
                 if param.options.size > user_param_input
@@ -29,7 +30,7 @@ module SniplineCli
             if param.default_value != ""
               puts "Leave blank for default (#{param.default_value})"
             end
-            if user_param_input = gets
+            if user_param_input = Readline.readline
               if user_param_input == ""
                 user_param_input = param.default_value
               end
