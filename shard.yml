@@ -25,3 +25,6 @@ dependencies:
   baked_file_system:
     github: schovi/baked_file_system
     version: 0.9.8
+  spec-kemal:
+    github: kemalcr/spec-kemal
+    branch: master

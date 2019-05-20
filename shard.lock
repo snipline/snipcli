@@ -28,6 +28,10 @@ shards:
     github: luislavena/radix
     version: 0.3.9
 
+  spec-kemal:
+    github: kemalcr/spec-kemal
+    commit: 64b89c719234ceb92c0a14762dce3afc6257fffc
+
   toml:
     github: crystal-community/toml.cr
     commit: 5935d7f5afeed8ba126418a9f85691b4067db85c
