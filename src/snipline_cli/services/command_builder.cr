@@ -1,8 +1,8 @@
 require "readline"
+
 module SniplineCli
   module Services
     class CommandBuilder
-
       def self.print(message, output)
         case output
         when IO

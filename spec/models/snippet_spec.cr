@@ -5,7 +5,7 @@ def create_test_object(attributes : String | Nil)
   SniplineCli::Snippet.from_json(attributes)
 end
 
-describe SniplineCli::SnippetParam do
+describe SniplineCli::Snippet do
   it "correctly parses snippets from JSON" do
     content = File.read(File.expand_path("./spec/fixtures/snippets.json"))
     snippets = Array(SniplineCli::Snippet).from_json(content)

@@ -19,7 +19,6 @@ module SniplineCli
     SniplineCli::Services::Log.log
   end
 
-
   class Command < Admiral::Command
     define_version "0.1.0"
     define_help description: "Snipline CLI"

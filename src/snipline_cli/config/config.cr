@@ -4,6 +4,7 @@ require "file_utils"
 module SniplineCli
   class Config
     INSTANCE = Config.new
+
     def initialize
       ENV["CONFIG_FILE"] ||= "~/.config/snipline/config.toml"
       if File.exists?(File.expand_path(ENV["CONFIG_FILE"]))
