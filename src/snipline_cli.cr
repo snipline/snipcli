@@ -15,6 +15,10 @@ module SniplineCli
     SniplineCli::Config.config
   end
 
+  def self.config_file
+      ENV.has_key?("CONFIG_FILE") ? ENV["CONFIG_FILE"] : "~/.config/snipline/config.toml"
+  end
+
   def self.log
     SniplineCli::Services::Log.log
   end
@@ -24,7 +28,6 @@ module SniplineCli
     define_help description: "Snipline CLI"
 
     def run
-      puts "Use #{"snipline login".colorize(:green)} to get started."
     end
   end
 end

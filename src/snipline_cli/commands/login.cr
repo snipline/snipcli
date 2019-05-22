@@ -1,5 +1,4 @@
 require "toml"
-require "../config/config"
 
 module SniplineCli
   class Command < Admiral::Command
@@ -7,7 +6,7 @@ module SniplineCli
       define_help description: "Log-in into your Snipline account"
 
       def run
-        config = SniplineCli::Config.new
+        config = SniplineCli.config
         puts "What's your Snipline email account?".colorize.mode(:bold)
         puts "Register at #{"https://account.snipline.io/register".colorize.mode(:underline)} if you don't have an account."
         print "Email:"
@@ -50,8 +49,8 @@ module SniplineCli
             file = "#{config.get("general.file")}"
             TOML
 
-            File.write(File.expand_path("~/.config/snipline/config.toml"), toml_contents, mode: "w")
-            puts "Configuration saved to #{File.expand_path("~/.config/snipline/config.toml").colorize.mode(:bold)}"
+            File.write(File.expand_path(SniplineCli.config_file), toml_contents, mode: "w")
+            puts "Configuration saved to #{File.expand_path(SniplineCli.config_file).colorize.mode(:bold)}"
             puts "To fetch your snippets run #{"snipline sync".colorize.mode(:bold)}"
           end
         rescue ex : Crest::NotFound

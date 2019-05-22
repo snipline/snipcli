@@ -6,9 +6,8 @@ module SniplineCli
     INSTANCE = Config.new
 
     def initialize
-      ENV["CONFIG_FILE"] ||= "~/.config/snipline/config.toml"
-      if File.exists?(File.expand_path(ENV["CONFIG_FILE"]))
-        config_file = File.read(File.expand_path(ENV["CONFIG_FILE"]))
+      if File.exists?(File.expand_path(SniplineCli.config_file))
+        config_file = File.read(File.expand_path(SniplineCli.config_file))
         toml = TOML.parse(config_file)
         @api = toml["api"].as(Hash(String, TOML::Type))
         @general = toml["general"].as(Hash(String, TOML::Type))
