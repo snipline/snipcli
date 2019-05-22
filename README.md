@@ -124,6 +124,7 @@ Contributions are welcome, but for new features please open an issue first to di
 * Edit snippets through web interface.
 * Delete snippets through web interface.
 * More documentation (Including code docs)
+* Table formatting for search results
 
 ## Contributors
 
