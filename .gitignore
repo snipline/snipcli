@@ -4,3 +4,5 @@
 /.shards/
 *.dwarf
 /node_modules/
+snipcli
+snipline_cli
