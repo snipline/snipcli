@@ -23,6 +23,10 @@ module SniplineCli
     SniplineCli::Services::Log.log
   end
 
+  # The base Command Class that inherits from [Admiral](https://github.com/jwaldrip/admiral.cr)
+  #
+  # This command is not used by itself
+  # It is here to set up usage for other commands.
   class Command < Admiral::Command
     define_version "0.1.0"
     define_help description: "Snipline CLI"

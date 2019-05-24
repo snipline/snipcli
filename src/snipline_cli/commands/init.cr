@@ -2,6 +2,11 @@ require "toml"
 
 module SniplineCli
   class Command < Admiral::Command
+
+    # The command to initialize Snipline CLI without an active Snipline account.
+    #
+    # This command generates a config file in the requested location.
+    # By default this location is ~/.config/snipline/config.toml
     class Init < Admiral::Command
       define_help description: "Initialise Snipline CLI without logging in"
 

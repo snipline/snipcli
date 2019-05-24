@@ -2,31 +2,21 @@ require "readline"
 
 module SniplineCli
   module Services
+
+    # Takes a `Snippet`, asks for users parameter changes, and then returns the output as a string.
+    #
+    # ```crystal
+    # output = SniplineCli::Services::CommandBuilder.run(results[chosen_snippet_index], STDIN, STDOUT)
+    # ```
+    #
+    # User answers can be pre-supplied for testing
+    #
+    # ```crystal
+    # File.tempfile("test") do |io|
+    #   response = SniplineCli::Services::CommandBuilder.run(snippet, io, io, ["example input"])
+    # end
+    # ```
     class CommandBuilder
-      def self.print(message, output)
-        case output
-        when IO
-          output.print(message)
-          output.flush
-        end
-      end
-
-      def self.gets(output, override_input : String | Nil, *args)
-        case override_input
-        when String
-          return override_input
-        else
-          output.gets(*args)
-        end
-      end
-
-      def self.shift_input(user_input : Array(String) | Nil)
-        if user_input && user_input.size > 0
-          {user_input.not_nil!.shift, user_input}
-        else
-          {nil, user_input}
-        end
-      end
 
       def self.run(snippet : Snippet, input, output, user_input = [] of String) : String
         unless snippet.has_params
@@ -67,6 +57,7 @@ module SniplineCli
             end
           end
         end
+
         password_characters = %w{a b c d e f g h i j k l m n o
           p q r s t u v w x y z A B C D
           E F G H I J K L M N O P Q R S
@@ -85,6 +76,37 @@ module SniplineCli
         end
         command_builder
       end
+
+      # Controls output. If IO then shows in the terminal, otherwise hides it (e.g. for testing)
+      private def self.print(message, output)
+        case output
+        when IO
+          output.print(message)
+          output.flush
+        end
+      end
+
+      # Handles user input. If an array of is pre-supplied (E.g. for tests) then they are used.
+      # Otherwise user is asked to input the variables in the terminal. 
+      private def self.gets(output, override_input : String | Nil, *args)
+        case override_input
+        when String
+          return override_input
+        else
+          output.gets(*args)
+        end
+      end
+
+      # Helper method for running through test input
+      # Shifts an array if applicable and returns the first element and the remaining array.
+      private def self.shift_input(user_input : Array(String) | Nil)
+        if user_input && user_input.size > 0
+          {user_input.not_nil!.shift, user_input}
+        else
+          {nil, user_input}
+        end
+      end
+
     end
   end
 end

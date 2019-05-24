@@ -4,6 +4,16 @@ require "file"
 
 module SniplineCli
   class Command < Admiral::Command
+
+    # The command to start the web version of Snipline CLI
+    #
+    # ```bash
+    # snipcli web -b 0.0.0.0 -p 3000
+    # ```
+    #
+    # The web version allows you to view snippets in a friendly GUI.
+    #
+    # In the future this command will allow you to create, edit, and delete snippets.
     class Web < Admiral::Command
       define_help description: "Serve a web based interface for managing nippets"
       define_flag port : Int32, default: 9876_i32, long: port, short: p, required: true

@@ -5,6 +5,11 @@ require "toml"
 
 module SniplineCli
   class Command < Admiral::Command
+    # The command to sync your snippets with your active Snipline account.
+    #
+    # ```bash
+    # snipcli sync
+    # ```
     class Sync < Admiral::Command
       define_help description: "For syncing snippets from Snipline"
 

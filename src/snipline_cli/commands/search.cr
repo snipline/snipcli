@@ -5,6 +5,20 @@ require "toml"
 
 module SniplineCli
   class Command < Admiral::Command
+
+    # The command to search your snippets.
+    #
+    # You can search snippets quickly by using
+    #
+    # ```bash
+    # snipcli search <searchterm>
+    # ```
+    #
+    # You can specify a field to search or the result limit.
+    #
+    # ```bash
+    # snipcli search <searchterm> --field=tags --limit=10
+    # ```
     class Search < Admiral::Command
       define_help description: "For searching your snippets"
       define_argument search_term : String,

@@ -2,9 +2,20 @@ require "toml"
 require "file_utils"
 
 module SniplineCli
+  # SniplineCli::Config is for easily retreiving configuration throughout the codebase.
+  #
+  # Example usage:
+  #
+  # ```crystal
+  # config = SniplineCli.config
+  # config.get("api.url")
+  # ```
   class Config
+
+    # Constant that creates a fresh version of itself - for use with self.config.
     INSTANCE = Config.new
 
+    # When a new instance is created the config file is read and parsed.
     def initialize
       if File.exists?(File.expand_path(SniplineCli.config_file))
         config_file = File.read(File.expand_path(SniplineCli.config_file))
@@ -17,6 +28,7 @@ module SniplineCli
       end
     end
 
+    # Used for retreiving the value for a given key
     def get(key : String)
       case key
       when "api.url"
@@ -30,6 +42,7 @@ module SniplineCli
       end
     end
 
+    # The static convenience method for retreiving the Config class instance without regenerating it.
     def self.config
       Config::INSTANCE
     end

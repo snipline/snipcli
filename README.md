@@ -47,10 +47,15 @@ crystal build src/snipline_cli.cr -o snipcli --release
 
 Log-in to your Snipline account and sync your snippets.
 
+Follow login instructions (Enter email and token)
+
 ```bash
-# follow login instructions (Enter email and token)
 snipline login
-# download snippets from your account
+```
+
+Download snippets from your account
+
+```bash
 snipline sync
 ```
 
@@ -58,13 +63,13 @@ This will create two files on your system: `~/.config/snipline/config.toml` and 
 
 ### Searching snippets
 
-```
-# search <searchterm>
-snipline search <searchterm>
+A basic search can be done with the `search` command.
 
-# other options
-snipline search <searchterm> --field=tags --limit=10
+```bash
+snipline search <searchterm>
 ```
+
+Search options include `field`, and `limit`. See `snipcli search --help` for more information
 
 ### Web interface
 
@@ -92,11 +97,12 @@ snipcli init
 
 ## Development
 
-See the above details on building from source. 
+See the Installation section on building from source. 
 
 Set log levels for additional development output.
 
 ```bash
+crystal build src/snipline_cli.cr -o snipcli
 env LOG_LEVEL=DEBUG ./snipcli search git
 ```
 
@@ -108,7 +114,7 @@ env CONFIG_FILE=./spec/fixtures/config.toml ./snipcli search git
 
 ## Contributing
 
-Contributions are welcome, but for new features please open an issue first to discuss it.
+Contributions are welcome. For new features please open an issue first to discuss it.
 
 1. Fork it (<https://github.com/snipline/snipline_cli/fork>)
 2. Create your feature branch (`git checkout -b feature/my-new-feature`)
