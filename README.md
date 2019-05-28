@@ -114,14 +114,7 @@ env CONFIG_FILE=./spec/fixtures/config.toml ./snipcli search git
 
 ## Contributing
 
-Contributions are welcome. For new features please open an issue first to discuss it.
-
-1. Fork it (<https://github.com/snipline/snipline_cli/fork>)
-2. Create your feature branch (`git checkout -b feature/my-new-feature`)
-3. Run the tests `crystal spec`
-4. Commit your changes (`git commit -am 'Add some feature'`)
-5. Push to the branch (`git push origin feature/my-new-feature`)
-6. Create a new Pull Request
+See the [Contributing guide](CONTRIBUTING.md) for details.
 
 ## TODO
 
