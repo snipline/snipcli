@@ -112,8 +112,8 @@ See the [Contributing guide](CONTRIBUTING.md) for details.
 * Create snippets through web interface.
 * Edit snippets through web interface.
 * Delete snippets through web interface.
-* More documentation (Including code docs)
-* Table formatting for search results
+* More documentation (Including usage without a Snipline account).
+* Table formatting for search results.
 
 ## Contributors
 
