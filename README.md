@@ -16,19 +16,9 @@ Snipline CLI is available through Homebrew for MacOS and Linux.
 brew install snipline/snipline/snipcli
 ```
 
-### Executable
+### Snapcraft
 
-Linux users can download the executable directly.
-
-Bash:
-```bash
-wget "URL.tar.gz" && tar -xvzf ./URL.tar.gz && sudo mv FILE /usr/local/bin/
-```
-
-Fish:
-```fish
-wget "URL.tar.gz"; and tar -xvzf ./URL.tar.gz; and sudo mv FILE /usr/local/bin/
-```
+Linux users can download via Snapcraft. Instructions coming soon.
 
 ### From source
 
