@@ -16,19 +16,9 @@ Snipline CLI is available through Homebrew for MacOS and Linux.
 brew install snipline/snipline/snipcli
 ```
 
-### Executable
+### Snapcraft
 
-Linux users can download the executable directly.
-
-Bash:
-```bash
-wget "URL.tar.gz" && tar -xvzf ./URL.tar.gz && sudo mv FILE /usr/local/bin/
-```
-
-Fish:
-```fish
-wget "URL.tar.gz"; and tar -xvzf ./URL.tar.gz; and sudo mv FILE /usr/local/bin/
-```
+Linux users can download via Snapcraft. Instructions coming soon.
 
 ### From source
 
@@ -114,14 +104,7 @@ env CONFIG_FILE=./spec/fixtures/config.toml ./snipcli search git
 
 ## Contributing
 
-Contributions are welcome. For new features please open an issue first to discuss it.
-
-1. Fork it (<https://github.com/snipline/snipline_cli/fork>)
-2. Create your feature branch (`git checkout -b feature/my-new-feature`)
-3. Run the tests `crystal spec`
-4. Commit your changes (`git commit -am 'Add some feature'`)
-5. Push to the branch (`git push origin feature/my-new-feature`)
-6. Create a new Pull Request
+See the [Contributing guide](CONTRIBUTING.md) for details.
 
 ## TODO
 
@@ -129,8 +112,8 @@ Contributions are welcome. For new features please open an issue first to discus
 * Create snippets through web interface.
 * Edit snippets through web interface.
 * Delete snippets through web interface.
-* More documentation (Including code docs)
-* Table formatting for search results
+* More documentation (Including usage without a Snipline account).
+* Table formatting for search results.
 
 ## Contributors
 
