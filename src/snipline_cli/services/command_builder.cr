@@ -1,5 +1,3 @@
-require "readline"
-
 module SniplineCli
   module Services
 
