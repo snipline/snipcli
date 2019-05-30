@@ -6,5 +6,9 @@ module SniplineCli
 
     @[JSON::Field(key: "jwt")]
     property jwt : String
+
+    @[JSON::Field(key: "token")]
+    property token : String
+
   end
 end

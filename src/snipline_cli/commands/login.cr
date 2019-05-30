@@ -12,6 +12,7 @@ module SniplineCli
 
       def run
         config = SniplineCli.config
+        log = SniplineCli.log
         puts "What's your Snipline email account?".colorize.mode(:bold)
         puts "Register at #{"https://account.snipline.io/register".colorize.mode(:underline)} if you don't have an account."
         print "Email:"
@@ -27,6 +28,7 @@ module SniplineCli
         puts "Please enter the verification code that was sent to your email:"
         print "Verification Code:"
         verification_code = gets
+        log.debug("verification_code: #{verification_code}")
         if verification_code.nil? || verification_code.empty?
           puts "Code not entered. Please try again."
           return
@@ -36,13 +38,16 @@ module SniplineCli
         begin
           Crest.post(
             "#{config.get("api.url")}/tokens/create",
-            params: {
+            form: {
               :id     => email,
               :token  => verification_code,
               :length => "year",
             }
           ) do |response|
-            token = Token.from_json(response.body)
+            log.debug("response body")
+            json_string = response.body_io.gets_to_end
+            log.debug(json_string.inspect)
+            token = Token.from_json(json_string)
             toml_contents = <<-TOML
             title = "Snipline"
 
@@ -54,6 +59,7 @@ module SniplineCli
             file = "#{config.get("general.file")}"
             TOML
 
+            Services::CreateConfigDirectory.run(SniplineCli.config_file)
             File.write(File.expand_path(SniplineCli.config_file), toml_contents, mode: "w")
             puts "Configuration saved to #{File.expand_path(SniplineCli.config_file).colorize.mode(:bold)}"
             puts "To fetch your snippets run #{"snipline sync".colorize.mode(:bold)}"

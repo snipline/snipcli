@@ -15,7 +15,7 @@ lib:
 
 $(SNIPCLI): $(SNIPCLI_SOURCES) | $(OUT_DIR)
 	@echo "Building snipcli in $@"
-	@crystal build -o $@ src/snipline_cli.cr -p --no-debug
+	@crystal build -o $@ src/snipline_cli.cr -p --no-debug --release
 
 $(OUT_DIR) $(INSTALL_DIR):
 	 @mkdir -p $@
