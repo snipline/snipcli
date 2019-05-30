@@ -23,7 +23,7 @@ module SniplineCli
         file = "#{config.get("general.file")}"
         TOML
 
-        Services::CreateConfigDirectory.run(SniplineCli.config_file)
+        SniplineCli::Services::CreateConfigDirectory.run(SniplineCli.config_file)
         File.write(File.expand_path(SniplineCli.config_file), toml_contents, mode: "w")
         puts "Configuration saved to #{File.expand_path(SniplineCli.config_file).colorize.mode(:bold)}"
         puts "To fetch your snippets run #{"snipline sync".colorize.mode(:bold)}"
