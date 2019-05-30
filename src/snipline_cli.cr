@@ -28,7 +28,7 @@ module SniplineCli
   # This command is not used by itself
   # It is here to set up usage for other commands.
   class Command < Admiral::Command
-    define_version "0.1.0"
+    define_version "0.1.3"
     define_help description: "Snipline CLI"
 
     def run
