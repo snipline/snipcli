@@ -8,7 +8,7 @@ Snipline CLI allows you to search and run commands from your Snipline account di
 
 ## Installation
 
-### Homebrew
+### Homebrew (MacOS and Linux)
 
 Snipline CLI is available through Homebrew for MacOS and Linux.
 
@@ -16,9 +16,13 @@ Snipline CLI is available through Homebrew for MacOS and Linux.
 brew install snipline/snipline/snipcli
 ```
 
-### Snapcraft
+### Snapcraft (Linux)
 
-Linux users can download via Snapcraft. Instructions coming soon.
+Linux users can download via Snapcraft
+
+```
+sudo snap install snipcli --beta
+```
 
 ### From source
 
