@@ -3,7 +3,7 @@ require "json"
 module SniplineCli
   class Snippet
     JSON.mapping({
-      id:         String,
+      id:         String | Nil,
       type:       String,
       attributes: SnippetAttribute,
     })
