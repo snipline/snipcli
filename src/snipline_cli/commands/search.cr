@@ -75,7 +75,7 @@ module SniplineCli
         end
 
         results.each_with_index { |snippet, index|
-          puts "#{(index + 1).to_s.rjust(4)} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}#{(snippet.tags.size > 0) ? "[" + snippet.tags.join(",") + "]" : ""}".colorize.mode(:bold)
+          puts "#{(index + 1).to_s.rjust(4)} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}#{snippet.id.nil? ? "⚡️" : ""} #{(snippet.tags.size > 0) ? "[" + snippet.tags.join(",") + "]" : ""}".colorize.mode(:bold)
           puts "     #{snippet.preview_command}"
         }
 
