@@ -9,7 +9,7 @@ require "./snipline_cli/commands/*"
 require "toml"
 
 module SniplineCli
-  VERSION = "0.1.3"
+  VERSION = "0.1.4"
 
   def self.config
     SniplineCli::Config.config
@@ -28,7 +28,7 @@ module SniplineCli
   # This command is not used by itself
   # It is here to set up usage for other commands.
   class Command < Admiral::Command
-    define_version "0.1.3"
+    define_version SniplineCli::VERSION
     define_help description: "Snipline CLI"
 
     def run
