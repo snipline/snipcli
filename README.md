@@ -89,6 +89,8 @@ At this moment the web interface does not support CRUD commands and manual entry
 
 Here is an example ~/.config/snipline/snipets.json` file to get started.
 
+Note that `id` of `null` means that it has not been synced to a Snipline account. It will be lost if `snipcli sync` is ever run to fetch snippets from Snipline.
+
 ```json
 [
     {
