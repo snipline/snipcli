@@ -77,12 +77,32 @@ snipcli web -p 3000 -b 0.0.0.0
 
 ### Using Snipline CLI without a Snipline Account
 
-Snipline CLI can be used without an active Snipline account. But requires either manually entering data in the `snippets.json` file or using the `web` interface.
+Snipline CLI can be used without an active Snipline account. But requires either manually entering data in the `~/.config/snipline/snippets.json` file or using the `web` interface.
 
 To generate the initial configuration files use the `init` command.
 
 ```bash
 snipcli init
+```
+
+At this moment the web interface does not support CRUD commands and manual entry is required.
+
+Here is an example ~/.config/snipline/snipets.json` file to get started.
+
+```json
+[
+    {
+        "id":null,
+        "type":"snippets",
+        "attributes":
+        {
+            "is-pinned":false,
+            "name":"Symlink directory",
+            "real-command":"ln -s #{[Source]} #{[Destination]}",
+            "tags":["file", "linux"]
+        }
+    }
+]
 ```
 
 ## Development

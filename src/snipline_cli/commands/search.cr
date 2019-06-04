@@ -96,7 +96,7 @@ module SniplineCli
                 end
               end
             else
-              p "Snippet does not exist"
+              puts "Snippet does not exist"
             end
           else
             puts "You did not select a snippet."
