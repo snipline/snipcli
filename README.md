@@ -2,7 +2,7 @@
 
 Snipline CLI is the command-line tool for [Snipline](https://snipline.io).
 
-![SnipCLI Preivew](https://f002.backblazeb2.com/file/ms-uploads/snipline/2019-07-10 10.21.19.gif)
+![SnipCLI Preview](https://f002.backblazeb2.com/file/ms-uploads/snipline/2019-07-10%2010.21.19.gif)
 
 Snipline CLI allows you to search and run commands from your Snipline account directly through the command-line. It is also possible to use this for free without a Snipline account (See the documentation on using without a Snipline Account).
 
