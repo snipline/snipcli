@@ -26,7 +26,7 @@ sudo snap install snipcli --beta
 
 ### From source
 
-Snipline CLI requires Crystal 0.28.0 to be installed to install from source
+Snipline CLI requires Crystal 0.29.0 to be installed to install from source
 
 ```bash
 # Install dependencies

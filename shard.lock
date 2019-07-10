@@ -4,13 +4,17 @@ shards:
     github: jwaldrip/admiral.cr
     version: 1.8.0
 
+  ameba:
+    github: veelenga/ameba
+    version: 0.10.0
+
   baked_file_system:
     github: schovi/baked_file_system
     version: 0.9.8
 
   crest:
     github: mamantoha/crest
-    version: 0.19.1
+    version: 0.20.0
 
   exception_page:
     github: crystal-loot/exception_page
