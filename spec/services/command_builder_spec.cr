@@ -18,7 +18,7 @@ describe SniplineCli::Services::CommandBuilder do
       first_password = split[1]
       # If the second half of the split also has the same password
       # This checks if the password with the same name is repeating correctly.
-      "#{split[2]}".includes?(split[1])
+      "#{split[2]}".includes?(first_password)
     end
   end
 

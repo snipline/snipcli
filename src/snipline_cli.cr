@@ -9,14 +9,14 @@ require "./snipline_cli/commands/*"
 require "toml"
 
 module SniplineCli
-  VERSION = "0.1.4"
+  VERSION = "0.1.5"
 
   def self.config
     SniplineCli::Config.config
   end
 
   def self.config_file
-      ENV.has_key?("CONFIG_FILE") ? ENV["CONFIG_FILE"] : "~/.config/snipline/config.toml"
+    ENV.has_key?("CONFIG_FILE") ? ENV["CONFIG_FILE"] : "~/.config/snipline/config.toml"
   end
 
   def self.log

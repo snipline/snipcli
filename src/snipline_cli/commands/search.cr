@@ -5,7 +5,6 @@ require "toml"
 
 module SniplineCli
   class Command < Admiral::Command
-
     # The command to search your snippets.
     #
     # You can search snippets quickly by using
@@ -35,9 +34,6 @@ module SniplineCli
       property results
 
       def run
-        config = SniplineCli.config
-        log = SniplineCli.log
-
         search_term : String = arguments.search_term || ""
 
         snippets = SniplineCli::Services::LoadSnippets.run
@@ -57,17 +53,7 @@ module SniplineCli
           }
         end
 
-        results = snippets.sort { |snippet_a, snippet_b|
-          if snippet_a.is_pinned && snippet_b.is_pinned
-            snippet_a.name <=> snippet_b.name
-          elsif snippet_a.is_pinned
-            -1
-          elsif snippet_b.is_pinned
-            1
-          else
-            snippet_a.name <=> snippet_b.name
-          end
-        }.first(flags.limit)
+        results = sort_results(snippets, flags.limit)
 
         unless results.size > 0
           puts "No results found."
@@ -82,6 +68,24 @@ module SniplineCli
         puts "\nChoose a snippet"
         chosen_snippet_index = gets
 
+        handle_chosen_snippet(chosen_snippet_index, results)
+      end
+
+      def sort_results(snippets, limit)
+        snippets.sort { |snippet_a, snippet_b|
+          if snippet_a.is_pinned && snippet_b.is_pinned
+            snippet_a.name <=> snippet_b.name
+          elsif snippet_a.is_pinned
+            -1
+          elsif snippet_b.is_pinned
+            1
+          else
+            snippet_a.name <=> snippet_b.name
+          end
+        }.first(limit)
+      end
+
+      def handle_chosen_snippet(chosen_snippet_index, results)
         if chosen_snippet_index
           if chosen_snippet_index.to_i?
             chosen_snippet_index = (chosen_snippet_index.to_u32 - 1)

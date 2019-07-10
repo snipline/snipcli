@@ -1,6 +1,6 @@
 {
   "name": "snipcli",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "main": "index.js",
   "author": "Mitchell Stanley <mitchell.stanley@isev.co.uk>",
   "license": "MIT",

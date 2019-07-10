@@ -2,7 +2,6 @@ require "toml"
 
 module SniplineCli
   class Command < Admiral::Command
-
     # The command to initialize Snipline CLI without an active Snipline account.
     #
     # This command generates a config file in the requested location.
@@ -34,4 +33,3 @@ module SniplineCli
     register_sub_command :init, Init
   end
 end
-

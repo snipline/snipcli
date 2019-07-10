@@ -9,6 +9,5 @@ module SniplineCli
 
     @[JSON::Field(key: "token")]
     property token : String
-
   end
 end

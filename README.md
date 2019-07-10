@@ -2,7 +2,7 @@
 
 Snipline CLI is the command-line tool for [Snipline](https://snipline.io).
 
-[![asciicast](https://asciinema.org/a/R5vM238erVaOo62TYvHceixz3.svg)](https://asciinema.org/a/R5vM238erVaOo62TYvHceixz3)
+![SnipCLI Preview](https://f002.backblazeb2.com/file/ms-uploads/snipline/2019-07-10%2010.41.26.gif)
 
 Snipline CLI allows you to search and run commands from your Snipline account directly through the command-line. It is also possible to use this for free without a Snipline account (See the documentation on using without a Snipline Account).
 
@@ -26,7 +26,7 @@ sudo snap install snipcli --beta
 
 ### From source
 
-Snipline CLI requires Crystal 0.28.0 to be installed to install from source
+Snipline CLI requires Crystal 0.29.0 to be installed to install from source
 
 ```bash
 # Install dependencies

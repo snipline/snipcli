@@ -1,5 +1,5 @@
 name: snipline_cli
-version: 0.1.4
+version: 0.1.5
 
 authors:
   - Mitchell Stanley <mitchell.stanley@isev.co.uk>
@@ -8,7 +8,7 @@ targets:
   snipline_cli:
     main: src/snipline_cli.cr
 
-crystal: 0.28.0
+crystal: 0.29.0
 
 license: MIT
 
@@ -28,3 +28,8 @@ dependencies:
   spec-kemal:
     github: kemalcr/spec-kemal
     branch: master
+
+development_dependencies:
+  ameba:
+    github: veelenga/ameba
+    version: ~> 0.10.0
