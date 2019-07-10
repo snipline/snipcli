@@ -18,7 +18,6 @@ module SniplineCli
     # env LOG_LEVEL=WARN snipcli sync
     # ```
     class Log
-
       # Constant that creates a fresh version of itself - for use with self.log.
       INSTANCE = Log.new
 

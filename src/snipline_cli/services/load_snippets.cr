@@ -1,6 +1,5 @@
 module SniplineCli
   module Services
-
     # LoadSnippets fetches all the snippets from the `snippet.json` file and parses them.
     #
     # ```crystal

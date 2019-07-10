@@ -16,7 +16,7 @@ module SniplineCli
   end
 
   def self.config_file
-      ENV.has_key?("CONFIG_FILE") ? ENV["CONFIG_FILE"] : "~/.config/snipline/config.toml"
+    ENV.has_key?("CONFIG_FILE") ? ENV["CONFIG_FILE"] : "~/.config/snipline/config.toml"
   end
 
   def self.log

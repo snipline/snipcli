@@ -1,7 +1,7 @@
 describe SniplineCli::SnippetAttribute do
   it "correctly parses snippets attributes" do
     attributes = SniplineCli::SnippetAttribute.from_json(
-        %(
+      %(
             {
                 "is-pinned": true,
                 "name": "Test",
@@ -18,4 +18,3 @@ describe SniplineCli::SnippetAttribute do
     attributes.documentation.should eq nil
   end
 end
-

@@ -4,7 +4,6 @@ require "file"
 
 module SniplineCli
   class Command < Admiral::Command
-
     # The command to start the web version of Snipline CLI
     #
     # ```bash
@@ -21,7 +20,7 @@ module SniplineCli
 
       def run
         # add_context_storage_type([] of SniplineCli::Snippet)
-        get "/" do |env|
+        get "/" do
           # env.set "snippets", snippets
           render "src/snipline_cli/templates/index.ecr", "src/snipline_cli/templates/layout.ecr"
         end

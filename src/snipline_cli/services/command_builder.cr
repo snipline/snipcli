@@ -1,6 +1,5 @@
 module SniplineCli
   module Services
-
     # Takes a `Snippet`, asks for users parameter changes, and then returns the output as a string.
     #
     # ```crystal
@@ -15,14 +14,13 @@ module SniplineCli
     # end
     # ```
     class CommandBuilder
-
       def self.run(snippet : Snippet, input, output, user_input = [] of String) : String
         unless snippet.has_params
           return snippet.real_command
         end
 
         command_builder = snippet.real_command
-        snippet.interactive_params.each_with_index do |param, index|
+        snippet.interactive_params.each do |param|
           case param.type
           when "select"
             print("Choose number for #{param.name}:", output)
@@ -56,6 +54,7 @@ module SniplineCli
           end
         end
 
+        # ameba:disable Lint/PercentArrays
         password_characters = %w{a b c d e f g h i j k l m n o
           p q r s t u v w x y z A B C D
           E F G H I J K L M N O P Q R S
@@ -85,11 +84,11 @@ module SniplineCli
       end
 
       # Handles user input. If an array of is pre-supplied (E.g. for tests) then they are used.
-      # Otherwise user is asked to input the variables in the terminal. 
+      # Otherwise user is asked to input the variables in the terminal.
       private def self.gets(output, override_input : String | Nil, *args)
         case override_input
         when String
-          return override_input
+          override_input
         else
           output.gets(*args)
         end
@@ -104,7 +103,6 @@ module SniplineCli
           {nil, user_input}
         end
       end
-
     end
   end
 end

@@ -44,7 +44,7 @@ module SniplineCli
 
       real_command.scan(/#(select)?\{\[(.+?)\]\}/) do |m|
         param_type = (m[1]?) ? m[1] : "variable"
-        if temp_array.select { |param| param.name == m[2] && param_type == param.type }.size == 0
+        if temp_array.count { |param| param.name == m[2] && param_type == param.type } == 0
           if param_type == "select"
             split_equals = m[2].split("=").map { |substring| substring }
             param_name = split_equals.shift
@@ -70,7 +70,7 @@ module SniplineCli
           end
         end
       end
-      return temp_array
+      temp_array
     end
 
     #

@@ -11,7 +11,6 @@ module SniplineCli
   # config.get("api.url")
   # ```
   class Config
-
     # Constant that creates a fresh version of itself - for use with self.config.
     INSTANCE = Config.new
 

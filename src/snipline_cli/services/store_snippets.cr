@@ -1,10 +1,8 @@
 require "json"
 
 module SniplineCli::Services
-
   # For saving Snippets locally.
   class StoreSnippets
-
     # Takes an array of snippets and saves them to the `snippet.json` file.
     def store(snippets)
       config = SniplineCli.config
