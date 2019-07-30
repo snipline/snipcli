@@ -24,6 +24,18 @@ module SniplineCli
           # env.set "snippets", snippets
           render "src/snipline_cli/templates/index.ecr", "src/snipline_cli/templates/layout.ecr"
         end
+
+        get "/snippets/new" do
+          # env.set "snippets", snippets
+          render "src/snipline_cli/templates/snippets/new.ecr", "src/snipline_cli/templates/layout.ecr"
+        end
+
+        post "/snippets" do
+          # env.set "snippets", snippets
+          # render "src/snipline_cli/templates/snippets/new.ecr", "src/snipline_cli/templates/layout.ecr"
+          "Test"
+        end
+
         get "/app.css" do |env|
           env.response.content_type = "text/css"
           file = Services::FileStorage.get("css/app.css")

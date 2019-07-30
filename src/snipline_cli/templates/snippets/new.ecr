@@ -1,0 +1,26 @@
+<div class="flex flex-row mt-2">
+    <h1 class="flex-grow text-base font-hairline">Snipline</h1>
+    <a href="/" class="flex-grow-0 rounded px-4 py-2 bg-white text-xs shadow">Cancel</a>
+</div>
+<h2 class="text-lg font-semibold mb-2">New Snippet</h1>
+<form class="snippet-list-item">
+	<div>
+	<label for="title" class="flex flex-row items-center my-4">
+		<span class="text-sm font-semibold uppercase mr-2 w-1/5 text-right text-grey-dark">Title</span>
+		<input type="text" name="title" class="rounded bg-grey-lighter p-2 text-sm w-4/5">
+	</label>
+	</div>
+	<div>
+	<label for="command" class="flex flex-row items-center my-4">
+		<span class="text-sm font-semibold uppercase mr-2 w-1/5 text-right text-grey-dark">Command</span>
+		<textarea type="text" name="command" class="rounded bg-grey-lighter p-2 text-sm w-4/5" rows="5"></textarea>
+	</label>
+	</div>
+	<div class="ml-auto w-4/5 pl-2">
+		<label for="sync" class="flex flex-row items-center my-4">
+			<input type="checkbox" name="sync" id="sync">
+			<span class="text-sm font-semibold uppercase mx-2 text-right text-grey-dark">Sync to Cloud</span>
+		</label>
+	</div>
+	<button type="submit" id="saveSnippet" class="w-full rounded px-4 py-2 bg-snipline-lime text-xs shadow">Save</button>
+</form>

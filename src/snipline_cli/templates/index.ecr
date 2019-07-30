@@ -1,4 +1,9 @@
-<ul class="list-reset mx-auto max-w-md px-3">
+<div class="flex flex-row mt-2">
+    <h1 class="flex-grow text-base font-hairline">Snipline</h1>
+    <a href="/snippets/new" class="flex-grow-0 rounded px-4 py-2 bg-snipline-lime text-xs shadow">New Snippet</a>
+</div>
+<h2 class="text-lg font-semibold mb-2">Your Snippets</h1>
+<ul class="list-reset">
     <% snippets = SniplineCli::Services::LoadSnippets.run %>
     <% snippets.each do |snippet| %>
         <li class="snippet-list-item">
@@ -14,3 +19,4 @@
         </li>
     <% end %>
 </ul>
+<a href="/snippets/new" class="rounded px-4 py-2 my-2">Create Snippet</a>
