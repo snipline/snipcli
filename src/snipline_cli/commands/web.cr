@@ -30,10 +30,27 @@ module SniplineCli
           render "src/snipline_cli/templates/snippets/new.ecr", "src/snipline_cli/templates/layout.ecr"
         end
 
-        post "/snippets" do
+        post "/snippets" do |env|
+          snippet_params = env.params.body
+          puts snippet_params.inspect
+          snippet_attributes = SnippetAttribute.new(
+            name: snippet_params["name"],
+            real_command: snippet_params["real_command"],
+            documentation: snippet_params["documentation"],
+            is_pinned: false,
+            snippet_alias: nil,
+            tags: [] of String
+          )
+
+          if snippet_params.fetch_all("sync").includes?("true")
+            snippet = SniplineCli::Services::SyncSnippetToSnipline.handle(snippet_attributes)
+          else
+            snippet = Snippet.new(id: nil, type: "snippet", attributes: snippet_attributes)
+          end
+          SniplineCli::Services::AppendSnippetToLocalStorage.handle(snippet)
           # env.set "snippets", snippets
           # render "src/snipline_cli/templates/snippets/new.ecr", "src/snipline_cli/templates/layout.ecr"
-          "Test"
+          "Success"
         end
 
         get "/app.css" do |env|

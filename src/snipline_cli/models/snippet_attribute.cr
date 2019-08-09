@@ -21,5 +21,8 @@ module SniplineCli
 
     @[JSON::Field(key: "tags")]
     property tags : Array(String)
+
+    def initialize(@name : String, @real_command : String, @documentation : String | Nil, @is_pinned : Bool, @snippet_alias : String | Nil, @tags : Array(String))
+    end
   end
 end

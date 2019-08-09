@@ -3,23 +3,30 @@
     <a href="/" class="flex-grow-0 rounded px-4 py-2 bg-white text-xs shadow">Cancel</a>
 </div>
 <h2 class="text-lg font-semibold mb-2">New Snippet</h1>
-<form class="snippet-list-item">
+<form role="form" class="snippet-list-item" action="/snippets" method="POST">
 	<div>
-	<label for="title" class="flex flex-row items-center my-4">
-		<span class="text-sm font-semibold uppercase mr-2 w-1/5 text-right text-grey-dark">Title</span>
-		<input type="text" name="title" class="rounded bg-grey-lighter p-2 text-sm w-4/5">
+	<label for="title" class="flex flex-col items-center my-4">
+		<span class="text-sm font-semibold uppercase mb-2 w-full text-left text-grey-dark">Title</span>
+		<input type="text" name="name" class="rounded bg-grey-lighter p-2 text-sm w-full">
 	</label>
 	</div>
 	<div>
-	<label for="command" class="flex flex-row items-center my-4">
-		<span class="text-sm font-semibold uppercase mr-2 w-1/5 text-right text-grey-dark">Command</span>
-		<textarea type="text" name="command" class="rounded bg-grey-lighter p-2 text-sm w-4/5" rows="5"></textarea>
+	<label for="command" class="flex flex-col items-center my-4">
+		<span class="text-sm font-semibold uppercase mb-2 w-full text-left text-grey-dark">Command</span>
+		<textarea type="text" name="real_command" class="rounded bg-grey-lighter p-2 text-sm w-full" rows="5"></textarea>
 	</label>
 	</div>
-	<div class="ml-auto w-4/5 pl-2">
+	<div>
+	<label for="command" class="flex flex-col items-center my-4">
+		<span class="text-sm font-semibold uppercase mb-2 w-full text-left text-grey-dark">Documentation</span>
+		<textarea type="text" name="documentation" class="rounded bg-grey-lighter p-2 text-sm w-full" rows="5"></textarea>
+	</label>
+	</div>
+	<div class="ml-auto w-full pl-2">
 		<label for="sync" class="flex flex-row items-center my-4">
-			<input type="checkbox" name="sync" id="sync">
-			<span class="text-sm font-semibold uppercase mx-2 text-right text-grey-dark">Sync to Cloud</span>
+			<input type="hidden" name="sync" id="sync" value="false">
+			<input type="checkbox" name="sync" id="sync" value="true">
+			<span class="text-sm font-semibold uppercase mx-2 text-left text-grey-dark">Sync to Cloud</span>
 		</label>
 	</div>
 	<button type="submit" id="saveSnippet" class="w-full rounded px-4 py-2 bg-snipline-lime text-xs shadow">Save</button>

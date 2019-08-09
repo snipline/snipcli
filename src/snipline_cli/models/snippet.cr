@@ -8,6 +8,9 @@ module SniplineCli
       attributes: SnippetAttribute,
     })
 
+    def initialize(@id : String | Nil, @type : String, @attributes : SnippetAttribute)
+    end
+
     def snippet_alias
       attributes.snippet_alias
     end
