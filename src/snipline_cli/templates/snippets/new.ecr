@@ -17,10 +17,23 @@
 	</label>
 	</div>
 	<div>
-	<label for="command" class="flex flex-col items-center my-4">
+	<label for="alias" class="flex flex-col items-center my-4">
+		<span class="text-sm font-semibold uppercase mb-2 w-full text-left text-grey-dark">Alias</span>
+		<input type="text" name="alias" class="rounded bg-grey-lighter p-2 text-sm w-full">
+	</label>
+	</div>
+	<div>
+	<label for="documentation" class="flex flex-col items-center my-4">
 		<span class="text-sm font-semibold uppercase mb-2 w-full text-left text-grey-dark">Documentation</span>
 		<textarea type="text" name="documentation" class="rounded bg-grey-lighter p-2 text-sm w-full" rows="5"></textarea>
 	</label>
+	</div>
+	<div class="ml-auto w-full pl-2">
+		<label for="is_pinned" class="flex flex-row items-center my-4">
+			<input type="hidden" name="is_pinned" id="is_pinned" value="false">
+			<input type="checkbox" name="is_pinned" id="is_pinned" value="true">
+			<span class="text-sm font-semibold uppercase mx-2 text-left text-grey-dark">Pin?</span>
+		</label>
 	</div>
 	<div class="ml-auto w-full pl-2">
 		<label for="sync" class="flex flex-row items-center my-4">

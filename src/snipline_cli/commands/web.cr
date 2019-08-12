@@ -37,8 +37,8 @@ module SniplineCli
             name: snippet_params["name"],
             real_command: snippet_params["real_command"],
             documentation: snippet_params["documentation"],
-            is_pinned: false,
-            snippet_alias: nil,
+            is_pinned: (snippet_params["is_pinned"] == "true") ? true : false,
+            snippet_alias: snippet_params["alias"],
             tags: [] of String
           )
 
