@@ -15,6 +15,29 @@ module SniplineCli::Services
       )
       yield resp.body
     end
+
+    def create(snippet : Snippet)
+      config = SniplineCli.config
+      resp = Crest.post(
+        "#{config.get("api.url")}/snippets",
+        headers: {
+          # "Accept" => "application/vnd.api+json",
+          "Authorization" => "Bearer #{config.get("api.token")}",
+        },
+        form: {
+          # data: {
+            :name => snippet.name,
+            :real_command => snippet.real_command,
+            :documentation => snippet.documentation,
+            :alias => snippet.snippet_alias,
+            :is_pinned => snippet.is_pinned.to_s,
+            # :tags => snippet.tags
+          # }
+        }
+      )
+      # Snippet.from_json(resp.body)
+      SingleSnippetDataWrapper.from_json(resp.body).data
+    end
   end
 
   class SniplineApiTest
