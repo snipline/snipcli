@@ -26,14 +26,15 @@ module SniplineCli::Services
         },
         form: {
           # data: {
-            :name => snippet.name,
-            :real_command => snippet.real_command,
-            :documentation => snippet.documentation,
-            :alias => snippet.snippet_alias,
-            :is_pinned => snippet.is_pinned.to_s,
-            # :tags => snippet.tags
+          :name          => snippet.name,
+          :real_command  => snippet.real_command,
+          :documentation => snippet.documentation,
+          :alias         => snippet.snippet_alias,
+          :is_pinned     => snippet.is_pinned.to_s,
+          # :tags => snippet.tags
           # }
-        }
+        },
+        logging: ENV["LOG_LEVEL"] == "DEBUG" ? true : false
       )
       # Snippet.from_json(resp.body)
       SingleSnippetDataWrapper.from_json(resp.body).data

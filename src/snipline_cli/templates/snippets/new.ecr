@@ -4,6 +4,16 @@
 </div>
 <h2 class="text-lg font-semibold mb-2">New Snippet</h1>
 <form role="form" class="snippet-list-item" action="/snippets" method="POST">
+	<% if success %>
+	<div class="bg-success-500 text-success-900 p-4 rounded-lg shadow mb-4">
+		<%= success %>
+	</div>
+	<% end %>
+	<% if error %>
+	<div class="bg-danger-500 text-danger-900 p-4 rounded-lg shadow mb-4">
+		<%= error %>
+	</div>
+	<% end %>
 	<div>
 	<label for="title" class="flex flex-col items-center my-4">
 		<span class="text-sm font-semibold uppercase mb-2 w-full text-left text-grey-dark">Title</span>

@@ -27,6 +27,9 @@ module SniplineCli
 
         get "/snippets/new" do
           # env.set "snippets", snippets
+
+          error : String? = nil
+          success : String? = nil
           render "src/snipline_cli/templates/snippets/new.ecr", "src/snipline_cli/templates/layout.ecr"
         end
 
@@ -42,15 +45,35 @@ module SniplineCli
             tags: [] of String
           )
 
-          if snippet_params.fetch_all("sync").includes?("true")
-            snippet = SniplineCli::Services::SyncSnippetToSnipline.handle(snippet_attributes)
-          else
-            snippet = Snippet.new(id: nil, type: "snippet", attributes: snippet_attributes)
+          error : String? = nil
+          success : String? = nil
+
+          begin
+            snippet = if snippet_params.fetch_all("sync").includes?("true")
+                        SniplineCli::Services::SyncSnippetToSnipline.handle(snippet_attributes)
+                      else
+                        Snippet.new(id: nil, type: "snippet", attributes: snippet_attributes)
+                      end
+            unless snippet.is_a?(Snippet)
+              SniplineCli::Services::AppendSnippetToLocalStorage.handle(snippet)
+            end
+            success = "Snippet saved to Snipline"
+          rescue ex : Crest::UnprocessableEntity
+            error = "Invalid data"
+            success = nil
+            # data_errors = JSON.parse(ex)
+          rescue ex : Crest::NotFound
+            error = "404 API URL not found"
+            success = nil
+          rescue ex : Crest::InternalServerError
+            error = "API Internal Server Error"
+            success = nil
+          rescue
+            error = "Connection Refused"
+            success = nil
           end
-          SniplineCli::Services::AppendSnippetToLocalStorage.handle(snippet)
           # env.set "snippets", snippets
-          # render "src/snipline_cli/templates/snippets/new.ecr", "src/snipline_cli/templates/layout.ecr"
-          "Success"
+          render "src/snipline_cli/templates/snippets/new.ecr", "src/snipline_cli/templates/layout.ecr"
         end
 
         get "/app.css" do |env|
