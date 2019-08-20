@@ -30,6 +30,7 @@ module SniplineCli
 
           error : String? = nil
           success : String? = nil
+          snippet_errors : SnippetErrorResponse? = nil
           render "src/snipline_cli/templates/snippets/new.ecr", "src/snipline_cli/templates/layout.ecr"
         end
 
@@ -47,6 +48,7 @@ module SniplineCli
 
           error : String? = nil
           success : String? = nil
+          snippet_errors : SnippetErrorResponse? = nil
 
           begin
             snippet = if snippet_params.fetch_all("sync").includes?("true")
@@ -60,8 +62,10 @@ module SniplineCli
             success = "Snippet saved to Snipline"
           rescue ex : Crest::UnprocessableEntity
             error = "Invalid data"
+            snippet_errors = SnippetErrorResponse.from_json(ex.response.body)
+            puts snippet_errors.inspect
+            puts snippet_errors.has_key?("name")
             success = nil
-            # data_errors = JSON.parse(ex)
           rescue ex : Crest::NotFound
             error = "404 API URL not found"
             success = nil

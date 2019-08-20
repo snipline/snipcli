@@ -17,13 +17,13 @@
 	<div>
 	<label for="title" class="flex flex-col items-center my-4">
 		<span class="text-sm font-semibold uppercase mb-2 w-full text-left text-grey-dark">Title</span>
-		<input type="text" name="name" class="rounded bg-grey-lighter p-2 text-sm w-full">
+		<input type="text" name="name" class="<%= (!snippet_errors.nil? && snippet_errors.has_key?("name")) ? "bg-danger-200" : "bg-grey-lighter" %> rounded p-2 text-sm w-full">
 	</label>
 	</div>
 	<div>
 	<label for="command" class="flex flex-col items-center my-4">
 		<span class="text-sm font-semibold uppercase mb-2 w-full text-left text-grey-dark">Command</span>
-		<textarea type="text" name="real_command" class="rounded bg-grey-lighter p-2 text-sm w-full" rows="5"></textarea>
+		<textarea type="text" name="real_command" class="<%= (!snippet_errors.nil? && snippet_errors.has_key?("real-command")) ? "bg-danger-200" : "bg-grey-lighter" %> rounded bg-grey-lighter p-2 text-sm w-full" rows="5"></textarea>
 	</label>
 	</div>
 	<div>

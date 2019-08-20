@@ -18,6 +18,7 @@ module SniplineCli::Services
 
     def create(snippet : Snippet)
       config = SniplineCli.config
+      # begin
       resp = Crest.post(
         "#{config.get("api.url")}/snippets",
         headers: {
@@ -38,6 +39,18 @@ module SniplineCli::Services
       )
       # Snippet.from_json(resp.body)
       SingleSnippetDataWrapper.from_json(resp.body).data
+      # rescue ex : Crest::UnprocessableEntity
+      #   puts "RAISING"
+      #   puts resp.inspect
+      #   unless resp.nil?
+      #     errors = SnippetErrorResponse.from_json(resp.not_nil!.body)
+      #     raise SniplineCli::Exceptions::InvalidSnippet.new(errors)
+      #   end
+      # rescue ex
+        
+      #   puts "OTHER"
+      #   raise ex
+      # end
     end
   end
 
