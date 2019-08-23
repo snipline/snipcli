@@ -26,8 +26,15 @@ module SniplineCli
         end
 
         get "/snippets/new" do
-          # env.set "snippets", snippets
-
+					sync_to_cloud = false
+          snippet_attributes = SnippetAttribute.new(
+            name: "",
+            real_command: "",
+            documentation: "",
+            is_pinned: false,
+            snippet_alias: "",
+            tags: [] of String
+          )
           error : String? = nil
           success : String? = nil
           snippet_errors : SnippetErrorResponse? = nil
@@ -36,12 +43,12 @@ module SniplineCli
 
         post "/snippets" do |env|
           snippet_params = env.params.body
-          puts snippet_params.inspect
+					sync_to_cloud = snippet_params.fetch_all("sync").includes?("true")
           snippet_attributes = SnippetAttribute.new(
             name: snippet_params["name"],
             real_command: snippet_params["real_command"],
             documentation: snippet_params["documentation"],
-            is_pinned: (snippet_params["is_pinned"] == "true") ? true : false,
+            is_pinned: (snippet_params.fetch_all("is_pinned").includes?("true")) ? true : false,
             snippet_alias: snippet_params["alias"],
             tags: [] of String
           )
@@ -51,7 +58,7 @@ module SniplineCli
           snippet_errors : SnippetErrorResponse? = nil
 
           begin
-            snippet = if snippet_params.fetch_all("sync").includes?("true")
+            snippet = if sync_to_cloud
                         SniplineCli::Services::SyncSnippetToSnipline.handle(snippet_attributes)
                       else
                         Snippet.new(id: nil, type: "snippet", attributes: snippet_attributes)
@@ -60,11 +67,17 @@ module SniplineCli
               SniplineCli::Services::AppendSnippetToLocalStorage.handle(snippet)
             end
             success = "Snippet saved to Snipline"
+						snippet_attributes = SnippetAttribute.new(
+							name: "",
+							real_command: "",
+							documentation: "",
+							is_pinned: false,
+							snippet_alias: "",
+							tags: [] of String
+						)
           rescue ex : Crest::UnprocessableEntity
             error = "Invalid data"
             snippet_errors = SnippetErrorResponse.from_json(ex.response.body)
-            puts snippet_errors.inspect
-            puts snippet_errors.has_key?("name")
             success = nil
           rescue ex : Crest::NotFound
             error = "404 API URL not found"
