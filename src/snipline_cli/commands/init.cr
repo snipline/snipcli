@@ -20,6 +20,7 @@ module SniplineCli
 
         [general]
         file = "#{config.get("general.file")}"
+        temp_dir = "#{config.get("general.temp_dir")}"
         TOML
 
         SniplineCli::Services::CreateConfigDirectory.run(SniplineCli.config_file)
