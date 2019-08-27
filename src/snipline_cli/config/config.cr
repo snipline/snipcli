@@ -24,8 +24,8 @@ module SniplineCli
       else
         @api = {"url" => "https://api.snipline.io/api", "token" => ""}
         @general = {
-          "file" => "~/.config/snipline/snippets.json", 
-          "temp_dir" => "~/.config/snipline"
+          "file"     => "~/.config/snipline/snippets.json",
+          "temp_dir" => "~/.config/snipline",
         }
       end
     end

@@ -96,8 +96,8 @@ module SniplineCli
               if answer = gets
                 if answer == "y" || answer == "yes"
                   # TODO: flag for running this instead of copying
-									# system "#{output}"
-									system "echo \"#{output.gsub("\"", "\\\"")}\" | tr -d '\n' | pbcopy"
+                  # system "#{output}"
+                  system "echo \"#{output.gsub("\"", "\\\"")}\" | tr -d '\n' | pbcopy"
                   # system %(pbcopy < "#{output}")
                 end
               end

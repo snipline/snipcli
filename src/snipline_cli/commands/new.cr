@@ -21,4 +21,3 @@ module SniplineCli
     register_sub_command :new, New
   end
 end
-

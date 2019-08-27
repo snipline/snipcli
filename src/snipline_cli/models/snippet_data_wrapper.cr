@@ -17,16 +17,17 @@ module SniplineCli
     JSON.mapping({
       detail: String,
       source: Hash(String, String),
-      title: String
+      title:  String,
     })
   end
+
   class SnippetErrorResponse
     JSON.mapping({
-      errors: Array(SnippetError)
+      errors: Array(SnippetError),
     })
 
     def has_key?(key)
-      @errors.any?{ | error |
+      @errors.any? { |error|
         error.source["pointer"] == "/data/attributes/#{key}"
       }
     end

@@ -47,7 +47,7 @@ module SniplineCli::Services
       #     raise SniplineCli::Exceptions::InvalidSnippet.new(errors)
       #   end
       # rescue ex
-        
+
       #   puts "OTHER"
       #   raise ex
       # end
