@@ -14,7 +14,28 @@ module SniplineCli
         temp_file = SniplineCli::Services::TempSnippetEditorFile.new
         temp_file.create
         system("#{ENV["EDITOR"]} #{File.expand_path("#{config.get("general.temp_dir")}/temp.toml")}")
-        puts temp_file.read.inspect
+        snippet_attributes = temp_file.read
+        begin
+          snippet = if config.get("general.sync_to_cloud")
+                      SniplineCli::Services::SyncSnippetToSnipline.handle(snippet_attributes)
+                    else
+                      Snippet.new(id: nil, type: "snippet", attributes: snippet_attributes)
+                    end
+          unless snippet.is_a?(Snippet)
+            SniplineCli::Services::AppendSnippetToLocalStorage.handle(snippet)
+          end
+          puts "Snippet created!"
+          temp_file.delete
+        rescue ex : Crest::UnprocessableEntity
+          puts "Invalid data - see `snipcli new` for details"
+          snippet_errors = SnippetErrorResponse.from_json(ex.response.body)
+        rescue ex : Crest::NotFound
+          puts "404 API URL not found"
+        rescue ex : Crest::InternalServerError
+          puts "API Internal Server Error"
+        rescue
+          puts "Connection to Snipline Cloud Refused"
+        end
       end
     end
 
