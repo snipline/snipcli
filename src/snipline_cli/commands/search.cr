@@ -92,7 +92,7 @@ module SniplineCli
 
             if results.size > chosen_snippet_index && chosen_snippet_index >= 0
               output = SniplineCli::Services::CommandBuilder.run(results[chosen_snippet_index], STDIN, STDOUT)
-              puts "Do you want to copy '#{output.colorize(:green)}' in #{FileUtils.pwd.colorize(:green)}? to clipboard? (y/N)"
+              puts "Do you want to copy '#{output.chomp.colorize(:green)}' in #{FileUtils.pwd.colorize(:green)}? to clipboard? (y/N)"
               if answer = gets
                 if answer == "y" || answer == "yes"
                   # TODO: flag for running this instead of copying
