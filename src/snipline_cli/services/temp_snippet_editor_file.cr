@@ -40,7 +40,7 @@ sync_to_cloud = true
 
     def delete
       config = SniplineCli.config
-      unless File.exists?(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"))
+      if File.exists?(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"))
         File.delete(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"))
       end
     end
