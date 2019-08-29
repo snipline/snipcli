@@ -27,7 +27,7 @@ module SniplineCli::Services
         },
         form: {
           # data: {
-          :name          => snippet.name,
+          :name          => snippet.name.chomp,
           :real_command  => snippet.real_command,
           :documentation => snippet.documentation,
           :alias         => snippet.snippet_alias,
