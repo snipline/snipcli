@@ -10,7 +10,7 @@ require "./snipline_cli/commands/*"
 require "toml"
 
 module SniplineCli
-  VERSION = "0.1.5"
+  VERSION = "0.2.0"
 
   def self.config
     SniplineCli::Config.config
