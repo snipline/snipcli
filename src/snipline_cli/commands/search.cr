@@ -97,11 +97,11 @@ module SniplineCli
               puts "Do you want to copy '#{output.chomp.colorize(:green)}' to clipboard? (Y/n)"
               if answer = gets
                 unless answer == "n" || answer == "no" || answer == "N"
-                  system "echo \"#{output}\" | tr -d '\n' | tr -d '\r' | pbcopy"
+                  system "echo \"#{output}\" | tr -d '\n' | tr -d '\r' | #{copy_to_clipboard}"
                 end
               end
               if flags.run
-                puts "Are you sure you want to run '#{output.chomp.colorize(:green)}' in #{FileUtils.pwd.colorize(:green)}? to clipboard? (Y/n)"
+                puts "Are you sure you want to run '#{output.chomp.colorize(:green)}' in #{FileUtils.pwd.colorize(:green)}? (Y/n)"
                 if answer = gets
                   unless answer == "n" || answer == "no" || answer == "N"
                     # print "\"#{output.gsub("\"", "\\\"")}\""
@@ -118,8 +118,18 @@ module SniplineCli
           end
         end
       end
+      def copy_to_clipboard
+        output = IO::Memory.new
+        Process.run("/bin/sh", {"-c", "uname -s"}, output: output)
+        if output.to_s.chomp == "Darwin"
+          "pbcopy"
+        else
+          "xclip -selection c"
+        end
+      end
     end
 
     register_sub_command :search, Search
+
   end
 end
