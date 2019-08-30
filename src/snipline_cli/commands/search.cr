@@ -25,6 +25,8 @@ module SniplineCli
         default: nil,
         required: false
       define_flag limit : UInt32, default: 5_u32, long: limit
+      define_flag run : Bool, default: false, long: run,
+        description: "Run the result"
 
       define_flag field : String,
         description: "The field to search (alias|documentation|name|tags)",
@@ -92,13 +94,20 @@ module SniplineCli
 
             if results.size > chosen_snippet_index && chosen_snippet_index >= 0
               output = SniplineCli::Services::CommandBuilder.run(results[chosen_snippet_index], STDIN, STDOUT)
-              puts "Do you want to copy '#{output.chomp.colorize(:green)}' in #{FileUtils.pwd.colorize(:green)}? to clipboard? (Y/n)"
+              puts "Do you want to copy '#{output.chomp.colorize(:green)}' to clipboard? (Y/n)"
               if answer = gets
                 unless answer == "n" || answer == "no" || answer == "N"
-                  # TODO: flag for running this instead of copying
-                  # system "#{output}"
-                  system "echo \"#{output.gsub("\"", "\\\"")}\" | tr -d '\n' | pbcopy"
-                  # system %(pbcopy < "#{output}")
+                  system "echo \"#{output}\" | tr -d '\n' | tr -d '\r' | pbcopy"
+                end
+              end
+              if flags.run
+                puts "Are you sure you want to run '#{output.chomp.colorize(:green)}' in #{FileUtils.pwd.colorize(:green)}? to clipboard? (Y/n)"
+                if answer = gets
+                  unless answer == "n" || answer == "no" || answer == "N"
+                    # print "\"#{output.gsub("\"", "\\\"")}\""
+                    system("#{output}")
+                    # system %(pbcopy < "#{output}")
+                  end
                 end
               end
             else
