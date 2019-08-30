@@ -94,21 +94,9 @@ module SniplineCli
 
             if results.size > chosen_snippet_index && chosen_snippet_index >= 0
               output = SniplineCli::Services::CommandBuilder.run(results[chosen_snippet_index], STDIN, STDOUT)
-              puts "Do you want to copy '#{output.chomp.colorize(:green)}' to clipboard? (Y/n)"
-              if answer = gets
-                unless answer == "n" || answer == "no" || answer == "N"
-                  system "echo \"#{output}\" | tr -d '\n' | tr -d '\r' | #{copy_to_clipboard}"
-                end
-              end
+              copy_snippet(output)
               if flags.run
-                puts "Are you sure you want to run '#{output.chomp.colorize(:green)}' in #{FileUtils.pwd.colorize(:green)}? (Y/n)"
-                if answer = gets
-                  unless answer == "n" || answer == "no" || answer == "N"
-                    # print "\"#{output.gsub("\"", "\\\"")}\""
-                    system("#{output}")
-                    # system %(pbcopy < "#{output}")
-                  end
-                end
+                run_snippet(output)
               end
             else
               puts "Snippet does not exist"
@@ -118,6 +106,27 @@ module SniplineCli
           end
         end
       end
+
+      def copy_snippet(output)
+        puts "Do you want to copy '#{output.chomp.colorize(:green)}' to clipboard? (Y/n)"
+        if answer = gets
+          unless answer == "n" || answer == "no" || answer == "N"
+            system "echo \"#{output}\" | tr -d '\n' | tr -d '\r' | #{copy_to_clipboard}"
+          end
+        end
+      end
+
+      def run_snippet(output)
+        puts "Are you sure you want to run '#{output.chomp.colorize(:green)}' in #{FileUtils.pwd.colorize(:green)}? (Y/n)"
+        if answer = gets
+          unless answer == "n" || answer == "no" || answer == "N"
+            # print "\"#{output.gsub("\"", "\\\"")}\""
+            system("#{output}")
+            # system %(pbcopy < "#{output}")
+          end
+        end
+      end
+
       def copy_to_clipboard
         output = IO::Memory.new
         Process.run("/bin/sh", {"-c", "uname -s"}, output: output)
@@ -130,6 +139,5 @@ module SniplineCli
     end
 
     register_sub_command :search, Search
-
   end
 end

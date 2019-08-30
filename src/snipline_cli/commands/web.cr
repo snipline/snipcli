@@ -65,7 +65,7 @@ module SniplineCli
                       else
                         Snippet.new(id: nil, type: "snippet", attributes: snippet_attributes)
                       end
-            unless snippet.is_a?(Snippet)
+            if snippet.is_a?(Snippet)
               SniplineCli::Services::AppendSnippetToLocalStorage.handle(snippet)
             end
             # ameba:disable Lint/UselessAssign
