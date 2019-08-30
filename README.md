@@ -63,7 +63,21 @@ A basic search can be done with the `search` command.
 snipline search <searchterm>
 ```
 
-Search options include `field`, and `limit`. See `snipcli search --help` for more information
+By default search will ask if you wish to copy the result to clipboard, to run the result in the current terminal, use the `run` flag.
+
+```bash
+snipline search <searchterm> --run
+```
+
+Search options include `field`, `limit`, `run`. See `snipcli search --help` for more information
+
+### Creating a new snippet
+
+You can create a new snippet by using the `new` command. This will open a TOML file in the text editor of your preference. Once closed it will attempt to add it to your `snippets.json` file and sync to Snipline Cloud.
+
+```bash
+snipline new
+```
 
 ### Web interface
 
