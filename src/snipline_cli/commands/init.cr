@@ -25,6 +25,10 @@ module SniplineCli
 
         SniplineCli::Services::CreateConfigDirectory.run(SniplineCli.config_file)
         File.write(File.expand_path(SniplineCli.config_file), toml_contents, mode: "w")
+        unless File.exists?(File.expand_path(config.get("general.file")))
+          File.write(File.expand_path(config.get("general.file")), "[]", mode: "w")
+          puts "Created #{config.get("general.file").colorize.mode(:bold)}"
+        end
         puts "Configuration saved to #{File.expand_path(SniplineCli.config_file).colorize.mode(:bold)}"
         puts "Add your snippets to #{File.expand_path(config.get("general.file"))}"
         puts "See documentation for more information https://github.com/snipline/snipcli#using-snipline-cli-without-a-snipline-account"
