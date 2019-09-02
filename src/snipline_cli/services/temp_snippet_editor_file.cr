@@ -38,6 +38,12 @@ sync_to_cloud = true
       )
     end
 
+    def sync_to_cloud?
+      config = SniplineCli.config
+      toml = TOML.parse(File.read(File.expand_path("#{config.get("general.temp_dir")}/temp.toml")))
+      toml["sync_to_cloud"].as(Bool)
+    end
+
     def delete
       config = SniplineCli.config
       if File.exists?(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"))
