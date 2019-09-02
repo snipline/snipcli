@@ -23,7 +23,10 @@ module SniplineCli
         @general = toml["general"].as(Hash(String, TOML::Type))
       else
         @api = {"url" => "https://api.snipline.io/api", "token" => ""}
-        @general = {"file" => "~/.config/snipline/snippets.json"}
+        @general = {
+          "file"     => "~/.config/snipline/snippets.json",
+          "temp_dir" => "~/.config/snipline",
+        }
       end
     end
 
@@ -36,6 +39,8 @@ module SniplineCli
         @api["token"].as(String)
       when "general.file"
         @general["file"].as(String)
+      when "general.temp_dir"
+        @general.has_key?("temp_dir") ? @general["temp_dir"].as(String) : "~/.config/snipline"
       else
         ""
       end

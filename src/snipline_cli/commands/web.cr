@@ -24,6 +24,88 @@ module SniplineCli
           # env.set "snippets", snippets
           render "src/snipline_cli/templates/index.ecr", "src/snipline_cli/templates/layout.ecr"
         end
+
+        get "/snippets/new" do
+          # ameba:disable Lint/UselessAssign
+          sync_to_cloud = false
+          # ameba:disable Lint/UselessAssign
+          snippet_attributes = SnippetAttribute.new(
+            name: "",
+            real_command: "",
+            documentation: "",
+            is_pinned: false,
+            snippet_alias: "",
+            tags: [] of String
+          )
+          error : String? = nil
+          success : String? = nil
+          snippet_errors : SnippetErrorResponse? = nil
+          render "src/snipline_cli/templates/snippets/new.ecr", "src/snipline_cli/templates/layout.ecr"
+        end
+
+        post "/snippets" do |env|
+          snippet_params = env.params.body
+          sync_to_cloud = snippet_params.fetch_all("sync").includes?("true")
+          snippet_attributes = SnippetAttribute.new(
+            name: snippet_params["name"],
+            real_command: snippet_params["real_command"],
+            documentation: snippet_params["documentation"],
+            is_pinned: (snippet_params.fetch_all("is_pinned").includes?("true")) ? true : false,
+            snippet_alias: snippet_params["alias"],
+            tags: [] of String
+          )
+
+          error : String? = nil
+          success : String? = nil
+          snippet_errors : SnippetErrorResponse? = nil
+
+          begin
+            snippet = if sync_to_cloud
+                        SniplineCli::Services::SyncSnippetToSnipline.handle(snippet_attributes)
+                      else
+                        Snippet.new(id: nil, type: "snippet", attributes: snippet_attributes)
+                      end
+            if snippet.is_a?(Snippet)
+              SniplineCli::Services::AppendSnippetToLocalStorage.handle(snippet)
+            end
+            # ameba:disable Lint/UselessAssign
+            success = "Snippet saved to Snipline"
+            # ameba:disable Lint/UselessAssign
+            snippet_attributes = SnippetAttribute.new(
+              name: "",
+              real_command: "",
+              documentation: "",
+              is_pinned: false,
+              snippet_alias: "",
+              tags: [] of String
+            )
+          rescue ex : Crest::UnprocessableEntity
+            # ameba:disable Lint/UselessAssign
+            error = "Invalid data"
+            # ameba:disable Lint/UselessAssign
+            snippet_errors = SnippetErrorResponse.from_json(ex.response.body)
+            # ameba:disable Lint/UselessAssign
+            success = nil
+          rescue ex : Crest::NotFound
+            # ameba:disable Lint/UselessAssign
+            error = "404 API URL not found"
+            # ameba:disable Lint/UselessAssign
+            success = nil
+          rescue ex : Crest::InternalServerError
+            # ameba:disable Lint/UselessAssign
+            error = "API Internal Server Error"
+            # ameba:disable Lint/UselessAssign
+            success = nil
+          rescue
+            # ameba:disable Lint/UselessAssign
+            error = "Connection Refused"
+            # ameba:disable Lint/UselessAssign
+            success = nil
+          end
+          # env.set "snippets", snippets
+          render "src/snipline_cli/templates/snippets/new.ecr", "src/snipline_cli/templates/layout.ecr"
+        end
+
         get "/app.css" do |env|
           env.response.content_type = "text/css"
           file = Services::FileStorage.get("css/app.css")

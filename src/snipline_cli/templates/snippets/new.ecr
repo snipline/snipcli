@@ -1,0 +1,56 @@
+<div class="flex flex-row mt-2">
+    <h1 class="flex-grow text-base font-hairline">Snipline</h1>
+    <a href="/" class="flex-grow-0 rounded px-4 py-2 bg-white text-xs shadow">Cancel</a>
+</div>
+<h2 class="text-lg font-semibold mb-2">New Snippet</h1>
+<form role="form" class="snippet-list-item" action="/snippets" method="POST">
+	<% if success %>
+	<div class="bg-success-500 text-success-900 p-4 rounded-lg shadow mb-4">
+		<%= success %>
+	</div>
+	<% end %>
+	<% if error %>
+	<div class="bg-danger-500 text-danger-900 p-4 rounded-lg shadow mb-4">
+		<%= error %>
+	</div>
+	<% end %>
+	<div>
+	<label for="title" class="flex flex-col items-center my-4">
+		<span class="text-sm font-semibold uppercase mb-2 w-full text-left text-grey-dark">Title</span>
+		<input type="text" name="name" class="<%= (!snippet_errors.nil? && snippet_errors.has_key?("name")) ? "bg-danger-200" : "bg-grey-lighter" %> rounded p-2 text-sm w-full" value="<%= snippet_attributes.name %>">
+	</label>
+	</div>
+	<div>
+	<label for="command" class="flex flex-col items-center my-4">
+		<span class="text-sm font-semibold uppercase mb-2 w-full text-left text-grey-dark">Command</span>
+		<textarea type="text" name="real_command" class="<%= (!snippet_errors.nil? && snippet_errors.has_key?("real-command")) ? "bg-danger-200" : "bg-grey-lighter" %> rounded bg-grey-lighter p-2 text-sm w-full" rows="5"><%= snippet_attributes.real_command %></textarea>
+	</label>
+	</div>
+	<div>
+	<label for="alias" class="flex flex-col items-center my-4">
+		<span class="text-sm font-semibold uppercase mb-2 w-full text-left text-grey-dark">Alias</span>
+		<input type="text" name="alias" class="rounded bg-grey-lighter p-2 text-sm w-full" value="<%= snippet_attributes.snippet_alias %>">
+	</label>
+	</div>
+	<div>
+	<label for="documentation" class="flex flex-col items-center my-4">
+		<span class="text-sm font-semibold uppercase mb-2 w-full text-left text-grey-dark">Documentation</span>
+		<textarea type="text" name="documentation" class="rounded bg-grey-lighter p-2 text-sm w-full" rows="5"><%= snippet_attributes.documentation %></textarea>
+	</label>
+	</div>
+	<div class="ml-auto w-full pl-2">
+		<label for="is_pinned" class="flex flex-row items-center my-4">
+			<input type="hidden" name="is_pinned" id="is_pinned" value="false">
+			<input type="checkbox" name="is_pinned" id="is_pinned" value="true" <%= snippet_attributes.is_pinned ? "checked='checked'" : "" %>>
+			<span class="text-sm font-semibold uppercase mx-2 text-left text-grey-dark">Pin?</span>
+		</label>
+	</div>
+	<div class="ml-auto w-full pl-2">
+		<label for="sync" class="flex flex-row items-center my-4">
+			<input type="hidden" name="sync" id="sync" value="false">
+			<input type="checkbox" name="sync" id="sync" value="true" <%= sync_to_cloud ? "checked='checked'" : "" %>>
+			<span class="text-sm font-semibold uppercase mx-2 text-left text-grey-dark">Sync to Cloud</span>
+		</label>
+	</div>
+	<button type="submit" id="saveSnippet" class="w-full rounded px-4 py-2 bg-snipline-lime text-xs shadow">Save</button>
+</form>

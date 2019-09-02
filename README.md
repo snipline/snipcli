@@ -44,13 +44,13 @@ Log-in to your Snipline account and sync your snippets.
 Follow login instructions (Enter email and token)
 
 ```bash
-snipline login
+snipcli login
 ```
 
 Download snippets from your account
 
 ```bash
-snipline sync
+snipcli sync
 ```
 
 This will create two files on your system: `~/.config/snipline/config.toml` and `~/.config/snipline/snippets.json`.
@@ -60,10 +60,26 @@ This will create two files on your system: `~/.config/snipline/config.toml` and 
 A basic search can be done with the `search` command.
 
 ```bash
-snipline search <searchterm>
+snipcli search <searchterm>
 ```
 
-Search options include `field`, and `limit`. See `snipcli search --help` for more information
+By default search will ask if you wish to copy the result to clipboard, to run the result in the current terminal, use the `run` flag.
+
+```bash
+snipline search <searchterm> --run
+```
+
+Search options include `field`, `limit`, `run`. See `snipcli search --help` for more information
+
+Note that as of 0.2.0 it's not possible to search and copy to clipboard from a Linux VM/SSH session. Select `no` when prompted to copy to clipboard to continue and use the `--run` flag to run the command instead.
+
+### Creating a new snippet
+
+You can create a new snippet by using the `new` command. This will open a TOML file in the text editor of your preference. Once closed it will attempt to add it to your `snippets.json` file and sync to Snipline Cloud.
+
+```bash
+snipline new
+```
 
 ### Web interface
 

@@ -1,5 +1,5 @@
 name: snipcli
-version: 0.1.5
+version: 0.2.0
 summary: Shell Snippet organiser
 description: >
   Snipcli is a commandline interface for managing shell commands. Sync commands with your Snipline account or use in guest mode. Snipline lets you dynamically change command parameters easily so you never have to remember how to build a command.

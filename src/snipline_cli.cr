@@ -4,12 +4,13 @@ require "crest"
 # require "./snipline_cli/*"
 require "./snipline_cli/config/config"
 require "./snipline_cli/models/*"
+require "./snipline_cli/exceptions/*"
 require "./snipline_cli/services/*"
 require "./snipline_cli/commands/*"
 require "toml"
 
 module SniplineCli
-  VERSION = "0.1.5"
+  VERSION = "0.2.0"
 
   def self.config
     SniplineCli::Config.config
