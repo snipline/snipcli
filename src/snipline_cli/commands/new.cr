@@ -14,13 +14,16 @@ module SniplineCli
         unless File.exists?(File.expand_path("#{config.get("general.file")}"))
             abort("Config file does not exist - Have you tried running #{"snipcli init".colorize.mode(:bold)}?".colorize.back(:red).on(:red))
         end
+        unless ENV.has_key?("EDITOR")
+            abort("Please set your environment EDITOR variable. E.g. export EDITOR=vi".colorize.back(:red).on(:red))
+        end
         temp_file = SniplineCli::Services::TempSnippetEditorFile.new
         temp_file.create
         loop do
           system("#{ENV["EDITOR"]} #{File.expand_path("#{config.get("general.temp_dir")}/temp.toml")}")
           snippet_attributes = temp_file.read
           begin
-            snippet = if config.get("general.sync_to_cloud")
+            snippet = if temp_file.sync_to_cloud?
                         SniplineCli::Services::SyncSnippetToSnipline.handle(snippet_attributes)
                       else
                         Snippet.new(id: nil, type: "snippet", attributes: snippet_attributes)
