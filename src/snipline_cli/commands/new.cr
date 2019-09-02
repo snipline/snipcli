@@ -12,7 +12,7 @@ module SniplineCli
       def run
         config = SniplineCli.config
         unless File.exists?(File.expand_path("#{config.get("general.file")}"))
-            abort("Config file does not exist - Have you tried running #{"snipcli init".colorize(:bold)}?".colorize.back(:red).on(:red))
+            abort("Config file does not exist - Have you tried running #{"snipcli init".colorize.mode(:bold)}?".colorize.back(:red).on(:red))
         end
         temp_file = SniplineCli::Services::TempSnippetEditorFile.new
         temp_file.create
