@@ -1,27 +1,162 @@
-# cli2
+# Snipline CLI
 
-TODO: Write a description here
+Snipline CLI is the command-line tool for [Snipline](https://snipline.io).
+
+![SnipCLI Preview](https://f002.backblazeb2.com/file/ms-uploads/snipline/2019-07-10%2010.41.26.gif)
+
+Snipline CLI allows you to search and run commands from your Snipline account directly through the command-line. It is also possible to use this for free without a Snipline account (See the documentation on using without a Snipline Account).
 
 ## Installation
 
-TODO: Write installation instructions here
+### Homebrew (MacOS and Linux)
+
+Snipline CLI is available through Homebrew for MacOS and Linux.
+
+```bash
+brew install snipline/snipline/snipcli
+```
+
+### Snapcraft (Linux)
+
+Linux users can download via Snapcraft
+
+```
+sudo snap install snipcli --beta
+```
+
+### From source
+
+Snipline CLI requires Crystal 0.29.0 to be installed to install from source
+
+```bash
+# Install dependencies
+shards
+# Build app
+crystal build src/snipline_cli.cr -o snipcli --release
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+### Syncing to Snipline
+
+Log-in to your Snipline account and sync your snippets.
+
+Follow login instructions (Enter email and token)
+
+```bash
+snipcli login
+```
+
+Download snippets from your account
+
+```bash
+snipcli sync
+```
+
+This will create two files on your system: `~/.config/snipline/config.toml` and `~/.config/snipline/snippets.json`.
+
+### Searching snippets
+
+A basic search can be done with the `search` command.
+
+```bash
+snipcli search <searchterm>
+```
+
+By default search will ask if you wish to copy the result to clipboard, to run the result in the current terminal, use the `run` flag.
+
+```bash
+snipline search <searchterm> --run
+```
+
+Search options include `field`, `limit`, `run`. See `snipcli search --help` for more information
+
+Note that as of 0.2.0 it's not possible to search and copy to clipboard from a Linux VM/SSH session. Select `no` when prompted to copy to clipboard to continue and use the `--run` flag to run the command instead.
+
+### Creating a new snippet
+
+You can create a new snippet by using the `new` command. This will open a TOML file in the text editor of your preference. Once closed it will attempt to add it to your `snippets.json` file and sync to Snipline Cloud.
+
+```bash
+snipline new
+```
+
+### Web interface
+
+Snipline CLI comes with a lightweight web interface. To use it run
+
+```
+snipcli web
+```
+
+You can then view and edit snippets through a web browser. By default this works locally on port 9876, however, you can specify it to be accessible remotely with the following arguments.
+
+```bash
+snipcli web -p 3000 -b 0.0.0.0
+```
+
+### Using Snipline CLI without a Snipline Account
+
+Snipline CLI can be used without an active Snipline account. But requires either manually entering data in the `~/.config/snipline/snippets.json` file or using the `web` interface.
+
+To generate the initial configuration files use the `init` command.
+
+```bash
+snipcli init
+```
+
+At this moment the web interface does not support CRUD commands and manual entry is required.
+
+Here is an example ~/.config/snipline/snipets.json` file to get started.
+
+Note that `id` of `null` means that it has not been synced to a Snipline account. It will be lost if `snipcli sync` is ever run to fetch snippets from Snipline.
+
+```json
+[
+    {
+        "id":null,
+        "type":"snippets",
+        "attributes":
+        {
+            "is-pinned":false,
+            "name":"Symlink directory",
+            "real-command":"ln -s #{[Source]} #{[Destination]}",
+            "tags":["file", "linux"]
+        }
+    }
+]
+```
 
 ## Development
 
-TODO: Write development instructions here
+See the Installation section on building from source. 
+
+Set log levels for additional development output.
+
+```bash
+crystal build src/snipline_cli.cr -o snipcli
+env LOG_LEVEL=DEBUG ./snipcli search git
+```
+
+To change the config file location (For testing) use the `CONFIG_FILE` environment variable.
+
+```bash
+env CONFIG_FILE=./spec/fixtures/config.toml ./snipcli search git
+```
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/cli2/fork>)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+See the [Contributing guide](CONTRIBUTING.md) for details.
+
+## TODO
+
+* More tests.
+* Create snippets through web interface.
+* Edit snippets through web interface.
+* Delete snippets through web interface.
+* More documentation (Including usage without a Snipline account).
+* Table formatting for search results.
 
 ## Contributors
 
-- [Mitchell Stanley](https://github.com/your-github-user) - creator and maintainer
+- [Mitchell Stanley](https://github.com/acoustep) - creator and maintainer
