@@ -2,9 +2,9 @@
 
 Snipline CLI is the command-line tool for [Snipline](https://snipline.io).
 
-![SnipCLI Preview](https://f002.backblazeb2.com/file/ms-uploads/snipline/2019-07-10%2010.41.26.gif)
+![SnipCLI Preview](https://f002.backblazeb2.com/file/snipline/2019-10-14+12.02.35.gif)
 
-Snipline CLI allows you to search and run commands from your Snipline account directly through the command-line. It is also possible to use this for free without a Snipline account (See the documentation on using without a Snipline Account).
+Snipline CLI allows you to organise your favourite shell commands from the terminal. It can optionally sync to [Snipline](https://snipline.io) account.
 
 ## Installation
 
@@ -26,7 +26,7 @@ sudo snap install snipcli --beta
 
 ### From source
 
-Snipline CLI requires Crystal 0.29.0 to be installed to install from source
+Snipline CLI requires Crystal 0.30.1 to be installed to install from source
 
 ```bash
 # Install dependencies
@@ -36,6 +36,18 @@ crystal build src/snipline_cli.cr -o snipcli --release
 ```
 
 ## Usage
+
+### Using Snipline CLI for free
+
+Snipline CLI can be used without an active Snipline account.
+
+To generate the initial configuration files use the `init` command.
+
+```bash
+snipcli init
+```
+
+The above command will generate a `config.toml` file and a `snippets.json` file in your `~/.config/snipline` directory.
 
 ### Syncing to Snipline
 
@@ -49,33 +61,33 @@ snipcli login
 
 Download snippets from your account
 
+**Note:: At the time of writing this will clear any unsynced snippets on your machine. This will be changed with a future update**
+
 ```bash
 snipcli sync
 ```
-
-This will create two files on your system: `~/.config/snipline/config.toml` and `~/.config/snipline/snippets.json`.
 
 ### Searching snippets
 
 A basic search can be done with the `search` command.
 
 ```bash
-snipcli search <searchterm>
+snipcli search
 ```
 
-By default search will ask if you wish to copy the result to clipboard, to run the result in the current terminal, use the `run` flag.
+If you wish to pre-filter the results you can do so by adding a searchterm and specify the field to search on.
 
 ```bash
-snipline search <searchterm> --run
+snipline search <searchterm> --field=tags
 ```
 
-Search options include `field`, `limit`, `run`. See `snipcli search --help` for more information
+Search options include `field` and `limit`. See `snipcli search --help` for more information
 
-Note that as of 0.2.0 it's not possible to search and copy to clipboard from a Linux VM/SSH session. Select `no` when prompted to copy to clipboard to continue and use the `--run` flag to run the command instead.
+Note that as of 0.2.0 it's not possible to search and copy to clipboard from a Linux VM/SSH session. Use `run` to run the command directly from your terminal session.
 
 ### Creating a new snippet
 
-You can create a new snippet by using the `new` command. This will open a TOML file in the text editor of your preference. Once closed it will attempt to add it to your `snippets.json` file and sync to Snipline Cloud.
+You can create a new snippet by using the `new` command. This will open a TOML file in the text editor of your preference. Once closed it will attempt to add it to your `snippets.json` file and sync to your Snipline Account.
 
 ```bash
 snipline new
@@ -83,49 +95,7 @@ snipline new
 
 ### Web interface
 
-Snipline CLI comes with a lightweight web interface. To use it run
-
-```
-snipcli web
-```
-
-You can then view and edit snippets through a web browser. By default this works locally on port 9876, however, you can specify it to be accessible remotely with the following arguments.
-
-```bash
-snipcli web -p 3000 -b 0.0.0.0
-```
-
-### Using Snipline CLI without a Snipline Account
-
-Snipline CLI can be used without an active Snipline account. But requires either manually entering data in the `~/.config/snipline/snippets.json` file or using the `web` interface.
-
-To generate the initial configuration files use the `init` command.
-
-```bash
-snipcli init
-```
-
-At this moment the web interface does not support CRUD commands and manual entry is required.
-
-Here is an example ~/.config/snipline/snipets.json` file to get started.
-
-Note that `id` of `null` means that it has not been synced to a Snipline account. It will be lost if `snipcli sync` is ever run to fetch snippets from Snipline.
-
-```json
-[
-    {
-        "id":null,
-        "type":"snippets",
-        "attributes":
-        {
-            "is-pinned":false,
-            "name":"Symlink directory",
-            "real-command":"ln -s #{[Source]} #{[Destination]}",
-            "tags":["file", "linux"]
-        }
-    }
-]
-```
+As of 0.3.0 the web interface has been removed infavour of the new TUI.
 
 ## Development
 
@@ -151,11 +121,10 @@ See the [Contributing guide](CONTRIBUTING.md) for details.
 ## TODO
 
 * More tests.
-* Create snippets through web interface.
-* Edit snippets through web interface.
-* Delete snippets through web interface.
 * More documentation (Including usage without a Snipline account).
-* Table formatting for search results.
+* Syncing local snippets via `snipcli sync`.
+* Editing snippets.
+* Compact search mode.
 
 ## Contributors
 
