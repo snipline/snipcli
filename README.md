@@ -4,7 +4,7 @@ Snipline CLI is the command-line tool for [Snipline](https://snipline.io).
 
 ![SnipCLI Preview](https://f002.backblazeb2.com/file/snipline/2019-10-14+12.02.35.gif)
 
-Snipline CLI allows you to organise your favourite shell commands from the terminal. It can optionally sync to [Snipline](https://snipline.io) account.
+Snipline CLI allows you to organise your favourite shell commands from the terminal. It can optionally sync to your [Snipline](https://snipline.io) account.
 
 ## Installation
 
@@ -59,7 +59,7 @@ Follow login instructions (Enter email and token)
 snipcli login
 ```
 
-Download snippets from your account
+### Download snippets from your Snipline account
 
 **Note:: At the time of writing this will clear any unsynced snippets on your machine. This will be changed with a future update**
 
@@ -75,10 +75,10 @@ A basic search can be done with the `search` command.
 snipcli search
 ```
 
-If you wish to pre-filter the results you can do so by adding a searchterm and specify the field to search on.
+If you wish to pre-filter the results you can do so by adding a search term and specify the field to search on.
 
 ```bash
-snipline search <searchterm> --field=tags
+snipcli search <searchterm> --field=tags
 ```
 
 Search options include `field` and `limit`. See `snipcli search --help` for more information
@@ -90,7 +90,7 @@ Note that as of 0.2.0 it's not possible to search and copy to clipboard from a L
 You can create a new snippet by using the `new` command. This will open a TOML file in the text editor of your preference. Once closed it will attempt to add it to your `snippets.json` file and sync to your Snipline Account.
 
 ```bash
-snipline new
+snipcli new
 ```
 
 ### Web interface
