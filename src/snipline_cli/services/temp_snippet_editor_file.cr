@@ -3,6 +3,7 @@ require "toml"
 module SniplineCli::Services
   # For saving Snippets locally.
   class TempSnippetEditorFile
+    include SniplineCli::Models
     TEMPLATE = %<# Welcome to the terminal-based snippet editor
 # This file uses TOML syntax and will be processed after the file is closed
 # Fill in the below options and save+quit to continue

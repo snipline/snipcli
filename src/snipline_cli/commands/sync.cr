@@ -20,7 +20,7 @@ module SniplineCli
         puts "Syncing snippets..."
         @snipline_api.fetch do |body|
           # Save the response JSON into a file without the data wrapper
-          snippets = SnippetDataWrapper.from_json(body).data.to_json
+          snippets = Models::SnippetDataWrapper.from_json(body).data.to_json
           begin
             @file.store(snippets)
           rescue ex

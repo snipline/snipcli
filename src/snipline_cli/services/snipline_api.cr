@@ -3,6 +3,8 @@ require "json"
 module SniplineCli::Services
   # For talking to the Snipline API.
   class SniplineApi
+    include SniplineCli::Models
+
     # Fetches the user's Snippets.
     def fetch(&block)
       config = SniplineCli.config

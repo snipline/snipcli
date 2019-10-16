@@ -1,6 +1,4 @@
-require "json"
-
-module SniplineCli
+module SniplineCli::Models
   struct SnippetParam
     property name : String
     property default_value : String

@@ -6,35 +6,19 @@ shards:
 
   ameba:
     github: veelenga/ameba
-    version: 0.10.0
-
-  baked_file_system:
-    github: schovi/baked_file_system
-    version: 0.9.8
+    version: 0.10.1
 
   crest:
     github: mamantoha/crest
-    version: 0.21.1
+    version: 0.22.0
 
-  exception_page:
-    github: crystal-loot/exception_page
-    version: 0.1.2
+  http-client-digest_auth:
+    github: mamantoha/http-client-digest_auth
+    version: 0.2.0
 
-  kemal:
-    github: kemalcr/kemal
-    version: 0.26.0
-
-  kilt:
-    github: jeromegn/kilt
-    version: 0.4.0
-
-  radix:
-    github: luislavena/radix
-    version: 0.3.9
-
-  spec-kemal:
-    github: kemalcr/spec-kemal
-    commit: 64b89c719234ceb92c0a14762dce3afc6257fffc
+  ncurses:
+    github: JohnDowson/ncurses
+    commit: d0e46f673b6a443255269ce610d598a0fdc7d159
 
   toml:
     github: crystal-community/toml.cr

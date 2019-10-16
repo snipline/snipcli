@@ -1,6 +1,4 @@
-require "json"
-
-module SniplineCli
+module SniplineCli::Models
   class SnippetDataWrapper
     JSON.mapping({
       data: Array(Snippet),

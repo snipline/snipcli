@@ -1,6 +1,6 @@
 require "json"
 
-module SniplineCli
+module SniplineCli::Models
   class Token
     include JSON::Serializable
 

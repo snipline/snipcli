@@ -1,8 +1,8 @@
-require "json"
-
 module SniplineCli::Services
   # For saving Snippets locally.
   class AppendSnippetToLocalStorage
+    include SniplineCli::Models
+
     # Takes an array of snippets and saves them to the `snippet.json` file.
     def self.handle(snippet)
       snippets = SniplineCli::Services::LoadSnippets.run

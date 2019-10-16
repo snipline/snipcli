@@ -24,10 +24,7 @@ module SniplineCli
         description: "The term to search for",
         default: nil,
         required: false
-      define_flag limit : UInt32, default: 5_u32, long: limit
-      define_flag run : Bool, default: false, long: run,
-        description: "Run the result"
-
+      define_flag limit : UInt32, default: 500_u32, long: limit
       define_flag field : String,
         description: "The field to search (alias|documentation|name|tags)",
         default: nil,
@@ -59,18 +56,10 @@ module SniplineCli
 
         unless results.size > 0
           puts "No results found."
-          return
+          exit(0)
         end
 
-        results.each_with_index { |snippet, index|
-          puts "#{(index + 1).to_s.rjust(4)} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}#{snippet.id.nil? ? "⚡️" : ""} #{(snippet.tags.size > 0) ? "[" + snippet.tags.join(",") + "]" : ""}".colorize.mode(:bold)
-          puts "     #{snippet.preview_command}"
-        }
-
-        puts "\nChoose a snippet"
-        chosen_snippet_index = gets
-
-        handle_chosen_snippet(chosen_snippet_index, results)
+        Services::DisplayResults.new(results)
       end
 
       def sort_results(snippets, limit)
@@ -85,56 +74,6 @@ module SniplineCli
             snippet_a.name <=> snippet_b.name
           end
         }.first(limit)
-      end
-
-      def handle_chosen_snippet(chosen_snippet_index, results)
-        if chosen_snippet_index
-          if chosen_snippet_index.to_i?
-            chosen_snippet_index = (chosen_snippet_index.to_u32 - 1)
-
-            if results.size > chosen_snippet_index && chosen_snippet_index >= 0
-              output = SniplineCli::Services::CommandBuilder.run(results[chosen_snippet_index], STDIN, STDOUT)
-              copy_snippet(output)
-              if flags.run
-                run_snippet(output)
-              end
-            else
-              puts "Snippet does not exist"
-            end
-          else
-            puts "You did not select a snippet."
-          end
-        end
-      end
-
-      def copy_snippet(output)
-        puts "Do you want to copy '#{output.chomp.colorize(:green)}' to clipboard? (Y/n)"
-        if answer = gets
-          unless answer == "n" || answer == "no" || answer == "N"
-            system "echo \"#{output}\" | tr -d '\n' | tr -d '\r' | #{copy_to_clipboard}"
-          end
-        end
-      end
-
-      def run_snippet(output)
-        puts "Are you sure you want to run '#{output.chomp.colorize(:green)}' in #{FileUtils.pwd.colorize(:green)}? (Y/n)"
-        if answer = gets
-          unless answer == "n" || answer == "no" || answer == "N"
-            # print "\"#{output.gsub("\"", "\\\"")}\""
-            system("#{output}")
-            # system %(pbcopy < "#{output}")
-          end
-        end
-      end
-
-      def copy_to_clipboard
-        output = IO::Memory.new
-        Process.run("/bin/sh", {"-c", "uname -s"}, output: output)
-        if output.to_s.chomp == "Darwin"
-          "pbcopy"
-        else
-          "xclip -selection c"
-        end
       end
     end
 

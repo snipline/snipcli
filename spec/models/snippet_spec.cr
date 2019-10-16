@@ -2,13 +2,13 @@ require "file"
 
 def create_test_object(attributes : String | Nil)
   attributes = attributes || %({"id":"0f4846c0-3194-40bb-be77-8c4b136565f4","type":"snippets","attributes":{"alias":"git.sla","is-pinned":false,"name":"Git log pretty","real-command":"git log --oneline --decorate --graph --all","tags":["git"]}})
-  SniplineCli::Snippet.from_json(attributes)
+  SniplineCli::Models::Snippet.from_json(attributes)
 end
 
-describe SniplineCli::Snippet do
+describe SniplineCli::Models::Snippet do
   it "correctly parses snippets from JSON" do
     content = File.read(File.expand_path("./spec/fixtures/snippets.json"))
-    snippets = Array(SniplineCli::Snippet).from_json(content)
+    snippets = Array(SniplineCli::Models::Snippet).from_json(content)
     snippets.size.should eq(2)
     snippets.first.id.should eq("0f4846c0-3194-40bb-be77-8c4b136565f4")
   end
@@ -20,11 +20,10 @@ describe SniplineCli::Snippet do
     snippet.is_pinned.should eq(false)
     snippet.real_command.should eq("git log --oneline --decorate --graph --all")
     snippet.preview_command.should eq("git log --oneline --decorate --graph --all")
-    snippet.preview_command_in_html.should eq("git log --oneline --decorate --graph --all")
     snippet.tags.should eq(["git"])
     snippet.has_params.should eq(false)
-    snippet.interactive_params.should eq([] of SniplineCli::SnippetParam)
-    snippet.uninteractive_params.should eq([] of SniplineCli::SnippetPasswordParam)
+    snippet.interactive_params.should eq([] of SniplineCli::Models::SnippetParam)
+    snippet.uninteractive_params.should eq([] of SniplineCli::Models::SnippetPasswordParam)
   end
 
   it "#value_for_attribute" do
@@ -85,8 +84,7 @@ describe SniplineCli::Snippet do
       snippet = create_test_object(%({"id":"0b36b3a1-f10f-42f9-857e-0caeb23b36c3","type":"snippets","attributes":{"alias":"git.s","is-pinned":false,"name":"Search Git history","real-command":"magento user:create #password{[Name,8]} #password{[Default]}","tags":[]}}))
       snippet.has_params.should eq(true)
       snippet.interactive_params.size.should eq(0)
-      snippet.preview_command.should eq("magento user:create \e[32m<PW:Name>\e[0m \e[32m<PW:Default>\e[0m")
-      snippet.preview_command_in_html.should eq("magento user:create <span class='text-snipline-lime-dark'>&lt;PW:Name&gt;</span> <span class='text-snipline-lime-dark'>&lt;PW:Default&gt;</span>")
+      snippet.preview_command.should eq("magento user:create <PW:Name> <PW:Default>")
     end
   end
 end

@@ -7,6 +7,7 @@ module SniplineCli
     # This command generates a config file in the requested location.
     # By default this location is ~/.config/snipline/config.toml
     class Login < Admiral::Command
+      include SniplineCli::Models
       define_help description: "Log-in into your Snipline account"
 
       def run

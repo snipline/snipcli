@@ -1,6 +1,6 @@
-describe SniplineCli::SnippetAttribute do
+describe SniplineCli::Models::SnippetAttribute do
   it "correctly parses snippets attributes" do
-    attributes = SniplineCli::SnippetAttribute.from_json(
+    attributes = SniplineCli::Models::SnippetAttribute.from_json(
       %(
             {
                 "is-pinned": true,

@@ -1,6 +1,4 @@
-require "json"
-
-module SniplineCli
+module SniplineCli::Models
   struct SnippetPasswordParam
     property id : String
     property length : UInt32 | UInt8

@@ -1,6 +1,6 @@
-describe SniplineCli::SnippetParam do
+describe SniplineCli::Models::SnippetParam do
   it "correctly parses snippets params" do
-    param = SniplineCli::SnippetParam.new("Test Snippet", "default", "Test Snippet=default", "variable", [] of String)
+    param = SniplineCli::Models::SnippetParam.new("Test Snippet", "default", "Test Snippet=default", "variable", [] of String)
     param.name.should eq "Test Snippet"
     param.default_value.should eq "default"
     param.full.should eq "Test Snippet=default"

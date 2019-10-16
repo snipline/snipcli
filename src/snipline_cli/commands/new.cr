@@ -7,15 +7,16 @@ module SniplineCli
     # This command generates a config file in the requested location.
     # By default this location is ~/.config/snipline/config.toml
     class New < Admiral::Command
+      include SniplineCli::Models
       define_help description: "Create a new Snippet"
 
       def run
         config = SniplineCli.config
         unless File.exists?(File.expand_path("#{config.get("general.file")}"))
-            abort("Config file does not exist - Have you tried running #{"snipcli init".colorize.mode(:bold)}?".colorize.back(:red).on(:red))
+          abort("Config file does not exist - Have you tried running #{"snipcli init".colorize.mode(:bold)}?".colorize.back(:red).on(:red))
         end
         unless ENV.has_key?("EDITOR")
-            abort("Please set your environment EDITOR variable. E.g. export EDITOR=vi".colorize.back(:red).on(:red))
+          abort("Please set your environment EDITOR variable. E.g. export EDITOR=vi".colorize.back(:red).on(:red))
         end
         temp_file = SniplineCli::Services::TempSnippetEditorFile.new
         temp_file.create

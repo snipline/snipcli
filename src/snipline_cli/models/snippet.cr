@@ -1,6 +1,6 @@
 require "json"
 
-module SniplineCli
+module SniplineCli::Models
   class Snippet
     JSON.mapping({
       id:         String | Nil,
@@ -98,29 +98,6 @@ module SniplineCli
       interactive_params.size > 0 || uninteractive_params.size > 0
     end
 
-    def preview_command_in_html
-      unless has_params()
-        return real_command
-      end
-
-      temp_command = real_command
-      interactive_params.each do |param|
-        if param.type == "select"
-          temp_command = temp_command.gsub("#select{[#{param.full}]}") { "<span class='text-snipline-lime-dark'>&lt;#{param.name}&gt;</span>" }
-          temp_command = temp_command.gsub("#select{[#{param.name}]}") { "<span class='text-snipline-lime-dark'>&lt;#{param.name}&gt;</span>" }
-        else
-          temp_command = temp_command.gsub("\#{[#{param.full}]}") { "<span class='text-snipline-lime-dark'>&lt;#{param.name}&gt;</span>" }
-          temp_command = temp_command.gsub("\#{[#{param.name}]}") { "<span class='text-snipline-lime-dark'>&lt;#{param.name}&gt;</span>" }
-        end
-      end
-
-      uninteractive_params.each do |param|
-        temp_command = temp_command.gsub("#password{[#{param.full}]}") { "<span class='text-snipline-lime-dark'>&lt;PW:#{param.id}&gt;</span>" }
-        temp_command = temp_command.gsub("#password{[#{param.id}]}") { "<span class='text-snipline-lime-dark'>&lt;PW:#{param.id}&gt;</span>" }
-      end
-      temp_command
-    end
-
     def preview_command
       unless has_params()
         return real_command
@@ -129,17 +106,17 @@ module SniplineCli
       temp_command = real_command
       interactive_params.each do |param|
         if param.type == "select"
-          temp_command = temp_command.gsub("#select{[#{param.full}]}") { "<#{param.name}>".colorize(:green) }
-          temp_command = temp_command.gsub("#select{[#{param.name}]}") { "<#{param.name}>".colorize(:green) }
+          temp_command = temp_command.gsub("#select{[#{param.full}]}") { "<#{param.name}>" }
+          temp_command = temp_command.gsub("#select{[#{param.name}]}") { "<#{param.name}>" }
         else
-          temp_command = temp_command.gsub("\#{[#{param.full}]}") { "<#{param.name}>".colorize(:green) }
-          temp_command = temp_command.gsub("\#{[#{param.name}]}") { "<#{param.name}>".colorize(:green) }
+          temp_command = temp_command.gsub("\#{[#{param.full}]}") { "<#{param.name}>" }
+          temp_command = temp_command.gsub("\#{[#{param.name}]}") { "<#{param.name}>" }
         end
       end
 
       uninteractive_params.each do |param|
-        temp_command = temp_command.gsub("#password{[#{param.full}]}") { "<PW:#{param.id}>".colorize(:green) }
-        temp_command = temp_command.gsub("#password{[#{param.id}]}") { "<PW:#{param.id}>".colorize(:green) }
+        temp_command = temp_command.gsub("#password{[#{param.full}]}") { "<PW:#{param.id}>" }
+        temp_command = temp_command.gsub("#password{[#{param.id}]}") { "<PW:#{param.id}>" }
       end
       temp_command
     end
