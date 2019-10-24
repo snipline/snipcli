@@ -18,6 +18,12 @@ module SniplineCli
 
       def run
         puts "Syncing snippets..."
+        config = SniplineCli.config
+				puts config.get("api.token")
+				if config.get("api.token") == ""
+					puts "#{"No API token. Run".colorize(:red)} #{"snipcli login".colorize(:red).mode(:bold)} #{"to login".colorize(:red)}"
+					exit(1)
+				end
         @snipline_api.fetch do |body|
           # Save the response JSON into a file without the data wrapper
           snippets = Models::SnippetDataWrapper.from_json(body).data.to_json

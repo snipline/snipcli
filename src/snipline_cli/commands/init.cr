@@ -15,7 +15,7 @@ module SniplineCli
         title = "Snipline"
 
         [api]
-        url = ""
+        url = "#{config.get("api.url")}"
         token = ""
 
         [general]
@@ -25,13 +25,18 @@ module SniplineCli
 
         SniplineCli::Services::CreateConfigDirectory.run(SniplineCli.config_file)
         File.write(File.expand_path(SniplineCli.config_file), toml_contents, mode: "w")
+        puts "Configuration saved to #{File.expand_path(SniplineCli.config_file).colorize.mode(:bold)}"
         unless File.exists?(File.expand_path(config.get("general.file")))
           File.write(File.expand_path(config.get("general.file")), "[]", mode: "w")
-          puts "Created #{config.get("general.file").colorize.mode(:bold)}"
+					puts "Created JSON file in #{File.expand_path(config.get("general.file")).colorize.mode(:bold)}"
         end
-        puts "Configuration saved to #{File.expand_path(SniplineCli.config_file).colorize.mode(:bold)}"
-        puts "Add your snippets to #{File.expand_path(config.get("general.file"))}"
-        puts "See documentation for more information https://github.com/snipline/snipcli#using-snipline-cli-without-a-snipline-account"
+				puts ""
+				puts "Run #{"snipcli new".colorize.mode(:bold)} to create your first snippet"
+				puts "Search snippets with #{"snipcli search".colorize.mode(:bold)}"
+				puts ""
+        puts "See documentation for more information #{"https://github.com/snipline/snipcli".colorize.mode(:bold)}"
+				puts ""
+				puts "Happy Coding!"
       end
     end
 
