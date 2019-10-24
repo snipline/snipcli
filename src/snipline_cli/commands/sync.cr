@@ -21,8 +21,7 @@ module SniplineCli
         config = SniplineCli.config
 				puts config.get("api.token")
 				if config.get("api.token") == ""
-					puts "#{"No API token. Run".colorize(:red)} #{"snipcli login".colorize(:red).mode(:bold)} #{"to login".colorize(:red)}"
-					exit(1)
+					abort("#{"No API token. Run".colorize(:red)} #{"snipcli login".colorize(:red).mode(:bold)} #{"to login".colorize(:red)}")
 				end
         @snipline_api.fetch do |body|
           # Save the response JSON into a file without the data wrapper
