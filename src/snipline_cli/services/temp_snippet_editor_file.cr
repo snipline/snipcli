@@ -16,7 +16,7 @@ This section supports **Markdown**
 """
 is_pinned = true
 snippet_alias = ""
-sync_to_cloud = true
+sync_to_cloud = #{SniplineCli.config.get("api.token") == "" ? "false" : "true"}
 >
 
     def create
@@ -34,10 +34,19 @@ sync_to_cloud = true
         real_command: toml["real_command"].as(String),
         documentation: toml["documentation"].as(String),
         is_pinned: toml["is_pinned"].as(Bool),
-        snippet_alias: toml["snippet_alias"].as(String),
+        snippet_alias: parse_snippet_alias(toml["snippet_alias"]),
         tags: [] of String
       )
     end
+
+		def parse_snippet_alias(snippet_alias)
+			str = snippet_alias.as(String)
+			if str == ""
+				nil
+			else
+				str
+			end
+		end
 
     def sync_to_cloud?
       config = SniplineCli.config
