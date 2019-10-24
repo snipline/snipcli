@@ -20,7 +20,7 @@ module SniplineCli::Models
     property real_command : String
 
     @[JSON::Field(key: "tags")]
-    property tags : Array(String)
+    property tags : Array(String) | Nil
 
     def initialize(@name : String, @real_command : String, @documentation : String | Nil, @is_pinned : Bool, @snippet_alias : String | Nil, @tags : Array(String))
     end

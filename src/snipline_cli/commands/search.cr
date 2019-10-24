@@ -47,7 +47,11 @@ module SniplineCli
             if field = flags.field
               i.value_for_attribute(field).downcase.includes?(lowered_search_term)
             else
-              i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.includes?(lowered_search_term)
+							if !i.tags.nil?
+								i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.as(Array(String)).includes?(lowered_search_term)
+							else
+								i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term)
+							end
             end
           }
         end

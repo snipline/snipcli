@@ -16,7 +16,11 @@ module SniplineCli::Services
       unless search_term.empty?
         lowered_search_term = search_term.downcase
         results = results.select do |i|
-          i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.includes?(lowered_search_term) || (i.snippet_alias.is_a?(String) ? i.snippet_alias.as(String).downcase.includes?(lowered_search_term) : false)
+					if !i.tags.nil?
+						i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.as(Array(String)).includes?(lowered_search_term) || (i.snippet_alias.is_a?(String) ? i.snippet_alias.as(String).downcase.includes?(lowered_search_term) : false)
+					else
+						i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || (i.snippet_alias.is_a?(String) ? i.snippet_alias.as(String).downcase.includes?(lowered_search_term) : false)
+					end
         end
       end
 

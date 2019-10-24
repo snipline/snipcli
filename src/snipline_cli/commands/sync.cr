@@ -23,16 +23,34 @@ module SniplineCli
 				if config.get("api.token") == ""
 					abort("#{"No API token. Run".colorize(:red)} #{"snipcli login".colorize(:red).mode(:bold)} #{"to login".colorize(:red)}")
 				end
-        @snipline_api.fetch do |body|
-          # Save the response JSON into a file without the data wrapper
-          snippets = Models::SnippetDataWrapper.from_json(body).data.to_json
-          begin
-            @file.store(snippets)
-          rescue ex
-            puts ex.message
-          end
-        end
+
+				sync_unsaved_snippets
+
+        # @snipline_api.fetch do |body|
+        #   # Save the response JSON into a file without the data wrapper
+        #   snippets = Models::SnippetDataWrapper.from_json(body).data.to_json
+        #   begin
+        #     @file.store(snippets)
+        #   rescue ex
+        #     puts ex.message
+        #   end
+        # end
       end
+
+			def sync_unsaved_snippets
+				SniplineCli::Services::LoadSnippets.run.select { |s| s.id.nil? }.each do |snippet|
+					puts "Attempting to store #{snippet.name.colorize.mode(:bold)} in Snipline..."
+					begin
+						cloud_snippet = SniplineCli::Services::SyncSnippetToSnipline.handle(snippet.attributes)
+						puts "Success!"
+					rescue ex : Crest::UnprocessableEntity
+						resp = SniplineCli::Models::SnippetErrorResponse.from_json(ex.response.not_nil!.body)
+						puts "Failed #{resp.errors.first.source["pointer"]}: #{resp.errors.first.detail}".colorize(:red)
+					rescue ex
+						abort ex.message
+					end
+				end
+			end
     end
 
     register_sub_command :sync, Sync
