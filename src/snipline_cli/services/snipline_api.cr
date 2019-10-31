@@ -18,7 +18,7 @@ module SniplineCli::Services
       yield resp.body
     end
 
-    def create(snippet : Snippet)
+    def create(snippet : SnippetAttribute | SnippetSchema)
       config = SniplineCli.config
       # begin
       resp = Crest.post(
@@ -29,8 +29,8 @@ module SniplineCli::Services
         },
         form: {
           # data: {
-          :name          => snippet.name.chomp,
-          :real_command  => snippet.real_command.chomp,
+          :name          => snippet.name.not_nil!.chomp,
+          :real_command  => snippet.real_command.not_nil!.chomp,
           :documentation => snippet.documentation,
           :alias         => snippet.snippet_alias,
           :is_pinned     => snippet.is_pinned.to_s,

@@ -56,7 +56,7 @@ module SniplineCli
             token = "#{token.jwt}"
 
             [general]
-            file = "#{config.get("general.file")}"
+            db = "#{config.get("general.db")}"
             TOML
 
             SniplineCli::Services::CreateConfigDirectory.run(SniplineCli.config_file)

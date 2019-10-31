@@ -19,16 +19,16 @@ module SniplineCli
         token = ""
 
         [general]
-        file = "#{config.get("general.file")}"
+        db = "#{config.get("general.db")}"
         temp_dir = "#{config.get("general.temp_dir")}"
         TOML
 
         SniplineCli::Services::CreateConfigDirectory.run(SniplineCli.config_file)
         File.write(File.expand_path(SniplineCli.config_file), toml_contents, mode: "w")
         puts "Configuration saved to #{File.expand_path(SniplineCli.config_file).colorize.mode(:bold)}"
-        unless File.exists?(File.expand_path(config.get("general.file")))
-          File.write(File.expand_path(config.get("general.file")), "[]", mode: "w")
-					puts "Created JSON file in #{File.expand_path(config.get("general.file")).colorize.mode(:bold)}"
+        unless File.exists?(File.expand_path(config.get("general.db")))
+          File.write(File.expand_path(config.get("general.db")), "", mode: "w")
+					puts "Created SQLite file in #{File.expand_path(config.get("general.db")).colorize.mode(:bold)}"
         end
 				puts ""
 				puts "Run #{"snipcli new".colorize.mode(:bold)} to create your first snippet"
