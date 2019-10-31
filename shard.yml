@@ -23,6 +23,10 @@ dependencies:
   ncurses:
     github: JohnDowson/ncurses
     branch: borders_and_lines
+  crecto:    
+    github: Crecto/crecto
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3
 
 
 development_dependencies:

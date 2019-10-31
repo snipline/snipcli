@@ -17,6 +17,8 @@ module SniplineCli
       property file : (SniplineCli::Services::StoreSnippets) = SniplineCli::Services::StoreSnippets.new
 
       def run
+				puts "Migrating Database..."
+				SniplineCli::Services::Migrator.run
         puts "Syncing snippets..."
         config = SniplineCli.config
 				if config.get("api.token") == ""
