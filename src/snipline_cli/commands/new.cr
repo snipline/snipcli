@@ -27,6 +27,7 @@ module SniplineCli
             snippet = if temp_file.sync_to_cloud?
                         SniplineCli::Services::SyncSnippetToSnipline.handle(snippet_attributes)
                       else
+												snippet_attributes.set_timestamps()
                         Snippet.new(id: nil, type: "snippet", attributes: snippet_attributes)
                       end
             if snippet.is_a?(Snippet)

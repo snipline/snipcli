@@ -39,6 +39,14 @@ module SniplineCli::Models
       attributes.is_synced
     end
 
+    def inserted_at
+      attributes.inserted_at
+    end
+
+    def updated_at
+      attributes.updated_at
+    end
+
     #
     # Params such as variables or select that require input from the user
     #

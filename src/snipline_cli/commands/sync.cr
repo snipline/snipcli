@@ -80,6 +80,8 @@ module SniplineCli
 				local_snippets = local_snippets.map do |snippet|
 					if snippet.id.nil? && snippet.attributes.snippet_alias == cloud_snippet.attributes.snippet_alias && snippet.name == cloud_snippet.name
 						snippet.id = cloud_snippet.id
+						snippet.attributes.inserted_at = cloud_snippet.attributes.inserted_at
+						snippet.attributes.updated_at = cloud_snippet.attributes.updated_at
 					end
 					snippet
 				end
