@@ -6,10 +6,10 @@ module SniplineCli::NCursesWindows
     property right
     property selected_index = 0
     property searcher : SniplineCli::Services::SearchSnippets
-    property results : Array(SniplineCli::Models::Snippet)
-    property snippets : Array(SniplineCli::Models::Snippet)
+    property results : Array(SniplineCli::Models::SnippetSchema)
+    property snippets : Array(SniplineCli::Models::SnippetSchema)
 
-    def initialize(header_footer_height, @left : Int32, @right : Int32, @snippets = [] of SniplineCli::Models::Snippet)
+    def initialize(header_footer_height, @left : Int32, @right : Int32, @snippets = [] of SniplineCli::Models::SnippetSchema)
       @results = @snippets
       @searcher = SniplineCli::Services::SearchSnippets.new(@snippets)
 
@@ -72,7 +72,7 @@ module SniplineCli::NCursesWindows
         @window.print("[#{result.snippet_alias}] ")
       end
 
-      @window.print(result.name + "\n")
+      @window.print(result.name.as(String) + "\n")
     end
 
     def select_higher

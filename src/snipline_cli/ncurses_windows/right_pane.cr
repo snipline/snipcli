@@ -28,7 +28,7 @@ module SniplineCli::NCursesWindows
       @window
     end
 
-    def display(snippet : SniplineCli::Models::Snippet | Nil)
+    def display(snippet : SniplineCli::Models::SnippetSchema | Nil)
       @window.clear
       if snippet
         LibNCurses.wattr_off(@window, NCurses::Attribute::Bold, nil)
@@ -48,8 +48,8 @@ module SniplineCli::NCursesWindows
     end
 
     def print_snippet(command, width)
-      number_of_extra_lines = command.each_line(true).size - 3
-      command.each_line(true).first(3).each do |line|
+      number_of_extra_lines = command.as(String).each_line(true).size - 3
+      command.as(String).each_line(true).first(3).each do |line|
         LibNCurses.wprintw(@window, "%s\n", line)
       end
       if number_of_extra_lines > 0

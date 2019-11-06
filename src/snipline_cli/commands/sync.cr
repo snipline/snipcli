@@ -25,7 +25,7 @@ module SniplineCli
 					abort("#{"No API token. Run".colorize(:red)} #{"snipcli login".colorize(:red).mode(:bold)} #{"to login".colorize(:red)}")
 				end
 
-				sync_unsaved_snippets
+				sync_unsynced_snippets
 				download_snipline_snippets
 
       end
@@ -39,15 +39,25 @@ module SniplineCli
           begin
 						# Only snippets that are in the cloud but not stored locally
 						difference = [] of SniplineCli::Models::Snippet
-						local_snippet_ids = local_snippets.map { |s| s.id }
+						local_snippet_ids = local_snippets.map { |s| s.local_id }
 						cloud_snippets.each do |cs|
 							difference << cs unless local_snippet_exists?(cs, local_snippet_ids)
 						end
 						difference.each do |s|
 							puts "Storing #{s.attributes.name} from Snipline".colorize(:green)
-							local_snippets << s
+							snippet = SniplineCli::Models::SnippetSchema.new
+							snippet.name = s.name
+							snippet.real_command = s.real_command
+							snippet.documentation = s.documentation
+							snippet.tags = (s.tags.nil?) ? nil : s.tags.not_nil!.join(",")
+							snippet.snippet_alias = s.snippet_alias
+							snippet.is_pinned = s.is_pinned
+							snippet.is_synced = true
+							changeset = SniplineCli::Models::SnippetSchema.changeset(snippet)
+							result = Repo.insert(changeset)
+							# local_snippets << s
 						end
-						@file.store(local_snippets.to_json) unless difference.size == 0
+						# @file.store(local_snippets.to_json) unless difference.size == 0
           rescue ex
 						puts ex.message.colorize(:red)
           end
@@ -61,13 +71,13 @@ module SniplineCli
 				return false
 			end
 
-			def sync_unsaved_snippets
+			def sync_unsynced_snippets
 				local_snippets = SniplineCli::Services::LoadSnippets.run
-				local_snippets.select { |s| s.id.nil? }.each do |snippet|
+				local_snippets.select { |s| s.cloud_id.nil? }.each do |snippet|
 					puts "Attempting to store #{snippet.name.colorize.mode(:bold)} in Snipline..."
 					begin
-						cloud_snippet = SniplineCli::Services::SyncSnippetToSnipline.handle(snippet.attributes)
-						update_local_snippet_id(cloud_snippet, local_snippets)
+						cloud_snippet = SniplineCli::Services::SyncSnippetToSnipline.handle(snippet)
+						update_local_snippet_id(cloud_snippet, snippet)
 						puts "Success!".colorize(:green)
 					rescue ex : Crest::UnprocessableEntity
 						resp = SniplineCli::Models::SnippetErrorResponse.from_json(ex.response.not_nil!.body)
@@ -78,16 +88,10 @@ module SniplineCli
 				end
 			end
 
-			def update_local_snippet_id(cloud_snippet, local_snippets)
-				local_snippets = local_snippets.map do |snippet|
-					if snippet.id.nil? && snippet.attributes.snippet_alias == cloud_snippet.attributes.snippet_alias && snippet.name == cloud_snippet.name
-						snippet.id = cloud_snippet.id
-						snippet.attributes.inserted_at = cloud_snippet.attributes.inserted_at
-						snippet.attributes.updated_at = cloud_snippet.attributes.updated_at
-					end
-					snippet
-				end
-				@file.store(local_snippets.to_json)
+			def update_local_snippet_id(cloud_snippet, local_snippet)
+				local_snippet.cloud_id = cloud_snippet.id
+				local_snippet.is_synced = true
+				changeset = Repo.update(local_snippet)
 			end
     end
 
