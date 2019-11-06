@@ -30,8 +30,18 @@ module SniplineCli
           cloud_snippets = Models::SnippetDataWrapper.from_json(body).data
 					save_new_snipline_cloud_snippets(cloud_snippets)
 					delete_orphan_snippets(cloud_snippets)
+					update_locally_out_of_date_snippets(cloud_snippets)
+					update_cloud_out_of_date_snippets(cloud_snippets)
 				end
       end
+
+			def update_locally_out_of_date_snippets(cloud_snippets)
+				# TODO: this method is for local snippets whose updated_at is behind the cloud
+			end
+
+			def update_cloud_out_of_date_snippets(cloud_snippets)
+				# TODO: this method is for cloud snippets whose updated_at is behind the local version
+			end
 
 			def delete_orphan_snippets(cloud_snippets)
 				# if snippet cloud_id exists locally but not in cloud
