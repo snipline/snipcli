@@ -26,42 +26,63 @@ module SniplineCli
 				end
 
 				sync_unsynced_snippets
-				download_snipline_snippets
-
+        @snipline_api.fetch do |body|
+          cloud_snippets = Models::SnippetDataWrapper.from_json(body).data
+					save_new_snipline_cloud_snippets(cloud_snippets)
+					delete_orphan_snippets(cloud_snippets)
+				end
       end
 
+			def delete_orphan_snippets(cloud_snippets)
+				# if snippet cloud_id exists locally but not in cloud
+				puts "Cleaning up snippets that are no longer in Snipline Cloud..."
+				local_snippets = SniplineCli::Services::LoadSnippets.run.select { |ls| !ls.cloud_id.nil? }
+				orphans = [] of SniplineCli::Models::SnippetSchema
+				cloud_snippet_ids = cloud_snippets.map { |s| s.not_nil!.id }
+				local_snippets.each do |ls|
+					orphans << ls unless cloud_snippet_exists?(ls, cloud_snippet_ids)
+				end
+				orphans.each do |ls|
+					# delete snippets
+					puts "Deleting #{ls.name}".colorize(:green)
+					Repo.delete(ls)
+				end
+			end
 
-			def download_snipline_snippets
-        @snipline_api.fetch do |body|
-          # Save the response JSON into a file without the data wrapper
-          cloud_snippets = Models::SnippetDataWrapper.from_json(body).data
-					local_snippets = SniplineCli::Services::LoadSnippets.run
-          begin
-						# Only snippets that are in the cloud but not stored locally
-						difference = [] of SniplineCli::Models::Snippet
-						local_snippet_ids = local_snippets.map { |s| s.local_id }
-						cloud_snippets.each do |cs|
-							difference << cs unless local_snippet_exists?(cs, local_snippet_ids)
-						end
-						difference.each do |s|
-							puts "Storing #{s.attributes.name} from Snipline".colorize(:green)
-							snippet = SniplineCli::Models::SnippetSchema.new
-							snippet.name = s.name
-							snippet.real_command = s.real_command
-							snippet.documentation = s.documentation
-							snippet.tags = (s.tags.nil?) ? nil : s.tags.not_nil!.join(",")
-							snippet.snippet_alias = s.snippet_alias
-							snippet.is_pinned = s.is_pinned
-							snippet.is_synced = true
-							changeset = SniplineCli::Models::SnippetSchema.changeset(snippet)
-							result = Repo.insert(changeset)
-							# local_snippets << s
-						end
-						# @file.store(local_snippets.to_json) unless difference.size == 0
-          rescue ex
-						puts ex.message.colorize(:red)
-          end
-        end
+			def cloud_snippet_exists?(local_snippet, cloud_snippet_ids)
+				cloud_snippet_ids.includes?(local_snippet.cloud_id.not_nil!)
+			end
+
+
+			def save_new_snipline_cloud_snippets(cloud_snippets)
+				# Save the response JSON into a file without the data wrapper
+				local_snippets = SniplineCli::Services::LoadSnippets.run
+				begin
+					# Only snippets that are in the cloud but not stored locally
+					difference = [] of SniplineCli::Models::Snippet
+					local_snippet_cloud_ids = local_snippets.select{ |s| !s.cloud_id.nil? }.map { |s| s.cloud_id.not_nil! }
+					cloud_snippets.each do |cs|
+						difference << cs unless local_snippet_exists?(cs, local_snippet_cloud_ids)
+					end
+					difference.each do |s|
+						puts "Storing #{s.attributes.name} from Snipline".colorize(:green)
+						snippet = SniplineCli::Models::SnippetSchema.new
+						snippet.name = s.name
+						snippet.cloud_id = s.id
+						snippet.real_command = s.real_command
+						snippet.documentation = s.documentation
+						snippet.tags = (s.tags.nil?) ? nil : s.tags.not_nil!.join(",")
+						snippet.snippet_alias = s.snippet_alias
+						snippet.is_pinned = s.is_pinned
+						snippet.is_synced = true
+						changeset = SniplineCli::Models::SnippetSchema.changeset(snippet)
+						result = Repo.insert(changeset)
+						# local_snippets << s
+					end
+					# @file.store(local_snippets.to_json) unless difference.size == 0
+				rescue ex
+					puts ex.message.colorize(:red)
+				end
 			end
 
 			def local_snippet_exists?(cs, local_snippet_ids)
