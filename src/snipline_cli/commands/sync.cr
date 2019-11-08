@@ -37,6 +37,46 @@ module SniplineCli
 
 			def update_locally_out_of_date_snippets(cloud_snippets)
 				# TODO: this method is for local snippets whose updated_at is behind the cloud
+				puts "local"
+				cloud_snippets.each { |cs|
+					local_snippet = Repo.get_by(SniplineCli::Models::SnippetSchema, cloud_id: cs.id.not_nil!)
+					puts "#{local_snippet.inspect}"
+					if local_snippet
+						# cloud_updated_at = Time::Format.new(cs.not_nil!.updated_at.not_nil!).parse(cs.not_nil!.updated_at.not_nil!, Time::Location::UTC)
+						cloud_updated_at = Time.parse(
+							cs.not_nil!.updated_at.not_nil!,
+							"%F %T",
+							Time::Location::UTC
+						)
+						# 	cloud_updated_at.year,
+						# 	cloud_updated_at.month,
+						# 	cloud_updated_at.day,
+						# 	cloud_updated_at.hour,
+						# 	cloud_updated_at.minute,
+						# 	cloud_updated_at.second
+						# )
+						local_updated_at = local_snippet.not_nil!.updated_at.not_nil!
+						puts "ls #{local_updated_at.inspect} #{cloud_updated_at.inspect}"
+						if (local_updated_at - cloud_updated_at).minutes > 1
+							puts "Updating local snippet from cloud"
+							local_snippet.name = cs.not_nil!.name.not_nil!
+							local_snippet.real_command = cs.not_nil!.real_command.not_nil!
+							local_snippet.documentation = cs.not_nil!.documentation
+							local_snippet.snippet_alias = cs.not_nil!.snippet_alias
+							local_snippet.snippet_alias = cs.not_nil!.snippet_alias
+							local_snippet.is_synced = true
+							local_snippet.is_pinned = cs.not_nil!.is_pinned
+							Repo.update(local_snippet)
+						elsif (local_updated_at - cloud_updated_at).minutes < 1
+							puts "Sending local update to snipline"
+							# TODO
+						else
+							# DO NOTHING
+						end
+						# if local_snippet.updated_at < cs.not_nil!.updated_at
+						# end
+					end
+				}
 			end
 
 			def update_cloud_out_of_date_snippets(cloud_snippets)
