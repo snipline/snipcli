@@ -39,21 +39,53 @@ module SniplineCli::Services
         },
         logging: ENV["LOG_LEVEL"] == "DEBUG" ? true : false
       )
-      # Snippet.from_json(resp.body)
       SingleSnippetDataWrapper.from_json(resp.body).data
-      # rescue ex : Crest::UnprocessableEntity
-      #   puts "RAISING"
-      #   puts resp.inspect
-      #   unless resp.nil?
-      #     errors = SnippetErrorResponse.from_json(resp.not_nil!.body)
-      #     raise SniplineCli::Exceptions::InvalidSnippet.new(errors)
-      #   end
-      # rescue ex
-
-      #   puts "OTHER"
-      #   raise ex
-      # end
     end
+
+		def update(snippet : SnippetSchema)
+      config = SniplineCli.config
+      # begin
+      resp = Crest.patch(
+				"#{config.get("api.url")}/snippets/#{snippet.cloud_id}",
+        headers: {
+          # "Accept" => "application/vnd.api+json",
+          "Authorization" => "Bearer #{config.get("api.token")}",
+        },
+        form: {
+          # data: {
+          :name          => snippet.name.not_nil!.chomp,
+          :real_command  => snippet.real_command.not_nil!.chomp,
+          :documentation => snippet.documentation,
+          :alias         => snippet.snippet_alias,
+          :is_pinned     => snippet.is_pinned.to_s,
+          # :tags => snippet.tags
+          # }
+        },
+        logging: ENV["LOG_LEVEL"] == "DEBUG" ? true : false
+      )
+      response = SingleSnippetDataWrapper.from_json(resp.body).data
+			snippet.name = response.name.not_nil!
+			snippet.real_command = response.real_command.not_nil!
+			snippet.documentation = response.documentation
+			snippet.snippet_alias = response.snippet_alias
+			snippet.is_synced = true
+			snippet.is_pinned = response.is_pinned
+			Repo.update(snippet)
+			cloud_updated_at = Time.parse(
+				response.updated_at.not_nil!,
+				"%F %T",
+				Time::Location::UTC
+			)
+			puts "cloud #{cloud_updated_at}"
+			local_snippet = Repo.get_by(SniplineCli::Models::SnippetSchema, cloud_id: response.id.not_nil!)
+			if local_snippet
+				puts "local #{local_snippet.updated_at}"
+			end
+
+			q = Repo.raw_exec("UPDATE snippets SET updated_at=? WHERE cloud_id=?", cloud_updated_at, response.id)
+			puts q.inspect
+		end
+
   end
 
   class SniplineApiTest
@@ -62,6 +94,8 @@ module SniplineCli::Services
     end
 
 		def create(snippet : SniplineCli::Models::Snippet)
+		end
+		def update(snippet : SniplineCli::Models::SnippetSchema)
 		end
   end
 end

@@ -10,7 +10,7 @@ module SniplineCli::NCursesWindows
         0
       )
       @window.set_color 1
-      LibNCurses.wprintw(@window, "%s", " <C-c> Quit | <S-j> Down | <S-k> Up | <CR> - Copy | <S-r> Run\n")
+      LibNCurses.wprintw(@window, "%s", " <C-c> Quit | <S-j> Down | <S-k> Up | <CR> - Copy | <S-r> Run | <S-e> Edit\n")
       LibNCurses.mvwchgat(@window, 0, 0, -1, NCurses::Attribute::Reverse, 2, nil)
       @window.refresh
     end

@@ -3,9 +3,13 @@ require "toml"
 module SniplineCli::Services
   # For saving Snippets locally.
   class TempSnippetEditorFile
+
     include SniplineCli::Models
-    TEMPLATE = %<# Welcome to the terminal-based snippet editor
-# This file uses TOML syntax and will be processed after the file is closed
+
+		property snippet : SnippetSchema | Nil
+
+    property template = %<# Welcome to the terminal-based snippet editor
+# This file uses TOML syntax and will be processed after the file is saved and closed
 # Fill in the below options and save+quit to continue
 name = ""
 real_command = """
@@ -14,15 +18,35 @@ echo 'hello, world'
 documentation = """
 This section supports **Markdown**
 """
-is_pinned = true
+is_pinned = false
 snippet_alias = ""
 sync_to_cloud = #{SniplineCli.config.get("api.token") == "" ? "false" : "true"}
 >
+	
+		def initialize(@snippet : SnippetSchema | Nil = nil)
+			snippet = @snippet
+			if (snippet = @snippet).is_a?(SnippetSchema)
+				@template = %<# Welcome to the terminal-based snippet editor
+# This file uses TOML syntax and will be processed after the file is saved and closed
+# Fill in the below options and save+quit to continue
+name = "#{snippet.name}"
+real_command = """
+#{snippet.real_command}
+"""
+documentation = """
+#{snippet.documentation}
+"""
+is_pinned = #{snippet.is_pinned}
+snippet_alias = "#{snippet.snippet_alias}"
+sync_to_cloud = #{SniplineCli.config.get("api.token") == "" ? "false" : "true"}
+>
+			end
+		end
 
     def create
       config = SniplineCli.config
       unless File.exists?(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"))
-        File.write(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"), TEMPLATE)
+        File.write(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"), @template)
       end
     end
 
