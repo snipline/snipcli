@@ -9,9 +9,10 @@ end
 
 describe SniplineCli::Command::Sync do
   it "Syncs snippets from server" do
-    sync_command = SniplineCli::Command::Sync.new
-    sync_command.snipline_api = SniplineCli::Services::SniplineApiTest.new
-    sync_command.file = SniplineCli::Services::StoreSnippetsTest.new
-    sync_command.run
+		# TODO
+    # sync_command = SniplineCli::Command::Sync.new
+    # sync_command.snipline_api = SniplineCli::Services::SniplineApiTest.new
+    # sync_command.file = SniplineCli::Services::StoreSnippetsTest.new
+    # sync_command.run
   end
 end
