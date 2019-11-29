@@ -15,6 +15,7 @@ module SniplineCli
         unless File.exists?(File.expand_path("#{config.get("general.db")}"))
           abort("Database does not exist - Have you tried running #{"snipcli init".colorize.mode(:bold)}?".colorize.back(:red).on(:red))
         end
+				SniplineCli::Services::Migrator.run
         unless ENV.has_key?("EDITOR")
           abort("Please set your environment EDITOR variable. E.g. export EDITOR=vi".colorize.back(:red).on(:red))
         end
