@@ -15,6 +15,8 @@ module SniplineCli::Models
 		end
 
 		validate_required [:name, :real_command]
+		validate_length :name, min: 1
+		validate_length :real_command, min: 1
 		unique_constraint :snippet_alias
 		unique_constraint :name
 		#

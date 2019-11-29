@@ -56,7 +56,7 @@ sync_to_cloud = #{SniplineCli.config.get("api.token") == "" ? "false" : "true"}
       SnippetAttribute.new(
         name: toml["name"].as(String),
         real_command: toml["real_command"].as(String),
-        documentation: toml["documentation"].as(String),
+				documentation: toml["documentation"].as(String).rstrip,
         is_pinned: toml["is_pinned"].as(Bool),
         snippet_alias: parse_snippet_alias(toml["snippet_alias"]),
         tags: [] of String

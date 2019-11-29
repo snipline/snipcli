@@ -36,6 +36,8 @@ module SniplineCli
 
 			def update_locally_out_of_date_snippets(cloud_snippets)
 				# TODO: this method is for local snippets whose updated_at is behind the cloud
+				synced_to_local_count = 0
+				synced_to_cloud_count = 0
 				cloud_snippets.each { |cs|
 					local_snippet = Repo.get_by(SniplineCli::Models::SnippetSchema, cloud_id: cs.id.not_nil!)
 					if local_snippet
@@ -46,8 +48,9 @@ module SniplineCli
 							Time::Location::UTC
 						)
 						local_updated_at = local_snippet.not_nil!.updated_at.not_nil!
-						if (local_updated_at - cloud_updated_at).minutes > 1
-							puts "Updating local snippet #{local_snippet.name} from cloud"
+
+						if local_snippet.is_synced 
+							# local hasn't changed - redownload from snipline just incase
 							local_snippet.name = cs.not_nil!.name.not_nil!
 							local_snippet.real_command = cs.not_nil!.real_command.not_nil!
 							local_snippet.documentation = cs.not_nil!.documentation
@@ -55,16 +58,16 @@ module SniplineCli
 							local_snippet.is_synced = true
 							local_snippet.is_pinned = cs.not_nil!.is_pinned
 							Repo.update(local_snippet)
-							q = Repo.raw_exec("UPDATE snippets SET updated_at=? WHERE cloud_id=?", cloud_updated_at, cs.id)
-							puts q.inspect
-						elsif (local_updated_at - cloud_updated_at).minutes < 1
-							puts "Updating local #{local_snippet.name} to Snipline Cloud"
-							@snipline_api.update(local_snippet)
+							synced_to_local_count = synced_to_local_count + 1
 						else
-							# DO NOTHING
+							# local has updated without sending to snipline cloud - time to update the cloud version
+							@snipline_api.update(local_snippet)
+							synced_to_cloud_count = synced_to_cloud_count + 1
 						end
 					end
 				}
+				puts "Synced #{synced_to_local_count} from Snipline Cloud to local database".colorize(:green)
+				puts "Synced #{synced_to_cloud_count} from local database to Snipline Cloud".colorize(:green)
 			end
 
 			def delete_orphan_snippets(cloud_snippets)
