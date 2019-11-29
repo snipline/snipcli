@@ -1,10 +1,10 @@
 describe SniplineCli::Services::CommandBuilder do
   it "correctly parses snippets with no params" do
     # attributes = %({"id":"0f4846c0-3194-40bb-be77-8c4b136565f4","type":"snippets","attributes":{"alias":"git.sla","is-pinned":false,"name":"Git log pretty","real-command":"git log --oneline --decorate --graph --all","tags":["git"]}})
-		snippet = SniplineCli::Models::SnippetSchema.new
-		snippet.name = "Git log pretty"
-		snippet.snippet_alias = "git.sla"
-		snippet.real_command = "git log --oneline --decorate --graph --all"
+    snippet = SniplineCli::Models::SnippetSchema.new
+    snippet.name = "Git log pretty"
+    snippet.snippet_alias = "git.sla"
+    snippet.real_command = "git log --oneline --decorate --graph --all"
     # snippet = SniplineCli::Models::Snippet.from_json(attributes)
     File.tempfile("test") do |io|
       response = SniplineCli::Services::CommandBuilder.run(snippet, io, io)
@@ -15,10 +15,10 @@ describe SniplineCli::Services::CommandBuilder do
   it "should generate random passwords" do
     # attributes = %({"id":"0f4846c0-3194-40bb-be77-8c4b136565f4","type":"snippets","attributes":{"alias":"git.sla","is-pinned":false,"name":"random password generator","real-command":"rand '#password{[Name,8]}' #password{[Name]} #password{[Diff,4]}","tags":["git"]}})
     # snippet = SniplineCli::Models::Snippet.from_json(attributes)
-		snippet = SniplineCli::Models::SnippetSchema.new
-		snippet.name = "Git log pretty"
-		snippet.snippet_alias = "git.sla"
-		snippet.real_command = "rand '#password{[Name,8]}' #password{[Name]} #password{[Diff,4]}"
+    snippet = SniplineCli::Models::SnippetSchema.new
+    snippet.name = "Git log pretty"
+    snippet.snippet_alias = "git.sla"
+    snippet.real_command = "rand '#password{[Name,8]}' #password{[Name]} #password{[Diff,4]}"
     File.tempfile("test") do |io|
       response = SniplineCli::Services::CommandBuilder.run(snippet, io, io)
       response.size.should eq(29)

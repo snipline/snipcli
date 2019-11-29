@@ -38,34 +38,34 @@ module SniplineCli
         # snippets = SniplineCli::Services::LoadSnippets.run
 
         snippets = if search_term.empty?
-					query = Crecto::Repo::Query.order_by("is_pinned ASC").order_by("name ASC").limit(flags.limit.to_i)
-					Repo.all(SniplineCli::Models::SnippetSchema, query)
-				else
-          lowered_search_term = search_term.downcase
-          if flags.field != nil && !["alias", "documentation", "name", "tags"].includes?(flags.field.not_nil!)
-            puts "The search field entered does not exist."
-            return
-          end
-					query = Crecto::Repo::Query.new
-					if flags.field
-						query = query.where("snippets.#{flags.field.not_nil!.downcase} = ?", lowered_search_term)
-					else
-						query = query.where("snippets.name LIKE '%?%'", lowered_search_term).or_where("snippets.real_command LIKE '%?%'", lowered_search_term).or_where("snippets.snippet_alias LIKE '%?%'", lowered_search_term).or_where("snippets.tags LIKE '%?%'", lowered_search_term)
-					end
-					query.order_by("is_pinned ASC").order_by("name ASC").limit(flags.limit.to_i)
-					Repo.all(SniplineCli::Models::SnippetSchema, query)
-          # snippets.select! { |i|
-          #   if field = flags.field
-          #     i.value_for_attribute(field).downcase.includes?(lowered_search_term)
-          #   else
-					# 		if !i.tags.nil?
-					# 			i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.as(Array(String)).includes?(lowered_search_term)
-					# 		else
-					# 			i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term)
-					# 		end
-          #   end
-          # }
-        end
+                     query = Crecto::Repo::Query.order_by("is_pinned ASC").order_by("name ASC").limit(flags.limit.to_i)
+                     Repo.all(SniplineCli::Models::SnippetSchema, query)
+                   else
+                     lowered_search_term = search_term.downcase
+                     if flags.field != nil && !["alias", "documentation", "name", "tags"].includes?(flags.field.not_nil!)
+                       puts "The search field entered does not exist."
+                       return
+                     end
+                     query = Crecto::Repo::Query.new
+                     if flags.field
+                       query = query.where("snippets.#{flags.field.not_nil!.downcase} = ?", lowered_search_term)
+                     else
+                       query = query.where("snippets.name LIKE '%?%'", lowered_search_term).or_where("snippets.real_command LIKE '%?%'", lowered_search_term).or_where("snippets.snippet_alias LIKE '%?%'", lowered_search_term).or_where("snippets.tags LIKE '%?%'", lowered_search_term)
+                     end
+                     query.order_by("is_pinned ASC").order_by("name ASC").limit(flags.limit.to_i)
+                     Repo.all(SniplineCli::Models::SnippetSchema, query)
+                     # snippets.select! { |i|
+                     #   if field = flags.field
+                     #     i.value_for_attribute(field).downcase.includes?(lowered_search_term)
+                     #   else
+                     # 		if !i.tags.nil?
+                     # 			i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.as(Array(String)).includes?(lowered_search_term)
+                     # 		else
+                     # 			i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term)
+                     # 		end
+                     #   end
+                     # }
+                   end
 
         # results = sort_results(snippets, flags.limit)
 

@@ -9,12 +9,12 @@ module SniplineCli::Services
     def self.handle(snippet)
       # snippet = Snippet.new(id: nil, type: "snippet", attributes: snippet_attributes)
       response = SniplineApi.new.create(snippet)
-			if snippet.is_a?(SnippetSchema)
-				snippet = Repo.get!(SnippetSchema, snippet.as(SnippetSchema).local_id)
-				snippet.cloud_id = response.id
-				after = Repo.update(snippet)
-			end
-			response
+      if snippet.is_a?(SnippetSchema)
+        snippet = Repo.get!(SnippetSchema, snippet.as(SnippetSchema).local_id)
+        snippet.cloud_id = response.id
+        Repo.update(snippet)
+      end
+      response
     end
   end
 end

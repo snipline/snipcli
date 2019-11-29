@@ -24,7 +24,7 @@ module SniplineCli
       else
         @api = {"url" => "https://api.snipline.io/api", "token" => ""}
         @general = {
-          "db"     => "~/.config/snipline/snipline.db",
+          "db"       => "~/.config/snipline/snipline.db",
           "temp_dir" => "~/.config/snipline",
         }
       end

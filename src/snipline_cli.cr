@@ -14,12 +14,12 @@ require "./snipline_cli/services/*"
 require "./snipline_cli/commands/*"
 
 module Repo
-	extend Crecto::Repo
-	
-	config do |conf|
-		conf.adapter = Crecto::Adapters::SQLite3
-		conf.database = File.expand_path("~/.config/snipline/snipline.db")
-	end
+  extend Crecto::Repo
+
+  config do |conf|
+    conf.adapter = Crecto::Adapters::SQLite3
+    conf.database = File.expand_path("~/.config/snipline/snipline.db")
+  end
 end
 
 module SniplineCli

@@ -41,7 +41,7 @@ module SniplineCli
           E F G H I J K L M N O P Q R S
           T U V W X Y Z 1 2 3 4 5 6 7 8
           9 0 £ * ^ ] [ : ; | ? , .
-          ` ~ / }
+          ` ~ /}
         snippet.uninteractive_params.each do |param|
           # todo: use string builder instead
           generated_password = ""

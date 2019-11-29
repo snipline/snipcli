@@ -105,10 +105,10 @@ module SniplineCli::Services
       SniplineCli::Services::CommandBuilder.run(@left_pane.results[@left_pane.selected_index], STDIN, STDOUT)
     end
 
-		def edit_snippet
-			NCurses.clear
-			NCurses.end
+    def edit_snippet
+      NCurses.clear
+      NCurses.end
       SniplineCli::Services::EditSnippet.run(@left_pane.results[@left_pane.selected_index], STDIN, STDOUT)
-		end
+    end
   end
 end

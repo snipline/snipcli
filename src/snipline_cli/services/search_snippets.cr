@@ -16,11 +16,11 @@ module SniplineCli::Services
       unless search_term.empty?
         lowered_search_term = search_term.downcase
         results = results.select do |i|
-					if !i.tags.nil?
-						i.name.as(String).downcase.includes?(lowered_search_term) || i.real_command.as(String).downcase.includes?(lowered_search_term) || i.tags.as(String).split(",").includes?(lowered_search_term) || (i.snippet_alias.is_a?(String) ? i.snippet_alias.as(String).downcase.includes?(lowered_search_term) : false)
-					else
-						i.name.as(String).downcase.includes?(lowered_search_term) || i.real_command.as(String).downcase.includes?(lowered_search_term) || (i.snippet_alias.is_a?(String) ? i.snippet_alias.as(String).downcase.includes?(lowered_search_term) : false)
-					end
+          if !i.tags.nil?
+            i.name.as(String).downcase.includes?(lowered_search_term) || i.real_command.as(String).downcase.includes?(lowered_search_term) || i.tags.as(String).split(",").includes?(lowered_search_term) || (i.snippet_alias.is_a?(String) ? i.snippet_alias.as(String).downcase.includes?(lowered_search_term) : false)
+          else
+            i.name.as(String).downcase.includes?(lowered_search_term) || i.real_command.as(String).downcase.includes?(lowered_search_term) || (i.snippet_alias.is_a?(String) ? i.snippet_alias.as(String).downcase.includes?(lowered_search_term) : false)
+          end
         end
       end
 

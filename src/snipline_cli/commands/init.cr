@@ -28,15 +28,15 @@ module SniplineCli
         puts "Configuration saved to #{File.expand_path(SniplineCli.config_file).colorize.mode(:bold)}"
         unless File.exists?(File.expand_path(config.get("general.db")))
           File.write(File.expand_path(config.get("general.db")), "", mode: "w")
-					puts "Created SQLite file in #{File.expand_path(config.get("general.db")).colorize.mode(:bold)}"
+          puts "Created SQLite file in #{File.expand_path(config.get("general.db")).colorize.mode(:bold)}"
         end
-				puts ""
-				puts "Run #{"snipcli new".colorize.mode(:bold)} to create your first snippet"
-				puts "Search snippets with #{"snipcli search".colorize.mode(:bold)}"
-				puts ""
+        puts ""
+        puts "Run #{"snipcli new".colorize.mode(:bold)} to create your first snippet"
+        puts "Search snippets with #{"snipcli search".colorize.mode(:bold)}"
+        puts ""
         puts "See documentation for more information #{"https://github.com/snipline/snipcli".colorize.mode(:bold)}"
-				puts ""
-				puts "Happy Coding!"
+        puts ""
+        puts "Happy Coding!"
       end
     end
 
