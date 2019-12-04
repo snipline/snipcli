@@ -18,4 +18,3 @@ describe SniplineCli::Parsers::SnippetAttributeParser do
     attributes.documentation.should eq nil
   end
 end
-

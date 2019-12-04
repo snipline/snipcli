@@ -6,7 +6,6 @@ module SniplineCli
     # snippets = SniplineCli::Services::LoadSnippets.run
     # ```
     class EditSnippet
-
       def self.run(snippet : Snippet, input, output)
         config = SniplineCli.config
         log = SniplineCli.log

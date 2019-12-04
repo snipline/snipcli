@@ -40,4 +40,3 @@ module SniplineCli::Parsers
     end
   end
 end
-

@@ -5,7 +5,6 @@ include SniplineCli::Parsers
 module SniplineCli::Services
   # For talking to the Snipline API.
   class SniplineApi
-
     # Fetches the user's Snippets.
     def fetch(&block)
       config = SniplineCli.config

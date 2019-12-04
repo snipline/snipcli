@@ -3,7 +3,6 @@ require "toml"
 module SniplineCli::Services
   # For saving Snippets locally.
   class TempSnippetEditorFile
-
     property snippet : Snippet | Nil
 
     property template = %<# Welcome to the terminal-based snippet editor
