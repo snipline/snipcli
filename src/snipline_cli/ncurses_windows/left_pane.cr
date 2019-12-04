@@ -5,13 +5,13 @@ module SniplineCli::NCursesWindows
     property left
     property right
     property selected_index = 0
-    property searcher : SniplineCli::Services::SearchSnippets
-    property results : Array(SniplineCli::Models::SnippetSchema)
-    property snippets : Array(SniplineCli::Models::SnippetSchema)
+    property searcher : SearchSnippets
+    property results : Array(SnippetSchema)
+    property snippets : Array(SnippetSchema)
 
-    def initialize(header_footer_height, @left : Int32, @right : Int32, @snippets = [] of SniplineCli::Models::SnippetSchema)
+    def initialize(header_footer_height, @left : Int32, @right : Int32, @snippets = [] of SnippetSchema)
       @results = @snippets
-      @searcher = SniplineCli::Services::SearchSnippets.new(@snippets)
+      @searcher = SearchSnippets.new(@snippets)
 
       @border = NCurses::Window.new(
         NCurses.height - (header_footer_height * 2),

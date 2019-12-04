@@ -14,7 +14,6 @@ module SniplineCli
     # end
     # ```
     class CommandBuilder
-      include SniplineCli::Models
 
       def self.run(snippet : SnippetSchema, input, output, user_input = [] of String) : String
         unless snippet.has_params

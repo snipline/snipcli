@@ -13,6 +13,8 @@ require "./snipline_cli/ncurses_windows/*"
 require "./snipline_cli/services/*"
 require "./snipline_cli/commands/*"
 
+include SniplineCli::Services
+
 module Repo
   extend Crecto::Repo
 
@@ -26,7 +28,7 @@ module SniplineCli
   VERSION = "0.3.0"
 
   def self.config
-    SniplineCli::Config.config
+    Config.config
   end
 
   def self.config_file
@@ -34,7 +36,7 @@ module SniplineCli
   end
 
   def self.log
-    SniplineCli::Services::Log.log
+    Log.log
   end
 
   # The base Command Class that inherits from [Admiral](https://github.com/jwaldrip/admiral.cr)

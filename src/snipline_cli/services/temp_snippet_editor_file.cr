@@ -3,7 +3,6 @@ require "toml"
 module SniplineCli::Services
   # For saving Snippets locally.
   class TempSnippetEditorFile
-    include SniplineCli::Models
 
     property snippet : SnippetSchema | Nil
 

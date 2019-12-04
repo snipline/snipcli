@@ -7,7 +7,7 @@ module SniplineCli::NCursesWindows
     property entered_text : String = ""
     property selected_index : UInt32 = 0
 
-    def initialize(@command_builder : String, @param : SniplineCli::Models::SnippetParam)
+    def initialize(@command_builder : String, @param : SnippetParam)
       @border = NCurses::Window.new(
         NCurses.height,
         NCurses.width,

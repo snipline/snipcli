@@ -6,7 +6,6 @@ module SniplineCli
     # snippets = SniplineCli::Services::LoadSnippets.run
     # ```
     class LoadSnippets
-      include SniplineCli::Models
 
       def self.run : Array(SnippetSchema)
         config = SniplineCli.config

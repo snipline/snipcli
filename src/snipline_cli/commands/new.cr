@@ -7,7 +7,6 @@ module SniplineCli
     # This command generates a config file in the requested location.
     # By default this location is ~/.config/snipline/config.toml
     class New < Admiral::Command
-      include SniplineCli::Models
       define_help description: "Create a new Snippet"
 
       def run
@@ -15,16 +14,16 @@ module SniplineCli
         unless File.exists?(File.expand_path("#{config.get("general.db")}"))
           abort("Database does not exist - Have you tried running #{"snipcli init".colorize.mode(:bold)}?".colorize.back(:red).on(:red))
         end
-        SniplineCli::Services::Migrator.run
+        Migrator.run
         unless ENV.has_key?("EDITOR")
           abort("Please set your environment EDITOR variable. E.g. export EDITOR=vi".colorize.back(:red).on(:red))
         end
-        temp_file = SniplineCli::Services::TempSnippetEditorFile.new
+        temp_file = TempSnippetEditorFile.new
         temp_file.create
         loop do
           system("#{ENV["EDITOR"]} #{File.expand_path("#{config.get("general.temp_dir")}/temp.toml")}")
           snippet_attributes = temp_file.read
-          snippet = SniplineCli::Models::SnippetSchema.new
+          snippet = SnippetSchema.new
 
           snippet.name = snippet_attributes.name
           snippet.real_command = snippet_attributes.real_command
@@ -38,14 +37,8 @@ module SniplineCli
           result = Repo.insert(changeset)
           begin
             if temp_file.sync_to_cloud?
-              SniplineCli::Services::SyncSnippetToSnipline.handle(result.instance)
-              # else
-              # 	snippet_attributes.set_timestamps()
-              #   Snippet.new(id: nil, type: "snippet", attributes: snippet_attributes)
+              SyncSnippetToSnipline.handle(result.instance)
             end
-            # if snippet.is_a?(Snippet)
-            #   SniplineCli::Services::AppendSnippetToLocalStorage.handle(snippet)
-            # end
             puts "Snippet created!"
             temp_file.delete
             break

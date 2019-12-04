@@ -23,7 +23,7 @@ module SniplineCli
         temp_dir = "#{config.get("general.temp_dir")}"
         TOML
 
-        SniplineCli::Services::CreateConfigDirectory.run(SniplineCli.config_file)
+        CreateConfigDirectory.run(SniplineCli.config_file)
         File.write(File.expand_path(SniplineCli.config_file), toml_contents, mode: "w")
         puts "Configuration saved to #{File.expand_path(SniplineCli.config_file).colorize.mode(:bold)}"
         unless File.exists?(File.expand_path(config.get("general.db")))

@@ -6,13 +6,12 @@ module SniplineCli
     # snippets = SniplineCli::Services::LoadSnippets.run
     # ```
     class EditSnippet
-      include SniplineCli::Models
 
       def self.run(snippet : SnippetSchema, input, output)
         config = SniplineCli.config
         log = SniplineCli.log
         log.info("editing snippet #{snippet.name}")
-        temp_file = SniplineCli::Services::TempSnippetEditorFile.new(snippet)
+        temp_file = TempSnippetEditorFile.new(snippet)
         temp_file.create
         loop do
           system("#{ENV["EDITOR"]} #{File.expand_path("#{config.get("general.temp_dir")}/temp.toml")}")
@@ -28,7 +27,7 @@ module SniplineCli
           if changeset.valid?
             begin
               if temp_file.sync_to_cloud?
-                SniplineCli::Services::SniplineApi.new.update(snippet)
+                SniplineApi.new.update(snippet)
                 temp_file.delete
                 puts "Snippet updated!"
                 break

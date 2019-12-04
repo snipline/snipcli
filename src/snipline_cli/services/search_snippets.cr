@@ -6,7 +6,7 @@ module SniplineCli::Services
     property snippets
 
     # Takes an array of snippets and saves them to the `snippet.json` file.
-    def initialize(@snippets = [] of SniplineCli::Models::SnippetSchema)
+    def initialize(@snippets = [] of SnippetSchema)
     end
 
     def search(search_term)

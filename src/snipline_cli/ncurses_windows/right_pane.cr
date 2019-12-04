@@ -4,7 +4,7 @@ module SniplineCli::NCursesWindows
     property border
     property left
     property right
-    property documentation_formatter : SniplineCli::Services::DocumentationFormatter
+    property documentation_formatter : DocumentationFormatter
 
     def initialize(header_footer_height, @left : Int32, @right : Int32)
       @border = NCurses::Window.new(
@@ -19,7 +19,7 @@ module SniplineCli::NCursesWindows
         3,
         @left + 2
       )
-      @documentation_formatter = SniplineCli::Services::DocumentationFormatter.new(@window)
+      @documentation_formatter = DocumentationFormatter.new(@window)
       @window.set_color 2
       @border.set_color 2
       LibNCurses.box(@border, 0, 0)
@@ -28,7 +28,7 @@ module SniplineCli::NCursesWindows
       @window
     end
 
-    def display(snippet : SniplineCli::Models::SnippetSchema | Nil)
+    def display(snippet : SnippetSchema | Nil)
       @window.clear
       if snippet
         LibNCurses.wattr_off(@window, NCurses::Attribute::Bold, nil)

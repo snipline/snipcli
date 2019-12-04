@@ -1,7 +1,6 @@
 module SniplineCli::Services
   # For saving Snippets locally.
   class DisplayResults
-    include SniplineCli::Models
     property header
     property search
     property left_pane
@@ -102,13 +101,13 @@ module SniplineCli::Services
     def build_snippet
       NCurses.clear
       NCurses.end
-      SniplineCli::Services::CommandBuilder.run(@left_pane.results[@left_pane.selected_index], STDIN, STDOUT)
+      CommandBuilder.run(@left_pane.results[@left_pane.selected_index], STDIN, STDOUT)
     end
 
     def edit_snippet
       NCurses.clear
       NCurses.end
-      SniplineCli::Services::EditSnippet.run(@left_pane.results[@left_pane.selected_index], STDIN, STDOUT)
+      EditSnippet.run(@left_pane.results[@left_pane.selected_index], STDIN, STDOUT)
     end
   end
 end
