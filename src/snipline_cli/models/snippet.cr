@@ -112,7 +112,7 @@ module SniplineCli::Models
         name || ""
       when "tags"
         if !tags.nil?
-          tags.as(Array(String)).join(",") || ""
+					tags
         else
           ""
         end

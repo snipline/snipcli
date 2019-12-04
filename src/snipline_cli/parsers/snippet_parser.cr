@@ -47,10 +47,6 @@ module SniplineCli::Parsers
       attributes.updated_at
     end
 
-    def has_params
-      interactive_params.size > 0 || uninteractive_params.size > 0
-    end
-
     def value_for_attribute(attribute : String)
       case attribute
       when "alias"
