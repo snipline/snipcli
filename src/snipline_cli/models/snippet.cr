@@ -34,7 +34,7 @@ module SniplineCli::Models
             param_name = split_equals.shift
             unparsed_params = split_equals.join("=")
             if unparsed_params.is_a?(String)
-              options = unparsed_params.as(String).split(",").map(&.strip)
+              options = unparsed_params.split(",").map(&.strip)
               # todo
               if options.is_a?(Array(String))
                 options = options.as(Array(String))

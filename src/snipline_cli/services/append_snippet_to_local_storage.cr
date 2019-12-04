@@ -6,7 +6,7 @@ module SniplineCli::Services
     def self.handle(snippet)
       snippets = LoadSnippets.run
       if snippet.is_a?(Snippet)
-        snippets << snippet.as(Snippet)
+        snippets << snippet
       end
       StoreSnippets.new.store(snippets.to_json)
       return
