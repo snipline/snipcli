@@ -28,7 +28,7 @@ module SniplineCli::NCursesWindows
       @window
     end
 
-    def display(snippet : SnippetSchema | Nil)
+    def display(snippet : Snippet | Nil)
       @window.clear
       if snippet
         LibNCurses.wattr_off(@window, NCurses::Attribute::Bold, nil)

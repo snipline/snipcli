@@ -15,7 +15,7 @@ module SniplineCli
     # ```
     class CommandBuilder
 
-      def self.run(snippet : SnippetSchema, input, output, user_input = [] of String) : String
+      def self.run(snippet : Snippet, input, output, user_input = [] of String) : String
         unless snippet.has_params
           return snippet.real_command || ""
         end

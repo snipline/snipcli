@@ -37,7 +37,7 @@ module SniplineCli
 
         snippets = if search_term.empty?
                      query = Crecto::Repo::Query.order_by("is_pinned ASC").order_by("name ASC").limit(flags.limit.to_i)
-                     Repo.all(SnippetSchema, query)
+                     Repo.all(Snippet, query)
                    else
                      lowered_search_term = search_term.downcase
                      if flags.field != nil && !["alias", "documentation", "name", "tags"].includes?(flags.field.not_nil!)
@@ -51,7 +51,7 @@ module SniplineCli
                        query = query.where("snippets.name LIKE '%?%'", lowered_search_term).or_where("snippets.real_command LIKE '%?%'", lowered_search_term).or_where("snippets.snippet_alias LIKE '%?%'", lowered_search_term).or_where("snippets.tags LIKE '%?%'", lowered_search_term)
                      end
                      query.order_by("is_pinned ASC").order_by("name ASC").limit(flags.limit.to_i)
-                     Repo.all(SnippetSchema, query)
+                     Repo.all(Snippet, query)
                      # snippets.select! { |i|
                      #   if field = flags.field
                      #     i.value_for_attribute(field).downcase.includes?(lowered_search_term)

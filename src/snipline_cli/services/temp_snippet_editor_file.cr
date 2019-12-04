@@ -4,7 +4,7 @@ module SniplineCli::Services
   # For saving Snippets locally.
   class TempSnippetEditorFile
 
-    property snippet : SnippetSchema | Nil
+    property snippet : Snippet | Nil
 
     property template = %<# Welcome to the terminal-based snippet editor
 # This file uses TOML syntax and will be processed after the file is saved and closed
@@ -21,9 +21,9 @@ snippet_alias = ""
 sync_to_cloud = #{SniplineCli.config.get("api.token") == "" ? "false" : "true"}
 >
 
-    def initialize(@snippet : SnippetSchema | Nil = nil)
+    def initialize(@snippet : Snippet | Nil = nil)
       snippet = @snippet
-      if (snippet = @snippet).is_a?(SnippetSchema)
+      if (snippet = @snippet).is_a?(Snippet)
         @template = %<# Welcome to the terminal-based snippet editor
 # This file uses TOML syntax and will be processed after the file is saved and closed
 # Fill in the below options and save+quit to continue
@@ -51,7 +51,7 @@ sync_to_cloud = #{SniplineCli.config.get("api.token") == "" ? "false" : "true"}
     def read
       config = SniplineCli.config
       toml = TOML.parse(File.read(File.expand_path("#{config.get("general.temp_dir")}/temp.toml")))
-      SnippetAttribute.new(
+      SnippetAttributeParser.new(
         name: toml["name"].as(String),
         real_command: toml["real_command"].as(String),
         documentation: toml["documentation"].as(String).rstrip,

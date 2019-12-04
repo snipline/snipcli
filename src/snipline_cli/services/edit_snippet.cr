@@ -7,7 +7,7 @@ module SniplineCli
     # ```
     class EditSnippet
 
-      def self.run(snippet : SnippetSchema, input, output)
+      def self.run(snippet : Snippet, input, output)
         config = SniplineCli.config
         log = SniplineCli.log
         log.info("editing snippet #{snippet.name}")
@@ -23,7 +23,7 @@ module SniplineCli
           snippet.snippet_alias = snippet_attributes.snippet_alias
           snippet.is_pinned = snippet_attributes.is_pinned
           snippet.is_synced = false
-          changeset = SnippetSchema.changeset(snippet)
+          changeset = Snippet.changeset(snippet)
           if changeset.valid?
             begin
               if temp_file.sync_to_cloud?
@@ -32,7 +32,7 @@ module SniplineCli
                 puts "Snippet updated!"
                 break
               else
-                changeset = SnippetSchema.changeset(snippet)
+                changeset = Snippet.changeset(snippet)
                 Repo.update(changeset)
                 temp_file.delete
                 puts "Snippet updated!"

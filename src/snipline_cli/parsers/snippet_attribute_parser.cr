@@ -1,7 +1,7 @@
 require "json"
 
-module SniplineCli::Models
-  class SnippetAttribute
+module SniplineCli::Parsers
+  class SnippetAttributeParser
     include JSON::Serializable
 
     @[JSON::Field(key: "alias")]
@@ -40,3 +40,4 @@ module SniplineCli::Models
     end
   end
 end
+

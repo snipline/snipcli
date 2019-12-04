@@ -7,7 +7,7 @@ module SniplineCli
     # ```
     class LoadSnippets
 
-      def self.run : Array(SnippetSchema)
+      def self.run : Array(Snippet)
         config = SniplineCli.config
         log = SniplineCli.log
         log.info("Looking through file #{config.get("general.db")}")
@@ -18,7 +18,7 @@ module SniplineCli
         # File.open(File.expand_path(config.get("general.db"))) do |file|
         #   snippets = Array(Snippet).from_json(file)
         # end
-        Repo.all(SnippetSchema)
+        Repo.all(Snippet)
       end
     end
   end

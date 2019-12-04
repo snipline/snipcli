@@ -23,7 +23,7 @@ module SniplineCli
         loop do
           system("#{ENV["EDITOR"]} #{File.expand_path("#{config.get("general.temp_dir")}/temp.toml")}")
           snippet_attributes = temp_file.read
-          snippet = SnippetSchema.new
+          snippet = Snippet.new
 
           snippet.name = snippet_attributes.name
           snippet.real_command = snippet_attributes.real_command
@@ -32,7 +32,7 @@ module SniplineCli
           snippet.snippet_alias = snippet_attributes.snippet_alias
           snippet.is_pinned = snippet_attributes.is_pinned
           snippet.is_synced = false
-          changeset = SnippetSchema.changeset(snippet)
+          changeset = Snippet.changeset(snippet)
           abort("Invalid") unless changeset.valid?
           result = Repo.insert(changeset)
           begin

@@ -1,3 +1,5 @@
+include SniplineCli::Models
+
 module SniplineCli::NCursesWindows
   class LeftPane
     property window
@@ -6,10 +8,10 @@ module SniplineCli::NCursesWindows
     property right
     property selected_index = 0
     property searcher : SearchSnippets
-    property results : Array(SnippetSchema)
-    property snippets : Array(SnippetSchema)
+    property results : Array(Snippet)
+    property snippets : Array(Snippet)
 
-    def initialize(header_footer_height, @left : Int32, @right : Int32, @snippets = [] of SnippetSchema)
+    def initialize(header_footer_height, @left : Int32, @right : Int32, @snippets = [] of Snippet)
       @results = @snippets
       @searcher = SearchSnippets.new(@snippets)
 

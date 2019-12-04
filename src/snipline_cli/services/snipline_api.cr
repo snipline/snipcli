@@ -1,5 +1,7 @@
 require "json"
 
+include SniplineCli::Parsers
+
 module SniplineCli::Services
   # For talking to the Snipline API.
   class SniplineApi
@@ -17,7 +19,7 @@ module SniplineCli::Services
       yield resp.body
     end
 
-    def create(snippet : SnippetAttribute | SnippetSchema)
+    def create(snippet : SnippetAttributeParser | Snippet)
       config = SniplineCli.config
       # begin
       resp = Crest.post(
@@ -38,10 +40,10 @@ module SniplineCli::Services
         },
         logging: ENV["LOG_LEVEL"] == "DEBUG" ? true : false
       )
-      SingleSnippetDataWrapper.from_json(resp.body).data
+      SingleSnippetDataParser.from_json(resp.body).data
     end
 
-    def update(snippet : SnippetSchema)
+    def update(snippet : Snippet)
       config = SniplineCli.config
       # begin
       resp = Crest.patch(
@@ -62,7 +64,7 @@ module SniplineCli::Services
         },
         logging: ENV["LOG_LEVEL"] == "DEBUG" ? true : false
       )
-      response = SingleSnippetDataWrapper.from_json(resp.body).data
+      response = SingleSnippetDataParser.from_json(resp.body).data
       snippet.name = response.name.not_nil!
       snippet.real_command = response.real_command.not_nil!
       snippet.documentation = response.documentation
@@ -76,7 +78,7 @@ module SniplineCli::Services
         Time::Location::UTC
       )
       puts "cloud #{cloud_updated_at}"
-      local_snippet = Repo.get_by(SnippetSchema, cloud_id: response.id.not_nil!)
+      local_snippet = Repo.get_by(Snippet, cloud_id: response.id.not_nil!)
       if local_snippet
         puts "local #{local_snippet.updated_at}"
       end
@@ -94,7 +96,7 @@ module SniplineCli::Services
     def create(snippet : Snippet)
     end
 
-    def update(snippet : SnippetSchema)
+    def update(snippet : Snippet)
     end
   end
 end

@@ -8,6 +8,7 @@ require "crecto"
 
 require "./snipline_cli/config"
 require "./snipline_cli/exceptions/*"
+require "./snipline_cli/parsers/*"
 require "./snipline_cli/models/*"
 require "./snipline_cli/ncurses_windows/*"
 require "./snipline_cli/services/*"
