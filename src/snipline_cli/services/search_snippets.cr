@@ -1,4 +1,5 @@
 require "json"
+require "fuzzy_match"
 
 module SniplineCli::Services
   # For saving Snippets locally.
@@ -20,13 +21,13 @@ module SniplineCli::Services
         end
       end
 
-      sort_results(results)
+      sort_results(results, search_term)
     end
 
 		def snippet_has_search_term(i, lowered_search_term)
 			if i.tags.is_a?(String) && i.tags.as(String).split(",").includes?(lowered_search_term) 
 				true
-			elsif i.name.as(String).downcase.includes?(lowered_search_term)
+			elsif FuzzyMatch::Simple.new(lowered_search_term, i.name.as(String).downcase).matches?
 				true
 			elsif i.real_command.as(String).downcase.includes?(lowered_search_term) 
 				true
@@ -37,16 +38,16 @@ module SniplineCli::Services
 			end
 		end
 
-    def sort_results(snippets)
+    def sort_results(snippets, search_term)
       snippets.sort { |snippet_a, snippet_b|
         if snippet_a.is_pinned && snippet_b.is_pinned
-          snippet_a.name.as(String) <=> snippet_b.name.as(String)
+					FuzzyMatch::Full.new(search_term, snippet_a.name.as(String)).score <=> FuzzyMatch::Full.new(search_term, snippet_b.name.as(String)).score
         elsif snippet_a.is_pinned
           -1
         elsif snippet_b.is_pinned
           1
         else
-          snippet_a.name.as(String) <=> snippet_b.name.as(String)
+					FuzzyMatch::Full.new(search_term, snippet_a.name.as(String)).score <=> FuzzyMatch::Full.new(search_term, snippet_b.name.as(String)).score
         end
       }
     end
