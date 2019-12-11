@@ -85,6 +85,23 @@ module SniplineCli::Services
       q = Repo.raw_exec("UPDATE snippets SET updated_at=? WHERE cloud_id=?", cloud_updated_at, response.id)
       puts q.inspect
     end
+
+		def delete(snippet)
+      config = SniplineCli.config
+      begin
+      response = Crest.delete(
+				"#{config.get("api.url")}/snippets/#{snippet.cloud_id}",
+        headers: {
+          # "Accept" => "application/vnd.api+json",
+          "Authorization" => "Bearer #{config.get("api.token")}",
+        },
+        logging: ENV["LOG_LEVEL"] == "DEBUG" ? true : false
+      )
+			true
+			rescue ex
+				false
+			end
+		end
   end
 
   class SniplineApiTest
@@ -97,5 +114,8 @@ module SniplineCli::Services
 
     def update(snippet : Snippet)
     end
+
+		def delete(snippet : Snippet)
+		end
   end
 end

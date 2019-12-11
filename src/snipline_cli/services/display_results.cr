@@ -57,7 +57,10 @@ module SniplineCli::Services
 				output = build_snippet
 				copy_snippet(output)
 				return false
-			elsif codepoint == 69 # Shift+r - run
+			elsif codepoint == 68 # Shift+d - delete
+				delete_snippet
+				return false
+			elsif codepoint == 69 # Shift+e - edit
 				edit_snippet
 				return false
 			elsif codepoint == 82 # Shift+r - run
@@ -131,6 +134,11 @@ module SniplineCli::Services
       NCurses.clear
       NCurses.end
       EditSnippet.run(@left_pane.results[@left_pane.selected_index], STDIN, STDOUT)
+    end
+    def delete_snippet
+      NCurses.clear
+      NCurses.end
+      DeleteSnippet.run(@left_pane.results[@left_pane.selected_index], STDIN, STDOUT)
     end
   end
 end
