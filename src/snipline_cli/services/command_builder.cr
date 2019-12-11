@@ -14,14 +14,12 @@ module SniplineCli
     # end
     # ```
     class CommandBuilder
-      include SniplineCli::Models
-
       def self.run(snippet : Snippet, input, output, user_input = [] of String) : String
         unless snippet.has_params
-          return snippet.real_command
+          return snippet.real_command || ""
         end
 
-        command_builder : String = snippet.real_command
+        command_builder : String = snippet.real_command || ""
         Setup.new
         snippet.interactive_params.each do |param|
           NCurses.clear
@@ -40,8 +38,8 @@ module SniplineCli
           p q r s t u v w x y z A B C D
           E F G H I J K L M N O P Q R S
           T U V W X Y Z 1 2 3 4 5 6 7 8
-          9 0 £ * ^ ] [ : ; | ? > < , .
-          ` ~ / @}
+          9 0 £ * ^ ] [ : ; | ? , .
+          ` ~ /}
         snippet.uninteractive_params.each do |param|
           # todo: use string builder instead
           generated_password = ""

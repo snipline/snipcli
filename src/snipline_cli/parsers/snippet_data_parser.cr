@@ -1,13 +1,13 @@
-module SniplineCli::Models
-  class SnippetDataWrapper
+module SniplineCli::Parsers
+  class SnippetDataParser
     JSON.mapping({
-      data: Array(Snippet),
+      data: Array(SnippetParser),
     })
   end
 
-  class SingleSnippetDataWrapper
+  class SingleSnippetDataParser
     JSON.mapping({
-      data: Snippet,
+      data: SnippetParser,
     })
   end
 

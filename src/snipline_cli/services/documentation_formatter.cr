@@ -34,14 +34,14 @@ module SniplineCli::Services
 
         if line.size >= width
           words = line.split(' ')
-					words = words.flat_map { |word|
-						# for words that are longer than the width
-						if word.size >= width
-							word.chars.to_a.each_slice(width).to_a.map{ |w| w.join }
-						else
-							word
-						end
-					}
+          words = words.flat_map { |word|
+            # for words that are longer than the width
+            if word.size >= width
+              word.chars.to_a.each_slice(width).to_a.map { |w| w.join }
+            else
+              word
+            end
+          }
           formatted_line = String::Builder.new
           words.each do |word|
             if formatted_line.empty?

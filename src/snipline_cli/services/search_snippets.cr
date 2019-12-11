@@ -1,4 +1,5 @@
 require "json"
+require "fuzzy_match"
 
 module SniplineCli::Services
   # For saving Snippets locally.
@@ -6,7 +7,7 @@ module SniplineCli::Services
     property snippets
 
     # Takes an array of snippets and saves them to the `snippet.json` file.
-    def initialize(@snippets = [] of SniplineCli::Models::Snippet)
+    def initialize(@snippets = [] of Snippet)
     end
 
     def search(search_term)
@@ -16,27 +17,37 @@ module SniplineCli::Services
       unless search_term.empty?
         lowered_search_term = search_term.downcase
         results = results.select do |i|
-					if !i.tags.nil?
-						i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.as(Array(String)).includes?(lowered_search_term) || (i.snippet_alias.is_a?(String) ? i.snippet_alias.as(String).downcase.includes?(lowered_search_term) : false)
-					else
-						i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || (i.snippet_alias.is_a?(String) ? i.snippet_alias.as(String).downcase.includes?(lowered_search_term) : false)
-					end
+					snippet_has_search_term(i, lowered_search_term)
         end
       end
 
-      sort_results(results)
+      sort_results(results, search_term)
     end
 
-    def sort_results(snippets)
+		def snippet_has_search_term(i, lowered_search_term)
+			if i.tags.is_a?(String) && i.tags.as(String).split(",").includes?(lowered_search_term) 
+				true
+			elsif FuzzyMatch::Simple.new(lowered_search_term, i.name.as(String).downcase).matches?
+				true
+			elsif i.real_command.as(String).downcase.includes?(lowered_search_term) 
+				true
+			elsif i.snippet_alias.is_a?(String) && i.snippet_alias.as(String).downcase.includes?(lowered_search_term)
+				true
+			else
+				false
+			end
+		end
+
+    def sort_results(snippets, search_term)
       snippets.sort { |snippet_a, snippet_b|
         if snippet_a.is_pinned && snippet_b.is_pinned
-          snippet_a.name <=> snippet_b.name
+					FuzzyMatch::Full.new(search_term, snippet_a.name.as(String)).score <=> FuzzyMatch::Full.new(search_term, snippet_b.name.as(String)).score
         elsif snippet_a.is_pinned
           -1
         elsif snippet_b.is_pinned
           1
         else
-          snippet_a.name <=> snippet_b.name
+					FuzzyMatch::Full.new(search_term, snippet_a.name.as(String)).score <=> FuzzyMatch::Full.new(search_term, snippet_b.name.as(String)).score
         end
       }
     end

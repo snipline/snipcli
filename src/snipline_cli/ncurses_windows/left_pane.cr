@@ -1,3 +1,5 @@
+include SniplineCli::Models
+
 module SniplineCli::NCursesWindows
   class LeftPane
     property window
@@ -5,13 +7,13 @@ module SniplineCli::NCursesWindows
     property left
     property right
     property selected_index = 0
-    property searcher : SniplineCli::Services::SearchSnippets
-    property results : Array(SniplineCli::Models::Snippet)
-    property snippets : Array(SniplineCli::Models::Snippet)
+    property searcher : SearchSnippets
+    property results : Array(Snippet)
+    property snippets : Array(Snippet)
 
-    def initialize(header_footer_height, @left : Int32, @right : Int32, @snippets = [] of SniplineCli::Models::Snippet)
+    def initialize(header_footer_height, @left : Int32, @right : Int32, @snippets = [] of Snippet)
       @results = @snippets
-      @searcher = SniplineCli::Services::SearchSnippets.new(@snippets)
+      @searcher = SearchSnippets.new(@snippets)
 
       @border = NCurses::Window.new(
         NCurses.height - (header_footer_height * 2),
@@ -72,7 +74,7 @@ module SniplineCli::NCursesWindows
         @window.print("[#{result.snippet_alias}] ")
       end
 
-      @window.print(result.name + "\n")
+      @window.print(result.name.as(String) + "\n")
     end
 
     def select_higher

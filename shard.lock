@@ -8,9 +8,21 @@ shards:
     github: veelenga/ameba
     version: 0.10.1
 
+  crecto:
+    github: Crecto/crecto
+    version: 0.11.2
+
   crest:
     github: mamantoha/crest
     version: 0.22.0
+
+  db:
+    github: crystal-lang/crystal-db
+    version: 0.7.0
+
+  fuzzy_match:
+    github: acoustep/fuzzy_match.cr
+    commit: 24513474ea58e2ce97a2d34e8668947da8863965
 
   http-client-digest_auth:
     github: mamantoha/http-client-digest_auth
@@ -20,7 +32,11 @@ shards:
     github: JohnDowson/ncurses
     commit: d0e46f673b6a443255269ce610d598a0fdc7d159
 
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3
+    version: 0.14.0
+
   toml:
     github: crystal-community/toml.cr
-    commit: 5935d7f5afeed8ba126418a9f85691b4067db85c
+    commit: d02de85eed68a70dc97ab6d6e52831a4d0e890fe
 
