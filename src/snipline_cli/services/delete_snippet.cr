@@ -7,7 +7,6 @@ module SniplineCli
     # ```
     class DeleteSnippet
       def self.run(snippet : Snippet, input, output)
-        config = SniplineCli.config
         log = SniplineCli.log
 				puts "#{"Are you sure you want to permanently delete".colorize(:red)} #{snippet.name.colorize(:red).mode(:bold)}#{"? (y/N)".colorize(:red)}"
 				answer = gets
@@ -17,7 +16,8 @@ module SniplineCli
       end
 
 			def self.delete_snippet(snippet)
-				if snippet.cloud_id
+        config = SniplineCli.config
+				if snippet.cloud_id && config.get("api.token") != ""
 					SniplineApi.new.delete(snippet)
 				end
 				Repo.delete(snippet)
