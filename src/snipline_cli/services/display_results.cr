@@ -24,43 +24,66 @@ module SniplineCli::Services
       @search.window.refresh
 
       @search.window.get_char do |ch|
-        break unless ch.is_a?(Char)
         # @search.write(ch.ord.to_s)
-        codepoint = ch.ord
-        break if codepoint == 17 # C+q - quit
-
-        if codepoint == 127
-          @search.delete
-          @left_pane.filter(@search.search_text)
-          refresh_right_pane
-        elsif codepoint == 75 # S+k - up
-          @left_pane.select_higher
-          refresh_right_pane
-        elsif codepoint == 74 # C+j / S+j - down
-          @left_pane.select_lower
-          refresh_right_pane
-        elsif codepoint == 67 || codepoint == 10 # Shift+c / Enter - copy
-          output = build_snippet
-          copy_snippet(output)
-          break
-        elsif codepoint == 69 # Shift+r - run
-          edit_snippet
-          break
-        elsif codepoint == 82 # Shift+r - run
-          output = build_snippet
-          run_snippet(output)
-          break
-        else
-          @search.write(ch)
-          @left_pane.filter(@search.search_text)
-          refresh_right_pane
-        end
-        @left_pane.filter(@search.search_text)
-        @search.window.refresh
-      end
+				# @search.write(ch.inspect)
+        # break unless ch.is_a?(Char) || ch == NCurses::Key::Up || ch == NCurses::Key::Down
+				case ch
+					when LibNCurses::Key
+						run_command_key(ch)
+					when Char
+						codepoint = ch.ord
+						break if codepoint == 17 # C+q - quit
+						break if run_character_key(ch, codepoint) == false
+						@left_pane.filter(@search.search_text)
+					end
+					@search.window.refresh
+			end
       NCurses.clear
       NCurses.end
     end
+
+		def run_character_key(ch, codepoint)
+			if codepoint == 127
+				@search.delete
+				@left_pane.filter(@search.search_text)
+				refresh_right_pane
+			elsif codepoint == 75 # S+k - up
+				@left_pane.select_higher
+				refresh_right_pane
+			elsif codepoint == 74 # C+j / S+j - down
+				@left_pane.select_lower
+				refresh_right_pane
+			elsif codepoint == 67 || codepoint == 10 # Shift+c / Enter - copy
+				output = build_snippet
+				copy_snippet(output)
+				return false
+			elsif codepoint == 69 # Shift+r - run
+				edit_snippet
+				return false
+			elsif codepoint == 82 # Shift+r - run
+				output = build_snippet
+				run_snippet(output)
+				return false
+			else
+				@search.write(ch)
+				@left_pane.filter(@search.search_text)
+				refresh_right_pane
+			end
+			return true
+		end
+
+		def run_command_key(ch)
+			case ch.value
+			when 27
+				# @search.write("d")
+				@left_pane.select_lower
+				refresh_right_pane
+			when 28
+				@search.write("u")
+			else
+				@search.write("unknown #{ch}")
+			end
+		end
 
     def refresh_right_pane
       if @left_pane.selected_index < @left_pane.results.size
