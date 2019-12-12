@@ -10,11 +10,11 @@ module SniplineCli
         config = SniplineCli.config
         log = SniplineCli.log
         log.info("Looking through file #{config.get("general.db")}")
-        unless File.readable?(File.expand_path(config.get("general.db")))
+        unless File.readable?(File.expand_path(config.get("general.db"), home: true))
           log.warn("Could not read #{config.get("general.db")}")
           abort("Run #{"snipline-cli sync".colorize(:green)} first")
         end
-        # File.open(File.expand_path(config.get("general.db"))) do |file|
+        # File.open(File.expand_path(config.get("general.db"), home: true)) do |file|
         #   snippets = Array(Snippet).from_json(file)
         # end
         Repo.all(Snippet)

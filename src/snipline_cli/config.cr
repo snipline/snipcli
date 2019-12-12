@@ -16,8 +16,8 @@ module SniplineCli
 
     # When a new instance is created the config file is read and parsed.
     def initialize
-      if File.exists?(File.expand_path(SniplineCli.config_file))
-        config_file = File.read(File.expand_path(SniplineCli.config_file))
+      if File.exists?(File.expand_path(SniplineCli.config_file, home: true))
+        config_file = File.read(File.expand_path(SniplineCli.config_file, home: true))
         toml = TOML.parse(config_file)
         @api = toml["api"].as(Hash(String, TOML::Type))
         @general = toml["general"].as(Hash(String, TOML::Type))

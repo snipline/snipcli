@@ -11,7 +11,7 @@ module SniplineCli
 
       def run
         config = SniplineCli.config
-        unless File.exists?(File.expand_path("#{config.get("general.db")}"))
+        unless File.exists?(File.expand_path("#{config.get("general.db")}", home: true))
           abort("Database does not exist - Have you tried running #{"snipcli init".colorize.mode(:bold)}?".colorize.back(:red).on(:red))
         end
         Migrator.run
@@ -21,7 +21,7 @@ module SniplineCli
         temp_file = TempSnippetEditorFile.new
         temp_file.create
         loop do
-          system("#{ENV["EDITOR"]} #{File.expand_path("#{config.get("general.temp_dir")}/temp.toml")}")
+          system("#{ENV["EDITOR"]} #{File.expand_path("#{config.get("general.temp_dir")}/temp.toml")}", home :true)
           snippet_attributes = temp_file.read
           snippet = Snippet.new
 

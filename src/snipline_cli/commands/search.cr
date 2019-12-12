@@ -46,13 +46,13 @@ module SniplineCli
                      end
                      query = Crecto::Repo::Query.new
                      query = if flags.field
-                       # query.where("snippets.#{flags.field.not_nil!.downcase} = ?", lowered_search_term)
-											 query
-                     else
-											 wildcard_query = "%#{lowered_search_term}%"
-                       query.where("snippets.name LIKE ?", wildcard_query).or_where("snippets.real_command LIKE ?", wildcard_query).or_where("snippets.snippet_alias LIKE ?", wildcard_query).or_where("snippets.tags LIKE ?", wildcard_query)
-                     end
-										 Repo.all(Snippet, query)
+                               # query.where("snippets.#{flags.field.not_nil!.downcase} = ?", lowered_search_term)
+                               query
+                             else
+                               wildcard_query = "%#{lowered_search_term}%"
+                               query.where("snippets.name LIKE ?", wildcard_query).or_where("snippets.real_command LIKE ?", wildcard_query).or_where("snippets.snippet_alias LIKE ?", wildcard_query).or_where("snippets.tags LIKE ?", wildcard_query)
+                             end
+                     Repo.all(Snippet, query)
                      # snippets.select! { |i|
                      #   if field = flags.field
                      #     i.value_for_attribute(field).downcase.includes?(lowered_search_term)

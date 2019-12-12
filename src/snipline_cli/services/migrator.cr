@@ -4,8 +4,8 @@ require "sqlite3"
 module SniplineCli::Services
   class Migrator
     def self.run
-      File.write(File.expand_path("~/.config/snipline/snipline.db"), "", mode: "w") unless File.exists?(File.expand_path("~/.config/snipline/snipline.db"))
-      DB.open "sqlite3:#{File.expand_path("~/.config/snipline/snipline.db")}" do |db|
+      File.write(File.expand_path("~/.config/snipline/snipline.db", home: true), "", mode: "w") unless File.exists?(File.expand_path("~/.config/snipline/snipline.db", home: true))
+      DB.open "sqlite3:#{File.expand_path("~/.config/snipline/snipline.db", home: true)}" do |db|
         db.exec "create table if not exists snippets (
 					local_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 					cloud_id TEXT NULL,
