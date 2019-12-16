@@ -11,7 +11,7 @@ module SniplineCli::NCursesWindows
     property results : Array(Snippet)
     property snippets : Array(Snippet)
 
-    def initialize(header_footer_height, @left : Int32, @right : Int32, @snippets = [] of Snippet)
+    def initialize(header_footer_height : Int32, @left : Int32, @right : Int32, @snippets = [] of Snippet)
       @results = @snippets
       @searcher = SearchSnippets.new(@snippets)
 

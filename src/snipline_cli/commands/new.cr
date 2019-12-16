@@ -21,7 +21,7 @@ module SniplineCli
         temp_file = TempSnippetEditorFile.new
         temp_file.create
         loop do
-          system("#{ENV["EDITOR"]} #{File.expand_path("#{config.get("general.temp_dir")}/temp.toml")}", home :true)
+          system("#{ENV["EDITOR"]} #{File.expand_path("#{config.get("general.temp_dir")}/temp.toml", home: true)}")
           snippet_attributes = temp_file.read
           snippet = Snippet.new
 

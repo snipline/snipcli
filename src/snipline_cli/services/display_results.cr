@@ -16,8 +16,8 @@ module SniplineCli::Services
       header_footer_height = 1
       @header = SniplineCli::NCursesWindows::Header.new(header_footer_height)
       @footer = SniplineCli::NCursesWindows::Footer.new(header_footer_height)
-      @left_pane = SniplineCli::NCursesWindows::LeftPane.new(header_footer_height + 1, left: 0, right: (NCurses.width / 2), snippets: results)
-      @right_pane = SniplineCli::NCursesWindows::RightPane.new(header_footer_height + 1, left: (NCurses.width / 2), right: (NCurses.width / 2.0).ceil.to_i32)
+			@left_pane = SniplineCli::NCursesWindows::LeftPane.new(header_footer_height + 1, left: 0, right: (NCurses.width / 2).floor.to_i32, snippets: results)
+			@right_pane = SniplineCli::NCursesWindows::RightPane.new(header_footer_height + 1, left: (NCurses.width / 2).ceil.to_i32, right: (NCurses.width / 2.0).ceil.to_i32)
       @search = SniplineCli::NCursesWindows::Search.new(header_footer_height)
       @left_pane.filter("")
       refresh_right_pane
