@@ -2,7 +2,7 @@ version: 1.0
 shards:
   admiral:
     github: jwaldrip/admiral.cr
-    version: 1.8.0
+    version: 1.9.0
 
   ameba:
     github: veelenga/ameba
@@ -22,7 +22,7 @@ shards:
 
   fuzzy_match:
     github: acoustep/fuzzy_match.cr
-    commit: 24513474ea58e2ce97a2d34e8668947da8863965
+    commit: ce3bff7e29a5062190dcf8618de08072f11cab66
 
   http-client-digest_auth:
     github: mamantoha/http-client-digest_auth
