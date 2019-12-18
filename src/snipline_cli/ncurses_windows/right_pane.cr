@@ -1,4 +1,5 @@
 module SniplineCli::NCursesWindows
+  # This NCurses window is the detail view which shows the attributes of the currently highlighted snippet.
   class RightPane
     property window
     property border

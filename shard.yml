@@ -32,7 +32,7 @@ dependencies:
   fuzzy_match:
     github: acoustep/fuzzy_match.cr
     branch: master
-    # version: ~> 0.2.0
+    version: ~> 0.2.0
 
 
 development_dependencies:

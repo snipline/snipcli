@@ -2,6 +2,7 @@ require "db"
 require "sqlite3"
 
 module SniplineCli::Services
+  # Keeps the database structure up to date
   class Migrator
     def self.run
       File.write(File.expand_path("~/.config/snipline/snipline.db", home: true), "", mode: "w") unless File.exists?(File.expand_path("~/.config/snipline/snipline.db", home: true))

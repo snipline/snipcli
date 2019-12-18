@@ -2,7 +2,7 @@ require "json"
 require "fuzzy_match"
 
 module SniplineCli::Services
-  # For saving Snippets locally.
+  # Searches snippets.
   class SearchSnippets
     property snippets
 

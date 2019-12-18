@@ -1,7 +1,7 @@
 require "toml"
 
 module SniplineCli::Services
-  # For saving Snippets locally.
+  # Provides the users preferred text editor with a template for editing and adding new snippets.
   class TempSnippetEditorFile
     property snippet : Snippet | Nil
 

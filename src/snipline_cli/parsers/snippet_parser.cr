@@ -1,6 +1,9 @@
 require "json"
 
 module SniplineCli::Parsers
+  # This is used for parsing snippets from the JSON API.
+  #
+  # Note how most attributes are contained within the `attribute` attribute. This is to conform to the JSON-API specification.
   class SnippetParser
     JSON.mapping({
       id:         String | Nil,

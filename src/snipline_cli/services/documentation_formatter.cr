@@ -1,20 +1,24 @@
 module SniplineCli::Services
+  # For parsing the snippet documentation attribute in NCurses.
   class DocumentationFormatter
     property window
 
     def initialize(@window : NCurses::Window | SniplineCli::NCursesWindows::MockWindow)
     end
 
+    # When the snippet does not have any documentation provide a default value.
     def to_ncurses(documentation : Nil)
       @window.print("No documentation found")
     end
 
+    # Format the documentation for NCurses given the terminal width.
     def to_ncurses(documentation : String)
       format_documentation(documentation, @window.width).each do |line|
         @window.print("#{line}")
       end
     end
 
+    # Take the documentation text and split it onto newlines while keeping whole words in tact.
     def format_documentation(documentation, width)
       formatted_line = String::Builder.new
       formatted_lines = [] of String

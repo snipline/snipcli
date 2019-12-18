@@ -1,5 +1,6 @@
 module SniplineCli
   module Services
+    # Creates a config directory for storing configuration files for SnipCLI.
     class CreateConfigDirectory
       def self.run(file)
         directory_name = File.expand_path(File.dirname(file), home: true)

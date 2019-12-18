@@ -1,6 +1,9 @@
 include SniplineCli::Models
 
 module SniplineCli::NCursesWindows
+  # The left panel of the search interface which lists snippets
+  #
+  # When the `selected_index` is updated the highlighted snippet is changed.
   class LeftPane
     property window
     property border

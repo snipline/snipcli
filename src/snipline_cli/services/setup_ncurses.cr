@@ -1,4 +1,5 @@
 module SniplineCli::Services
+  # Sets up the Search NCurses TUI
   class Setup
     def initialize
       NCurses.start
