@@ -110,8 +110,10 @@ env LOG_LEVEL=DEBUG ./snipcli search git
 
 To change the config file location (For testing) use the `CONFIG_FILE` environment variable.
 
+There is an example already in place for testing located in `config.spec.toml`
+
 ```bash
-env CONFIG_FILE=./spec/fixtures/config.toml ./snipcli search git
+env CONFIG_FILE=./config.spec.toml crystal spec
 ```
 
 ## Contributing

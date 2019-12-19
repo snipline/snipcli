@@ -20,6 +20,7 @@ module SniplineCli
 
         [general]
         db = "#{config.get("general.db")}"
+        file = "#{config.get("general.file")}"
         temp_dir = "#{config.get("general.temp_dir")}"
         TOML
 
