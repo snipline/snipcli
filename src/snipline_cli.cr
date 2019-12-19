@@ -21,7 +21,7 @@ module Repo
 
   config do |conf|
     conf.adapter = Crecto::Adapters::SQLite3
-		conf.database = File.expand_path(SniplineCli.config.get("general.db"), home: true)
+    conf.database = File.expand_path(SniplineCli.config.get("general.db"), home: true)
   end
 end
 

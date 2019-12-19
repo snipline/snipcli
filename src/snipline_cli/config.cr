@@ -24,9 +24,9 @@ module SniplineCli
       else
         @api = {"url" => "https://api.snipline.io/api", "token" => ""}
         @general = {
-					"db" => "~/.config/snipline/snipline.db",
-					"file" => "~/.config/snipline/snippets.json",
-					"temp_dir" => "~/.config/snipline",
+          "db"       => "~/.config/snipline/snipline.db",
+          "file"     => "~/.config/snipline/snippets.json",
+          "temp_dir" => "~/.config/snipline",
         }
       end
     end
@@ -39,9 +39,9 @@ module SniplineCli
       when "api.token"
         @api["token"].as(String)
       when "general.db"
-				@general.has_key?("db") ? @general["db"].as(String) : "~/.config/snipline/snipline.db"
+        @general.has_key?("db") ? @general["db"].as(String) : "~/.config/snipline/snipline.db"
       when "general.file"
-				@general.has_key?("file") ? @general["file"].as(String) : "~/.config/snipline/snippets.json"
+        @general.has_key?("file") ? @general["file"].as(String) : "~/.config/snipline/snippets.json"
       when "general.temp_dir"
         @general.has_key?("temp_dir") ? @general["temp_dir"].as(String) : "~/.config/snipline"
       else
