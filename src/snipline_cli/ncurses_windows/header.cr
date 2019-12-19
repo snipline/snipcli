@@ -1,4 +1,5 @@
 module SniplineCli::NCursesWindows
+  # The top element of the search interface
   class Header
     property window
 

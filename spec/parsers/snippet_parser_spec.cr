@@ -29,6 +29,4 @@ describe SniplineCli::Parsers::SnippetParser do
     snippet.value_for_attribute("tags").should eq("git")
     # snippet.value_for_attribute("documentation").should eq("")
   end
-
 end
-

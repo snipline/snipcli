@@ -1,4 +1,7 @@
 module SniplineCli::NCursesWindows
+  # The bottom element of the search window.
+  #
+  # This includes keyboard shortcuts for navigating the TUI
   class Footer
     property window
 

@@ -1,6 +1,9 @@
 require "json"
 
 module SniplineCli::Parsers
+  # Used for parsing JSON-API spec attributes.
+  #
+  # When a list of snippets comes from the API, there is an `attribute` attribute which contains most of the snippet properties (except id).
   class SnippetAttributeParser
     include JSON::Serializable
 

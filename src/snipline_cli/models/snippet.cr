@@ -1,4 +1,5 @@
 module SniplineCli::Models
+  # A Snippet which is usually retrieved from the SQLite database
   class Snippet < Crecto::Model
     set_created_at_field :inserted_at
 
@@ -20,9 +21,7 @@ module SniplineCli::Models
     unique_constraint :snippet_alias
     unique_constraint :name
 
-    #
     # Params such as variables or select that require input from the user
-    #
     def interactive_params : Array(SnippetParam)
       temp_array = [] of SnippetParam
 
@@ -57,9 +56,9 @@ module SniplineCli::Models
       temp_array
     end
 
+    # Uninteractive params currently consist of password params.
     #
-    # E.g. Passwords
-    #
+    # These are replaced on copy/run with no user interaction.
     def uninteractive_params : Array(SnippetPasswordParam)
       temp_array = [] of SnippetPasswordParam
       real_command.as(String).scan(/#password\{\[(.+?)\]\}/) do |m|
@@ -75,10 +74,12 @@ module SniplineCli::Models
       temp_array
     end
 
+    # Checks to see if the snippet has any parameters
     def has_params
       interactive_params.size > 0 || uninteractive_params.size > 0
     end
 
+    # Converts the snippet to a more human-readable format.
     def preview_command
       unless has_params()
         return real_command
@@ -102,6 +103,7 @@ module SniplineCli::Models
       temp_command
     end
 
+    # Helper method for getting the value of a snippet attribute
     def value_for_attribute(attribute : String)
       case attribute
       when "alias"
@@ -112,7 +114,7 @@ module SniplineCli::Models
         name || ""
       when "tags"
         if !tags.nil?
-					tags
+          tags
         else
           ""
         end

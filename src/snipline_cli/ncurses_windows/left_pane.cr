@@ -1,6 +1,9 @@
 include SniplineCli::Models
 
 module SniplineCli::NCursesWindows
+  # The left panel of the search interface which lists snippets
+  #
+  # When the `selected_index` is updated the highlighted snippet is changed.
   class LeftPane
     property window
     property border
@@ -11,7 +14,7 @@ module SniplineCli::NCursesWindows
     property results : Array(Snippet)
     property snippets : Array(Snippet)
 
-    def initialize(header_footer_height, @left : Int32, @right : Int32, @snippets = [] of Snippet)
+    def initialize(header_footer_height : Int32, @left : Int32, @right : Int32, @snippets = [] of Snippet)
       @results = @snippets
       @searcher = SearchSnippets.new(@snippets)
 

@@ -6,11 +6,11 @@ shards:
 
   ameba:
     github: veelenga/ameba
-    version: 0.10.1
+    version: 0.11.0
 
   crecto:
-    github: Crecto/crecto
-    version: 0.11.2
+    github: acoustep/crecto
+    commit: fcae1f96740970ddf33790bd825eaada30378d62
 
   crest:
     github: mamantoha/crest
@@ -18,7 +18,7 @@ shards:
 
   db:
     github: crystal-lang/crystal-db
-    version: 0.7.0
+    version: 0.8.0
 
   fuzzy_match:
     github: acoustep/fuzzy_match.cr
@@ -34,7 +34,7 @@ shards:
 
   sqlite3:
     github: crystal-lang/crystal-sqlite3
-    version: 0.14.0
+    version: 0.15.0
 
   toml:
     github: crystal-community/toml.cr

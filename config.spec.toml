@@ -1,0 +1,10 @@
+title = "Snipline"
+
+[api]
+url = "http://localhost:4001/api"
+token = ""
+
+[general]
+db = "./test.db"
+file = "./snippets.json"
+temp_dir = "./temp"

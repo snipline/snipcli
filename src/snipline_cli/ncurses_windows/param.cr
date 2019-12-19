@@ -1,4 +1,7 @@
 module SniplineCli::NCursesWindows
+  # This window will show when a user has chosen a snippet to run/copy.
+  #
+  # They will enter text or use the default value provided by the snippet.
   class ParamPane
     property window
     property border

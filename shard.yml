@@ -8,7 +8,7 @@ targets:
   cli2:
     main: src/cli.cr
 
-crystal: 0.30.1
+crystal: 0.32.1
 
 license: MIT
 
@@ -25,17 +25,18 @@ dependencies:
     github: JohnDowson/ncurses
     branch: borders_and_lines
   crecto:    
-    github: Crecto/crecto
-    version: ~> 0.11.0
+    github: acoustep/crecto
+    branch: 0320compatability
   sqlite3:
     github: crystal-lang/crystal-sqlite3
-    version: ~> 0.14.0
+    version: ~> 0.15.0
   fuzzy_match:
     github: acoustep/fuzzy_match.cr
     branch: master
+    version: ~> 0.2.0
 
 
 development_dependencies:
   ameba:
     github: veelenga/ameba
-    version: ~> 0.10.0
+    version: ~> 0.11.0

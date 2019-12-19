@@ -35,43 +35,48 @@ module SniplineCli
       def run
         search_term : String = arguments.search_term || ""
 
-        snippets = if search_term.empty?
-                     query = Crecto::Repo::Query.order_by("is_pinned ASC").order_by("name ASC").limit(flags.limit.to_i)
-                     Repo.all(Snippet, query)
-                   else
-                     lowered_search_term = search_term.downcase
-                     if flags.field != nil && !["alias", "documentation", "name", "tags"].includes?(flags.field.not_nil!)
-                       puts "The search field entered does not exist."
-                       return
-                     end
-                     query = Crecto::Repo::Query.new
-                     query = if flags.field
-                       # query.where("snippets.#{flags.field.not_nil!.downcase} = ?", lowered_search_term)
-											 query
+        begin
+          snippets = if search_term.empty?
+                       query = Crecto::Repo::Query.order_by("is_pinned ASC").order_by("name ASC").limit(flags.limit.to_i)
+                       Repo.all(Snippet, query)
                      else
-											 wildcard_query = "%#{lowered_search_term}%"
-                       query.where("snippets.name LIKE ?", wildcard_query).or_where("snippets.real_command LIKE ?", wildcard_query).or_where("snippets.snippet_alias LIKE ?", wildcard_query).or_where("snippets.tags LIKE ?", wildcard_query)
+                       lowered_search_term = search_term.downcase
+                       if flags.field != nil && !["alias", "documentation", "name", "tags"].includes?(flags.field.not_nil!)
+                         puts "The search field entered does not exist."
+                         return
+                       end
+                       query = Crecto::Repo::Query.new
+                       query = if flags.field
+                                 # query.where("snippets.#{flags.field.not_nil!.downcase} = ?", lowered_search_term)
+                                 query
+                               else
+                                 wildcard_query = "%#{lowered_search_term}%"
+                                 query.where("snippets.name LIKE ?", wildcard_query).or_where("snippets.real_command LIKE ?", wildcard_query).or_where("snippets.snippet_alias LIKE ?", wildcard_query).or_where("snippets.tags LIKE ?", wildcard_query)
+                               end
+                       Repo.all(Snippet, query)
+                       # snippets.select! { |i|
+                       #   if field = flags.field
+                       #     i.value_for_attribute(field).downcase.includes?(lowered_search_term)
+                       #   else
+                       # 		if !i.tags.nil?
+                       # 			i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.as(Array(String)).includes?(lowered_search_term)
+                       # 		else
+                       # 			i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term)
+                       # 		end
+                       #   end
+                       # }
                      end
-										 Repo.all(Snippet, query)
-                     # snippets.select! { |i|
-                     #   if field = flags.field
-                     #     i.value_for_attribute(field).downcase.includes?(lowered_search_term)
-                     #   else
-                     # 		if !i.tags.nil?
-                     # 			i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.as(Array(String)).includes?(lowered_search_term)
-                     # 		else
-                     # 			i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term)
-                     # 		end
-                     #   end
-                     # }
-                   end
 
-        # results = sort_results(snippets, flags.limit)
+          # results = sort_results(snippets, flags.limit)
 
-        # unless results.size > 0
-        #   puts "No results found."
-        #   exit(0)
-        # end
+          # unless results.size > 0
+          #   puts "No results found."
+          #   exit(0)
+          # end
+        rescue ex
+          puts "Error: #{ex.inspect}".colorize(:red)
+          abort
+        end
 
         DisplayResults.new(snippets)
       end

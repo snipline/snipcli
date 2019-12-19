@@ -1,4 +1,5 @@
 module SniplineCli::NCursesWindows
+  # This view appears above the left and right panes and is where the user refines their snippet search
   class Search
     property window
     property search_text : String = ""

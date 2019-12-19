@@ -1,4 +1,7 @@
 module SniplineCli::Models
+  # A single dynamic parameter which is apart of a Snippet
+  #
+  # When a snippet includes the text `#{[Param=value]}` or #{[Param]}` this becomes a parameter.
   struct SnippetParam
     property name : String
     property default_value : String

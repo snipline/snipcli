@@ -1,4 +1,7 @@
 module SniplineCli::NCursesWindows
+  # The NCurses window for choosing a multi-select parameter.
+  #
+  # This window will show when a user has chosen a snippet with multi-select parameter. They will then select from the available choices before moving to the next parameter or finishing the copy/run process.
   class MultiParamPane
     property window
     property border

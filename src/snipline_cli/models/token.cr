@@ -1,6 +1,7 @@
 require "json"
 
 module SniplineCli::Models
+  # Used for parsing authentication tokens from the API
   class Token
     include JSON::Serializable
 

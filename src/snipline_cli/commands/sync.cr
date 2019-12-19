@@ -19,9 +19,9 @@ module SniplineCli
       property file : (StoreSnippets) = StoreSnippets.new
 
       def run
-				puts "Migrating Database..." if flags.verbose
+        puts "Migrating Database..." if flags.verbose
         Migrator.run
-				puts "Syncing snippets..." if flags.verbose
+        puts "Syncing snippets..." if flags.verbose
         config = SniplineCli.config
         if config.get("api.token") == ""
           abort("#{"No API token. Run".colorize(:red)} #{"snipcli login".colorize(:red).mode(:bold)} #{"to login".colorize(:red)}")
@@ -50,22 +50,22 @@ module SniplineCli
               local_snippet.snippet_alias = cs.not_nil!.snippet_alias
               local_snippet.is_synced = true
               local_snippet.is_pinned = cs.not_nil!.is_pinned
-							Repo.update(local_snippet) unless flags.dry_run
+              Repo.update(local_snippet) unless flags.dry_run
               synced_to_local_count = synced_to_local_count + 1
             else
               # local has updated without sending to snipline cloud - time to update the cloud version
-							@snipline_api.update(local_snippet) unless flags.dry_run
+              @snipline_api.update(local_snippet) unless flags.dry_run
               synced_to_cloud_count = synced_to_cloud_count + 1
             end
           end
         }
-				puts "Synced #{synced_to_local_count} from Snipline Cloud to local database".colorize(:green)
+        puts "Synced #{synced_to_local_count} from Snipline Cloud to local database".colorize(:green)
         puts "Synced #{synced_to_cloud_count} from local database to Snipline Cloud".colorize(:green)
       end
 
       def delete_orphan_snippets(cloud_snippets)
         # if snippet cloud_id exists locally but not in cloud
-				puts "Cleaning up snippets that are no longer in Snipline Cloud..." if (flags.verbose || flags.dry_run)
+        puts "Cleaning up snippets that are no longer in Snipline Cloud..." if (flags.verbose || flags.dry_run)
         local_snippets = LoadSnippets.run.select { |ls| !ls.cloud_id.nil? }
         orphans = [] of Snippet
         cloud_snippet_ids = cloud_snippets.map { |s| s.not_nil!.id }
@@ -74,8 +74,8 @@ module SniplineCli
         end
         orphans.each do |ls|
           # delete snippets
-					puts "Deleting #{ls.name}".colorize(:green) if (flags.verbose || flags.dry_run)
-					Repo.delete(ls) unless flags.dry_run
+          puts "Deleting #{ls.name}".colorize(:green) if (flags.verbose || flags.dry_run)
+          Repo.delete(ls) unless flags.dry_run
         end
       end
 
@@ -94,7 +94,7 @@ module SniplineCli
             difference << cs unless local_snippet_exists?(cs, local_snippet_cloud_ids)
           end
           difference.each do |s|
-						puts "Storing #{s.attributes.name} from Snipline Cloud".colorize(:green) if (flags.verbose || flags.dry_run)
+            puts "Storing #{s.attributes.name} from Snipline Cloud".colorize(:green) if (flags.verbose || flags.dry_run)
             snippet = Snippet.new
             snippet.name = s.name
             snippet.cloud_id = s.id
@@ -105,7 +105,7 @@ module SniplineCli
             snippet.is_pinned = s.is_pinned
             snippet.is_synced = true
             changeset = Snippet.changeset(snippet)
-						Repo.insert(changeset) unless flags.dry_run
+            Repo.insert(changeset) unless flags.dry_run
             # local_snippets << s
           end
           # @file.store(local_snippets.to_json) unless difference.size == 0
@@ -125,11 +125,11 @@ module SniplineCli
       def sync_unsynced_snippets
         local_snippets = LoadSnippets.run
         local_snippets.select { |s| s.cloud_id.nil? }.each do |snippet|
-					puts "Attempting to store #{snippet.name.colorize.mode(:bold)} in Snipline..." if (flags.verbose || flags.dry_run)
+          puts "Attempting to store #{snippet.name.colorize.mode(:bold)} in Snipline..." if (flags.verbose || flags.dry_run)
           begin
-						cloud_snippet = SyncSnippetToSnipline.handle(snippet) unless flags.dry_run
+            cloud_snippet = SyncSnippetToSnipline.handle(snippet) unless flags.dry_run
             update_local_snippet_id(cloud_snippet, snippet)
-						puts "#{snippet.name.colorize(:green).mode(:bold)} #{"saved successfully!".colorize(:green)}" if (flags.verbose || flags.dry_run)
+            puts "#{snippet.name.colorize(:green).mode(:bold)} #{"saved successfully!".colorize(:green)}" if (flags.verbose || flags.dry_run)
           rescue ex : Crest::UnprocessableEntity
             resp = SnippetErrorResponse.from_json(ex.response.not_nil!.body)
             puts "Failed: #{resp.errors.first.source["pointer"].gsub("/data/attributes/", "")} #{resp.errors.first.detail}".colorize(:red)
@@ -140,12 +140,12 @@ module SniplineCli
       end
 
       def update_local_snippet_id(cloud_snippet, local_snippet)
-				if cloud_snippet
-					local_snippet.cloud_id = cloud_snippet.id
-					local_snippet.is_synced = true
-					Repo.update(local_snippet) unless flags.dry_run
-					puts "Updated cloud_id of #{local_snippet.name.as(String)} to #{cloud_snippet.id}" if (flags.verbose || flags.dry_run)
-				end
+        if cloud_snippet
+          local_snippet.cloud_id = cloud_snippet.id
+          local_snippet.is_synced = true
+          Repo.update(local_snippet) unless flags.dry_run
+          puts "Updated cloud_id of #{local_snippet.name.as(String)} to #{cloud_snippet.id}" if (flags.verbose || flags.dry_run)
+        end
       end
     end
 

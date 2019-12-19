@@ -16,8 +16,8 @@ module SniplineCli
 
     # When a new instance is created the config file is read and parsed.
     def initialize
-      if File.exists?(File.expand_path(SniplineCli.config_file))
-        config_file = File.read(File.expand_path(SniplineCli.config_file))
+      if File.exists?(File.expand_path(SniplineCli.config_file, home: true))
+        config_file = File.read(File.expand_path(SniplineCli.config_file, home: true))
         toml = TOML.parse(config_file)
         @api = toml["api"].as(Hash(String, TOML::Type))
         @general = toml["general"].as(Hash(String, TOML::Type))
@@ -25,6 +25,7 @@ module SniplineCli
         @api = {"url" => "https://api.snipline.io/api", "token" => ""}
         @general = {
           "db"       => "~/.config/snipline/snipline.db",
+          "file"     => "~/.config/snipline/snippets.json",
           "temp_dir" => "~/.config/snipline",
         }
       end
@@ -38,7 +39,9 @@ module SniplineCli
       when "api.token"
         @api["token"].as(String)
       when "general.db"
-        @general["db"].as(String)
+        @general.has_key?("db") ? @general["db"].as(String) : "~/.config/snipline/snipline.db"
+      when "general.file"
+        @general.has_key?("file") ? @general["file"].as(String) : "~/.config/snipline/snippets.json"
       when "general.temp_dir"
         @general.has_key?("temp_dir") ? @general["temp_dir"].as(String) : "~/.config/snipline"
       else
