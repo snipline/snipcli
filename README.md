@@ -1,12 +1,10 @@
 # Snipline CLI
 
-Snipline CLI is the command-line tool for [Snipline](https://snipline.io).
+Snipline CLI allows you to organise and use your favourite shell commands from the terminal. It can optionally sync to your [Snipline](https://snipline.io) account.
 
-<div style="text-align:center">
+<p align="center">
 	<img src="https://f002.backblazeb2.com/file/snipline/2019-10-14+12.02.35.gif" alt="SnipCLI Preview"/>
-</div>
-
-Snipline CLI allows you to organise your favourite shell commands from the terminal. It can optionally sync to your [Snipline](https://snipline.io) account.
+</p>
 
 ## Installation
 
