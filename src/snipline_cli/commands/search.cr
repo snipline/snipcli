@@ -74,8 +74,7 @@ module SniplineCli
           #   exit(0)
           # end
         rescue ex
-          puts "Error: #{ex.inspect}".colorize(:red)
-          abort
+          abort "Error: #{ex.inspect}"
         end
 
         DisplayResults.new(snippets)
