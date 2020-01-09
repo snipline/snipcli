@@ -44,6 +44,7 @@ None
 * `search` command now copies the selected snippet instead of running.
 * Updated Crystal to `0.30.1`
 * Updated `lodash` dependency for `web` interface.
+* Removed `web` command.
 
 ### Bugfixes
 
