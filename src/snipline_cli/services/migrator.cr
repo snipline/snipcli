@@ -8,8 +8,8 @@ module SniplineCli::Services
   class Migrator
     def self.run
       config = SniplineCli.config
-      File.write(File.expand_path(config.get("general.db"), home: true), "", mode: "w") unless File.exists?(File.expand_path(config.get("general.db"), home: true))
-      DB.open "sqlite3:#{File.expand_path(config.get("general.db"), home: true)}" do |db|
+      File.write(File.expand_path(config.get("general.db")), "", mode: "w") unless File.exists?(File.expand_path(config.get("general.db")))
+      DB.open "sqlite3:#{File.expand_path(config.get("general.db"))}" do |db|
         db.exec "create table if not exists snippets (
 					local_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 					cloud_id TEXT NULL,
@@ -31,9 +31,9 @@ module SniplineCli::Services
         end
 
         # Import 0.2.0 snippets from JSON file
-        if File.exists?(File.expand_path(config.get("general.file"), home: true))
+        if File.exists?(File.expand_path(config.get("general.file")))
           # Get the snippets
-          json = File.read(File.expand_path(config.get("general.file"), home: true))
+          json = File.read(File.expand_path(config.get("general.file")))
           # import into DB
           p "Importing JSON snippets into SQLite Database"
           Array(SnippetParser).from_json(json).each do |snippet_json|
@@ -55,14 +55,13 @@ module SniplineCli::Services
                 puts "#{error.inspect}".colorize(:red)
               end
               p ""
-              p "Please fix this error and re-run the init command".colorize(:red)
-              abort()
+              abort("Please fix this error and re-run the init command")
             end
             if changeset.valid?
               Repo.insert(changeset)
             end
           end
-          File.delete(File.expand_path(config.get("general.file"), home: true))
+          File.delete(File.expand_path(config.get("general.file")))
         end
       end
     end

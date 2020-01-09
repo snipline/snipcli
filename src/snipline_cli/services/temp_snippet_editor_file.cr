@@ -42,14 +42,14 @@ sync_to_cloud = #{SniplineCli.config.get("api.token") == "" ? "false" : "true"}
 
     def create
       config = SniplineCli.config
-      unless File.exists?(File.expand_path("#{config.get("general.temp_dir")}/temp.toml", home: true))
-        File.write(File.expand_path("#{config.get("general.temp_dir")}/temp.toml", home: true), @template)
+      unless File.exists?(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"))
+        File.write(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"), @template)
       end
     end
 
     def read
       config = SniplineCli.config
-      toml = TOML.parse(File.read(File.expand_path("#{config.get("general.temp_dir")}/temp.toml", home: true)))
+      toml = TOML.parse(File.read(File.expand_path("#{config.get("general.temp_dir")}/temp.toml")))
       SnippetAttributeParser.new(
         name: toml["name"].as(String),
         real_command: toml["real_command"].as(String),
@@ -71,14 +71,14 @@ sync_to_cloud = #{SniplineCli.config.get("api.token") == "" ? "false" : "true"}
 
     def sync_to_cloud?
       config = SniplineCli.config
-      toml = TOML.parse(File.read(File.expand_path("#{config.get("general.temp_dir")}/temp.toml", home: true)))
+      toml = TOML.parse(File.read(File.expand_path("#{config.get("general.temp_dir")}/temp.toml")))
       toml["sync_to_cloud"].as(Bool)
     end
 
     def delete
       config = SniplineCli.config
-      if File.exists?(File.expand_path("#{config.get("general.temp_dir")}/temp.toml", home: true))
-        File.delete(File.expand_path("#{config.get("general.temp_dir")}/temp.toml", home: true))
+      if File.exists?(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"))
+        File.delete(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"))
       end
     end
   end
