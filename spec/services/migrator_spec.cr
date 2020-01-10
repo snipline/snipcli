@@ -1,12 +1,4 @@
 describe SniplineCli::Services::Migrator do
-  after_each do
-    if File.exists?("./snippets.json")
-      File.delete("./snippets.json")
-    end
-    if File.exists?("./test.db")
-      File.delete("./test.db")
-    end
-  end
 
   it "should create and migrate a DB from scratch" do
     File.exists?("./test.db").should eq(false)
@@ -14,6 +6,12 @@ describe SniplineCli::Services::Migrator do
     File.exists?("./test.db").should eq(true)
     DB.open "sqlite3:./test.db" do |db|
       db.scalar("select count(*) from snippets").should eq(0)
+    end
+    if File.exists?("./snippets.json")
+      File.delete("./snippets.json")
+    end
+    if File.exists?("./test.db")
+      File.delete("./test.db")
     end
   end
 
@@ -27,5 +25,11 @@ describe SniplineCli::Services::Migrator do
     end
     #
     File.exists?("./snippets.json").should eq(false)
+    if File.exists?("./snippets.json")
+      File.delete("./snippets.json")
+    end
+    if File.exists?("./test.db")
+      File.delete("./test.db")
+    end
   end
 end
