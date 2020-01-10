@@ -24,10 +24,7 @@ module SniplineCli
         description: "The term to search for",
         default: nil,
         required: false
-      define_flag limit : UInt32, default: 5_u32, long: limit
-      define_flag run : Bool, default: false, long: run,
-        description: "Run the result"
-
+      define_flag limit : UInt32, default: 500_u32, long: limit
       define_flag field : String,
         description: "The field to search (alias|documentation|name|tags)",
         default: nil,
@@ -38,39 +35,49 @@ module SniplineCli
       def run
         search_term : String = arguments.search_term || ""
 
-        snippets = SniplineCli::Services::LoadSnippets.run
+        begin
+          snippets = if search_term.empty?
+                       query = Crecto::Repo::Query.order_by("is_pinned ASC").order_by("name ASC").limit(flags.limit.to_i)
+                       Repo.all(Snippet, query)
+                     else
+                       lowered_search_term = search_term.downcase
+                       if flags.field != nil && !["alias", "documentation", "name", "tags"].includes?(flags.field.not_nil!)
+                         puts "The search field entered does not exist."
+                         return
+                       end
+                       query = Crecto::Repo::Query.new
+                       query = if flags.field
+                                 # query.where("snippets.#{flags.field.not_nil!.downcase} = ?", lowered_search_term)
+                                 query
+                               else
+                                 wildcard_query = "%#{lowered_search_term}%"
+                                 query.where("snippets.name LIKE ?", wildcard_query).or_where("snippets.real_command LIKE ?", wildcard_query).or_where("snippets.snippet_alias LIKE ?", wildcard_query).or_where("snippets.tags LIKE ?", wildcard_query)
+                               end
+                       Repo.all(Snippet, query)
+                       # snippets.select! { |i|
+                       #   if field = flags.field
+                       #     i.value_for_attribute(field).downcase.includes?(lowered_search_term)
+                       #   else
+                       # 		if !i.tags.nil?
+                       # 			i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.as(Array(String)).includes?(lowered_search_term)
+                       # 		else
+                       # 			i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term)
+                       # 		end
+                       #   end
+                       # }
+                     end
 
-        unless search_term.empty?
-          lowered_search_term = search_term.downcase
-          if flags.field != nil && !["alias", "documentation", "name", "tags"].includes?(flags.field.not_nil!)
-            puts "The search field entered does not exist."
-            return
-          end
-          snippets.select! { |i|
-            if field = flags.field
-              i.value_for_attribute(field).downcase.includes?(lowered_search_term)
-            else
-              i.name.downcase.includes?(lowered_search_term) || i.real_command.downcase.includes?(lowered_search_term) || i.tags.includes?(lowered_search_term)
-            end
-          }
+          # results = sort_results(snippets, flags.limit)
+
+          # unless results.size > 0
+          #   puts "No results found."
+          #   exit(0)
+          # end
+        rescue ex
+          abort "Error: #{ex.inspect}"
         end
 
-        results = sort_results(snippets, flags.limit)
-
-        unless results.size > 0
-          puts "No results found."
-          return
-        end
-
-        results.each_with_index { |snippet, index|
-          puts "#{(index + 1).to_s.rjust(4)} #{snippet.name.colorize(:green)} #{snippet.is_pinned ? "⭐️" : ""}#{snippet.id.nil? ? "⚡️" : ""} #{(snippet.tags.size > 0) ? "[" + snippet.tags.join(",") + "]" : ""}".colorize.mode(:bold)
-          puts "     #{snippet.preview_command}"
-        }
-
-        puts "\nChoose a snippet"
-        chosen_snippet_index = gets
-
-        handle_chosen_snippet(chosen_snippet_index, results)
+        DisplayResults.new(snippets)
       end
 
       def sort_results(snippets, limit)
@@ -85,56 +92,6 @@ module SniplineCli
             snippet_a.name <=> snippet_b.name
           end
         }.first(limit)
-      end
-
-      def handle_chosen_snippet(chosen_snippet_index, results)
-        if chosen_snippet_index
-          if chosen_snippet_index.to_i?
-            chosen_snippet_index = (chosen_snippet_index.to_u32 - 1)
-
-            if results.size > chosen_snippet_index && chosen_snippet_index >= 0
-              output = SniplineCli::Services::CommandBuilder.run(results[chosen_snippet_index], STDIN, STDOUT)
-              copy_snippet(output)
-              if flags.run
-                run_snippet(output)
-              end
-            else
-              puts "Snippet does not exist"
-            end
-          else
-            puts "You did not select a snippet."
-          end
-        end
-      end
-
-      def copy_snippet(output)
-        puts "Do you want to copy '#{output.chomp.colorize(:green)}' to clipboard? (Y/n)"
-        if answer = gets
-          unless answer == "n" || answer == "no" || answer == "N"
-            system "echo \"#{output}\" | tr -d '\n' | tr -d '\r' | #{copy_to_clipboard}"
-          end
-        end
-      end
-
-      def run_snippet(output)
-        puts "Are you sure you want to run '#{output.chomp.colorize(:green)}' in #{FileUtils.pwd.colorize(:green)}? (Y/n)"
-        if answer = gets
-          unless answer == "n" || answer == "no" || answer == "N"
-            # print "\"#{output.gsub("\"", "\\\"")}\""
-            system("#{output}")
-            # system %(pbcopy < "#{output}")
-          end
-        end
-      end
-
-      def copy_to_clipboard
-        output = IO::Memory.new
-        Process.run("/bin/sh", {"-c", "uname -s"}, output: output)
-        if output.to_s.chomp == "Darwin"
-          "pbcopy"
-        else
-          "xclip -selection c"
-        end
       end
     end
 

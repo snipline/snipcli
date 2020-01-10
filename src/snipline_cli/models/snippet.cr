@@ -1,51 +1,31 @@
-require "json"
+module SniplineCli::Models
+  # A Snippet which is usually retrieved from the SQLite database
+  class Snippet < Crecto::Model
+    set_created_at_field :inserted_at
 
-module SniplineCli
-  class Snippet
-    JSON.mapping({
-      id:         String | Nil,
-      type:       String,
-      attributes: SnippetAttribute,
-    })
-
-    def initialize(@id : String | Nil, @type : String, @attributes : SnippetAttribute)
+    schema "snippets" do
+      field :local_id, Int32, primary_key: true
+      field :cloud_id, String
+      field :name, String
+      field :real_command, String
+      field :documentation, String
+      field :tags, String
+      field :snippet_alias, String
+      field :is_pinned, Bool
+      field :is_synced, Bool
     end
 
-    def snippet_alias
-      attributes.snippet_alias
-    end
+    validate_required [:name, :real_command]
+    validate_length :name, min: 1
+    validate_length :real_command, min: 1
+    unique_constraint :snippet_alias
+    unique_constraint :name
 
-    def name
-      attributes.name
-    end
-
-    def documentation
-      attributes.documentation
-    end
-
-    def is_pinned
-      attributes.is_pinned
-    end
-
-    def real_command
-      attributes.real_command
-    end
-
-    def tags
-      attributes.tags
-    end
-
-    def is_synced
-      attributes.is_synced
-    end
-
-    #
     # Params such as variables or select that require input from the user
-    #
     def interactive_params : Array(SnippetParam)
       temp_array = [] of SnippetParam
 
-      real_command.scan(/#(select)?\{\[(.+?)\]\}/) do |m|
+      real_command.as(String).scan(/#(select)?\{\[(.+?)\]\}/) do |m|
         param_type = (m[1]?) ? m[1] : "variable"
         if temp_array.count { |param| param.name == m[2] && param_type == param.type } == 0
           if param_type == "select"
@@ -53,7 +33,7 @@ module SniplineCli
             param_name = split_equals.shift
             unparsed_params = split_equals.join("=")
             if unparsed_params.is_a?(String)
-              options = unparsed_params.as(String).split(",").map(&.strip)
+              options = unparsed_params.split(",").map(&.strip)
               # todo
               if options.is_a?(Array(String))
                 options = options.as(Array(String))
@@ -76,12 +56,12 @@ module SniplineCli
       temp_array
     end
 
+    # Uninteractive params currently consist of password params.
     #
-    # E.g. Passwords
-    #
+    # These are replaced on copy/run with no user interaction.
     def uninteractive_params : Array(SnippetPasswordParam)
       temp_array = [] of SnippetPasswordParam
-      real_command.scan(/#password\{\[(.+?)\]\}/) do |m|
+      real_command.as(String).scan(/#password\{\[(.+?)\]\}/) do |m|
         full = m[1].as(String)
         options = full.split(",")
         id = options.shift
@@ -94,33 +74,12 @@ module SniplineCli
       temp_array
     end
 
+    # Checks to see if the snippet has any parameters
     def has_params
       interactive_params.size > 0 || uninteractive_params.size > 0
     end
 
-    def preview_command_in_html
-      unless has_params()
-        return real_command
-      end
-
-      temp_command = real_command
-      interactive_params.each do |param|
-        if param.type == "select"
-          temp_command = temp_command.gsub("#select{[#{param.full}]}") { "<span class='text-snipline-lime-dark'>&lt;#{param.name}&gt;</span>" }
-          temp_command = temp_command.gsub("#select{[#{param.name}]}") { "<span class='text-snipline-lime-dark'>&lt;#{param.name}&gt;</span>" }
-        else
-          temp_command = temp_command.gsub("\#{[#{param.full}]}") { "<span class='text-snipline-lime-dark'>&lt;#{param.name}&gt;</span>" }
-          temp_command = temp_command.gsub("\#{[#{param.name}]}") { "<span class='text-snipline-lime-dark'>&lt;#{param.name}&gt;</span>" }
-        end
-      end
-
-      uninteractive_params.each do |param|
-        temp_command = temp_command.gsub("#password{[#{param.full}]}") { "<span class='text-snipline-lime-dark'>&lt;PW:#{param.id}&gt;</span>" }
-        temp_command = temp_command.gsub("#password{[#{param.id}]}") { "<span class='text-snipline-lime-dark'>&lt;PW:#{param.id}&gt;</span>" }
-      end
-      temp_command
-    end
-
+    # Converts the snippet to a more human-readable format.
     def preview_command
       unless has_params()
         return real_command
@@ -129,21 +88,22 @@ module SniplineCli
       temp_command = real_command
       interactive_params.each do |param|
         if param.type == "select"
-          temp_command = temp_command.gsub("#select{[#{param.full}]}") { "<#{param.name}>".colorize(:green) }
-          temp_command = temp_command.gsub("#select{[#{param.name}]}") { "<#{param.name}>".colorize(:green) }
+          temp_command = temp_command.as(String).gsub("#select{[#{param.full}]}") { "<#{param.name}>" }
+          temp_command = temp_command.as(String).gsub("#select{[#{param.name}]}") { "<#{param.name}>" }
         else
-          temp_command = temp_command.gsub("\#{[#{param.full}]}") { "<#{param.name}>".colorize(:green) }
-          temp_command = temp_command.gsub("\#{[#{param.name}]}") { "<#{param.name}>".colorize(:green) }
+          temp_command = temp_command.as(String).gsub("\#{[#{param.full}]}") { "<#{param.name}>" }
+          temp_command = temp_command.as(String).gsub("\#{[#{param.name}]}") { "<#{param.name}>" }
         end
       end
 
       uninteractive_params.each do |param|
-        temp_command = temp_command.gsub("#password{[#{param.full}]}") { "<PW:#{param.id}>".colorize(:green) }
-        temp_command = temp_command.gsub("#password{[#{param.id}]}") { "<PW:#{param.id}>".colorize(:green) }
+        temp_command = temp_command.as(String).gsub("#password{[#{param.full}]}") { "<PW:#{param.id}>" }
+        temp_command = temp_command.as(String).gsub("#password{[#{param.id}]}") { "<PW:#{param.id}>" }
       end
       temp_command
     end
 
+    # Helper method for getting the value of a snippet attribute
     def value_for_attribute(attribute : String)
       case attribute
       when "alias"
@@ -153,7 +113,11 @@ module SniplineCli
       when "name"
         name || ""
       when "tags"
-        tags.join(",") || ""
+        if !tags.nil?
+          tags
+        else
+          ""
+        end
       else
         ""
       end

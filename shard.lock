@@ -2,41 +2,41 @@ version: 1.0
 shards:
   admiral:
     github: jwaldrip/admiral.cr
-    version: 1.8.0
+    version: 1.9.0
 
   ameba:
     github: veelenga/ameba
-    version: 0.10.0
+    version: 0.11.0
 
-  baked_file_system:
-    github: schovi/baked_file_system
-    version: 0.9.8
+  crecto:
+    github: Crecto/crecto
+    version: 0.11.2
 
   crest:
     github: mamantoha/crest
-    version: 0.21.1
+    version: 0.22.0
 
-  exception_page:
-    github: crystal-loot/exception_page
-    version: 0.1.2
+  db:
+    github: crystal-lang/crystal-db
+    version: 0.7.0
 
-  kemal:
-    github: kemalcr/kemal
-    version: 0.26.0
+  fuzzy_match:
+    github: acoustep/fuzzy_match.cr
+    commit: fe9eed429118adc8f0f9f6c91de4f11cdca5840e
 
-  kilt:
-    github: jeromegn/kilt
-    version: 0.4.0
+  http-client-digest_auth:
+    github: mamantoha/http-client-digest_auth
+    version: 0.3.0
 
-  radix:
-    github: luislavena/radix
-    version: 0.3.9
+  ncurses:
+    github: JohnDowson/ncurses
+    commit: d0e46f673b6a443255269ce610d598a0fdc7d159
 
-  spec-kemal:
-    github: kemalcr/spec-kemal
-    commit: 64b89c719234ceb92c0a14762dce3afc6257fffc
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3
+    version: 0.14.0
 
   toml:
     github: crystal-community/toml.cr
-    commit: 5935d7f5afeed8ba126418a9f85691b4067db85c
+    commit: d02de85eed68a70dc97ab6d6e52831a4d0e890fe
 

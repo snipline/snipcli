@@ -16,51 +16,28 @@ module SniplineCli
     class CommandBuilder
       def self.run(snippet : Snippet, input, output, user_input = [] of String) : String
         unless snippet.has_params
-          return snippet.real_command
+          return snippet.real_command || ""
         end
 
-        command_builder = snippet.real_command
+        command_builder : String = snippet.real_command || ""
+        Setup.new
         snippet.interactive_params.each do |param|
+          NCurses.clear
           case param.type
           when "select"
-            print("Choose number for #{param.name}:", output)
-            param.options.each_with_index do |option, option_index|
-              print("  ##{option_index + 1} - #{option}", output)
-            end
-            # todo: list options and let user select via number
-            current_user_input, user_input = shift_input(user_input)
-            if user_param_input = gets(output, current_user_input)
-              if user_param_input = user_param_input.to_u32
-                user_param_input = user_param_input - 1
-                if param.options.size > user_param_input
-                  command_builder = command_builder.gsub("#select{[#{param.full}]}") { param.options[user_param_input] }
-                  command_builder = command_builder.gsub("#select{[#{param.name}]}") { param.options[user_param_input] }
-                end
-              end
-            end
+            multi_param_pane = SniplineCli::NCursesWindows::MultiParamPane.new(command_builder, param)
+            command_builder = multi_param_pane.run
           else
-            print("Enter #{param.name}:\n", output)
-            if param.default_value != ""
-              print("Leave blank for default (#{param.default_value})\n", output)
-            end
-            current_user_input, user_input = shift_input(user_input)
-            if user_param_input = gets(output, current_user_input)
-              if user_param_input == ""
-                user_param_input = param.default_value
-              end
-              command_builder = command_builder.gsub("\#{[#{param.full}]}") { user_param_input }
-              command_builder = command_builder.gsub("\#{[#{param.name}]}") { user_param_input }
-            end
+            param_pane = SniplineCli::NCursesWindows::ParamPane.new(command_builder, param)
+            command_builder = param_pane.run
           end
         end
 
-        # ameba:disable Lint/PercentArrays
         password_characters = %w{a b c d e f g h i j k l m n o
           p q r s t u v w x y z A B C D
           E F G H I J K L M N O P Q R S
           T U V W X Y Z 1 2 3 4 5 6 7 8
-          9 0 £ * ^ ] [ : ; | ? > < , .
-          ` ~ / @}
+          9 0 £ ] \} : . _ @}
         snippet.uninteractive_params.each do |param|
           # todo: use string builder instead
           generated_password = ""

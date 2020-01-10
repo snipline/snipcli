@@ -1,19 +1,35 @@
-# TODO: Write documentation for `SniplineCli`
 require "admiral"
 require "crest"
-# require "./snipline_cli/*"
-require "./snipline_cli/config/config"
-require "./snipline_cli/models/*"
+require "toml"
+require "json"
+require "ncurses"
+require "sqlite3"
+require "crecto"
+
+require "./snipline_cli/config"
 require "./snipline_cli/exceptions/*"
+require "./snipline_cli/parsers/*"
+require "./snipline_cli/models/*"
+require "./snipline_cli/ncurses_windows/*"
 require "./snipline_cli/services/*"
 require "./snipline_cli/commands/*"
-require "toml"
+
+include SniplineCli::Services
+
+module Repo
+  extend Crecto::Repo
+
+  config do |conf|
+    conf.adapter = Crecto::Adapters::SQLite3
+    conf.database = File.expand_path(SniplineCli.config.get("general.db"))
+  end
+end
 
 module SniplineCli
-  VERSION = "0.2.0"
+  VERSION = "0.3.0"
 
   def self.config
-    SniplineCli::Config.config
+    Config.config
   end
 
   def self.config_file
@@ -21,7 +37,7 @@ module SniplineCli
   end
 
   def self.log
-    SniplineCli::Services::Log.log
+    Log.log
   end
 
   # The base Command Class that inherits from [Admiral](https://github.com/jwaldrip/admiral.cr)

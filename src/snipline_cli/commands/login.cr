@@ -7,6 +7,7 @@ module SniplineCli
     # This command generates a config file in the requested location.
     # By default this location is ~/.config/snipline/config.toml
     class Login < Admiral::Command
+      include SniplineCli::Models
       define_help description: "Log-in into your Snipline account"
 
       def run
@@ -55,10 +56,10 @@ module SniplineCli
             token = "#{token.jwt}"
 
             [general]
-            file = "#{config.get("general.file")}"
+            db = "#{config.get("general.db")}"
             TOML
 
-            SniplineCli::Services::CreateConfigDirectory.run(SniplineCli.config_file)
+            CreateConfigDirectory.run(SniplineCli.config_file)
             File.write(File.expand_path(SniplineCli.config_file), toml_contents, mode: "w")
             puts "Configuration saved to #{File.expand_path(SniplineCli.config_file).colorize.mode(:bold)}"
             puts "To fetch your snippets run #{"snipcli sync".colorize.mode(:bold)}"

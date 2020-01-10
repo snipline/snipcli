@@ -1,14 +1,14 @@
-name: snipline_cli
-version: 0.2.0
+name: cli
+version: 0.3.0
 
 authors:
   - Mitchell Stanley <mitchell.stanley@isev.co.uk>
 
 targets:
-  snipline_cli:
-    main: src/snipline_cli.cr
+  cli2:
+    main: src/cli.cr
 
-crystal: 0.30.1
+crystal: 0.31.1
 
 license: MIT
 
@@ -17,19 +17,25 @@ dependencies:
     github: jwaldrip/admiral.cr
   crest:
     github: mamantoha/crest
+    version: ~> 0.22.0
   toml:
     github: crystal-community/toml.cr
     branch: master
-  kemal:
-    github: kemalcr/kemal
-  baked_file_system:
-    github: schovi/baked_file_system
-    version: 0.9.8
-  spec-kemal:
-    github: kemalcr/spec-kemal
+  ncurses:
+    github: JohnDowson/ncurses
+    branch: borders_and_lines
+  crecto:    
+    github: Crecto/crecto
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3
+    version: ~> 0.14.0
+  fuzzy_match:
+    github: acoustep/fuzzy_match.cr
     branch: master
+    version: ~> 0.3.0
+
 
 development_dependencies:
   ameba:
     github: veelenga/ameba
-    version: ~> 0.10.0
+    version: ~> 0.11.0

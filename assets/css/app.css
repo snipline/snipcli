@@ -1,7 +1,0 @@
-@tailwind base;
-
-@tailwind components;
-
-@import "components/snipline-list-item.css";
-
-@tailwind utilities;
