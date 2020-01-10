@@ -10,6 +10,8 @@ module SniplineCli
       define_help description: "Initialise Snipline CLI without logging in"
 
       def run
+        puts "Migrating Database..."
+        Migrator.run
         config = SniplineCli.config
         toml_contents = <<-TOML
         title = "Snipline"
