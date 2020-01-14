@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.1
+
+### Changes
+
+* Update temp snippet TOML file to include instructions for escaping quotes in commands and documentation
+
+### Bugfixes
+
+* Escape quotes in commands, documentation, and snippet name when editing a snippet
+* Remove debug output after saving an edited snippet
+* Always create a new temp snippet file even when it exists to prevent editing the wrong snippet
+
 ## 0.3.0
 
 ### Features

@@ -27,6 +27,10 @@ install: build | $(INSTALL_DIR)
 	@rm -f $(SNIPCLI_SYSTEM)
 	@cp $(SNIPCLI) $(SNIPCLI_SYSTEM)
 
+cp:
+	@rm -f $(SNIPCLI_SYSTEM)
+	@cp $(SNIPCLI) $(SNIPCLI_SYSTEM)
+
 link: build | $(INSTALL_DIR)
 	@echo "Symlinking $(SNIPCLI) to $(SNIPCLI_SYSTEM)"
 	@ln -s $(SNIPCLI) $(SNIPCLI_SYSTEM)

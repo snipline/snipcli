@@ -9,8 +9,9 @@ module SniplineCli::Services
 # This file uses TOML syntax and will be processed after the file is saved and closed
 # Fill in the below options and save+quit to continue
 name = ""
+# Tip: When working with quotes make sure to escape doubles with \\ or switch to '''
 real_command = """
-echo 'hello, world'
+echo 'hello, World'
 """
 documentation = """
 This section supports **Markdown**
@@ -26,12 +27,13 @@ sync_to_cloud = #{SniplineCli.config.get("api.token") == "" ? "false" : "true"}
         @template = %<# Welcome to the terminal-based snippet editor
 # This file uses TOML syntax and will be processed after the file is saved and closed
 # Fill in the below options and save+quit to continue
-name = "#{snippet.name}"
+name = "#{snippet.name ? snippet.name.not_nil!.gsub("\"", "\\\"") : ""}"
+# Tip: When working with quotes make sure to escape doubles with \\ or switch to '''
 real_command = """
-#{snippet.real_command}
+#{snippet.real_command ? snippet.real_command.not_nil!.gsub("\"", "\\\"") : ""}
 """
 documentation = """
-#{snippet.documentation}
+#{snippet.documentation ? snippet.documentation.not_nil!.gsub("\"", "\\\"") : ""}
 """
 is_pinned = #{snippet.is_pinned}
 snippet_alias = "#{snippet.snippet_alias}"
@@ -42,9 +44,7 @@ sync_to_cloud = #{SniplineCli.config.get("api.token") == "" ? "false" : "true"}
 
     def create
       config = SniplineCli.config
-      unless File.exists?(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"))
-        File.write(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"), @template)
-      end
+      File.write(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"), @template)
     end
 
     def read

@@ -16,7 +16,9 @@ module SniplineCli
           system("#{ENV["EDITOR"]} #{File.expand_path("#{config.get("general.temp_dir")}/temp.toml")}")
           snippet_attributes = temp_file.read
           snippet.name = snippet_attributes.name
-          snippet.real_command = snippet_attributes.real_command
+          snippet.real_command = snippet_attributes.real_command.strip
+          log.info(snippet.real_command.not_nil!)
+          log.info(snippet_attributes.real_command.not_nil!)
           snippet.documentation = snippet_attributes.documentation
           snippet.tags = (snippet_attributes.tags.nil?) ? nil : snippet_attributes.tags.not_nil!.join(",")
           snippet.snippet_alias = snippet_attributes.snippet_alias
