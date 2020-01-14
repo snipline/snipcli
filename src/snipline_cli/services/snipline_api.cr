@@ -76,9 +76,9 @@ module SniplineCli::Services
         "%F %T",
         Time::Location::UTC
       )
-      local_snippet = Repo.get_by(Snippet, cloud_id: response.id.not_nil!)
+      Repo.get_by(Snippet, cloud_id: response.id.not_nil!)
 
-      q = Repo.raw_exec("UPDATE snippets SET updated_at=? WHERE cloud_id=?", cloud_updated_at, response.id)
+      Repo.raw_exec("UPDATE snippets SET updated_at=? WHERE cloud_id=?", cloud_updated_at, response.id)
     end
 
     def delete(snippet)

@@ -44,7 +44,7 @@ sync_to_cloud = #{SniplineCli.config.get("api.token") == "" ? "false" : "true"}
 
     def create
       config = SniplineCli.config
-			File.write(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"), @template)
+      File.write(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"), @template)
     end
 
     def read

@@ -1,5 +1,4 @@
 describe SniplineCli::Services::Migrator do
-
   it "should create and migrate a DB from scratch" do
     File.exists?("./test.db").should eq(false)
     SniplineCli::Services::Migrator.run
