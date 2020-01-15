@@ -8,7 +8,7 @@ Snipline CLI allows you to organise and use your favourite shell commands from t
 
 ## Installation
 
-### Homebrew (MacOS and Linux)
+### Homebrew (MacOS)
 
 Snipline CLI is available through Homebrew for MacOS and Linux.
 
