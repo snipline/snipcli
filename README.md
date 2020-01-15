@@ -29,10 +29,37 @@ sudo snap install snipcli --beta
 Snipline CLI requires Crystal 0.30.1 to be installed to install from source
 
 ```bash
+# Clone the repo
+git clone git@github.com:snipline/snipcli.git
+# Checkout the latest release
+git checkout <tagname - e.g. 0.3.1>
+# Make sure you have the same Crystal installed that's required in shard.yml
+crystal -v
 # Install dependencies
 shards
 # Build app
-crystal build src/snipline_cli.cr -o snipcli --release
+crystal build src/snipline_cli.cr -o snipcli --release -o snipcli
+./snipcli --version
+```
+
+## Upgrading
+
+Upgrading Snipline CLI depends on your method of installation
+
+```bash
+# Homebrew
+brew upgrade snipline/snipline/snipcli
+
+# Snapcraft
+snap refresh
+
+# From Source
+git pull origin master
+git checkout <tagname - e.g. 0.3.1>
+crystal -v # confirm Crystal is the same as shard.yml requirement
+shards
+crystal build src/snipline_cli.cr -o snipcli --release -o snipcli
+./snipcli --version
 ```
 
 ## Usage
@@ -60,8 +87,6 @@ snipcli login
 ```
 
 ### Download snippets from your Snipline account
-
-**Note:: At the time of writing this will clear any unsynced snippets on your machine. This will be changed with a future update**
 
 ```bash
 snipcli sync
