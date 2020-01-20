@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.3
+
+* Fix bug when creating config files with snipcli init
+
 ## 0.3.2
 
 * Make compatible with Crystal 0.32.1 and 0.31.1
