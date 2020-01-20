@@ -7,6 +7,7 @@ require "sqlite3"
 require "crecto"
 
 require "./snipline_cli/config"
+require "./snipline_cli/helpers/*"
 require "./snipline_cli/exceptions/*"
 require "./snipline_cli/parsers/*"
 require "./snipline_cli/models/*"
@@ -21,12 +22,12 @@ module Repo
 
   config do |conf|
     conf.adapter = Crecto::Adapters::SQLite3
-    conf.database = File.expand_path(SniplineCli.config.get("general.db"))
+    conf.database = SniplineCli::Helpers.expand_path(SniplineCli.config.get("general.db"))
   end
 end
 
 module SniplineCli
-  VERSION = "0.3.1"
+  VERSION = "0.3.2"
 
   def self.config
     Config.config

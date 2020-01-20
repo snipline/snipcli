@@ -1,4 +1,5 @@
 require "toml"
+require "../helpers/expand_path"
 
 module SniplineCli
   class Command < Admiral::Command
@@ -7,6 +8,8 @@ module SniplineCli
     # This command generates a config file in the requested location.
     # By default this location is ~/.config/snipline/config.toml
     class Init < Admiral::Command
+      include SniplineCli::Helpers
+
       define_help description: "Initialise Snipline CLI without logging in"
 
       def run
@@ -27,11 +30,11 @@ module SniplineCli
         TOML
 
         CreateConfigDirectory.run(SniplineCli.config_file)
-        File.write(File.expand_path(SniplineCli.config_file), toml_contents, mode: "w")
-        puts "Configuration saved to #{File.expand_path(SniplineCli.config_file).colorize.mode(:bold)}"
-        unless File.exists?(File.expand_path(config.get("general.db")))
-          File.write(File.expand_path(config.get("general.db")), "", mode: "w")
-          puts "Created SQLite file in #{File.expand_path(config.get("general.db")).colorize.mode(:bold)}"
+        File.write(expand_path(SniplineCli.config_file), toml_contents, mode: "w")
+        puts "Configuration saved to #{expand_path(SniplineCli.config_file).colorize.mode(:bold)}"
+        unless File.exists?(expand_path(config.get("general.db")))
+          File.write(expand_path(config.get("general.db")), "", mode: "w")
+          puts "Created SQLite file in #{expand_path(config.get("general.db")).colorize.mode(:bold)}"
         end
         puts ""
         puts "Run #{"snipcli new".colorize.mode(:bold)} to create your first snippet"

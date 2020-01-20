@@ -1,3 +1,5 @@
+require "../helpers/*"
+
 module SniplineCli
   module Services
     # LoadSnippets fetches all the snippets from the `snippet.json` file and parses them.
@@ -13,7 +15,7 @@ module SniplineCli
         temp_file = TempSnippetEditorFile.new(snippet)
         temp_file.create
         loop do
-          system("#{ENV["EDITOR"]} #{File.expand_path("#{config.get("general.temp_dir")}/temp.toml")}")
+          system("#{ENV["EDITOR"]} #{SniplineCli::Helpers.expand_path("#{config.get("general.temp_dir")}/temp.toml")}")
           snippet_attributes = temp_file.read
           snippet.name = snippet_attributes.name
           snippet.real_command = snippet_attributes.real_command.strip

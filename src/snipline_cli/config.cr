@@ -1,5 +1,6 @@
 require "toml"
 require "file_utils"
+require "./helpers/*"
 
 module SniplineCli
   # SniplineCli::Config is for easily retreiving configuration throughout the codebase.
@@ -11,13 +12,14 @@ module SniplineCli
   # config.get("api.url")
   # ```
   class Config
+    include SniplineCli::Helpers
     # Constant that creates a fresh version of itself - for use with self.config.
     INSTANCE = Config.new
 
     # When a new instance is created the config file is read and parsed.
     def initialize
-      if File.exists?(File.expand_path(SniplineCli.config_file))
-        config_file = File.read(File.expand_path(SniplineCli.config_file))
+      if File.exists?(expand_path(SniplineCli.config_file))
+        config_file = File.read(expand_path(SniplineCli.config_file))
         toml = TOML.parse(config_file)
         @api = toml["api"].as(Hash(String, TOML::Type))
         @general = toml["general"].as(Hash(String, TOML::Type))

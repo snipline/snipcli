@@ -1,4 +1,5 @@
 require "toml"
+require "../helpers/expand_path"
 
 module SniplineCli
   class Command < Admiral::Command
@@ -7,11 +8,13 @@ module SniplineCli
     # This command generates a config file in the requested location.
     # By default this location is ~/.config/snipline/config.toml
     class New < Admiral::Command
+      include SniplineCli::Helpers
+
       define_help description: "Create a new Snippet"
 
       def run
         config = SniplineCli.config
-        unless File.exists?(File.expand_path("#{config.get("general.db")}"))
+        unless File.exists?(expand_path("#{config.get("general.db")}"))
           abort("Database does not exist - Have you tried running #{"snipcli init".colorize.mode(:bold)}?".colorize.back(:red).on(:red))
         end
         Migrator.run
@@ -21,7 +24,7 @@ module SniplineCli
         temp_file = TempSnippetEditorFile.new
         temp_file.create
         loop do
-          system("#{ENV["EDITOR"]} #{File.expand_path("#{config.get("general.temp_dir")}/temp.toml")}")
+          system("#{ENV["EDITOR"]} #{expand_path("#{config.get("general.temp_dir")}/temp.toml")}")
           snippet_attributes = temp_file.read
           snippet = Snippet.new
 

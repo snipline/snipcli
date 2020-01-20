@@ -1,8 +1,11 @@
 require "toml"
+require "../helpers/*"
 
 module SniplineCli::Services
   # Provides the users preferred text editor with a template for editing and adding new snippets.
   class TempSnippetEditorFile
+    include SniplineCli::Helpers
+
     property snippet : Snippet | Nil
 
     property template = %<# Welcome to the terminal-based snippet editor
@@ -44,12 +47,12 @@ sync_to_cloud = #{SniplineCli.config.get("api.token") == "" ? "false" : "true"}
 
     def create
       config = SniplineCli.config
-      File.write(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"), @template)
+      File.write(expand_path("#{config.get("general.temp_dir")}/temp.toml"), @template)
     end
 
     def read
       config = SniplineCli.config
-      toml = TOML.parse(File.read(File.expand_path("#{config.get("general.temp_dir")}/temp.toml")))
+      toml = TOML.parse(File.read(expand_path("#{config.get("general.temp_dir")}/temp.toml")))
       SnippetAttributeParser.new(
         name: toml["name"].as(String),
         real_command: toml["real_command"].as(String),
@@ -71,14 +74,14 @@ sync_to_cloud = #{SniplineCli.config.get("api.token") == "" ? "false" : "true"}
 
     def sync_to_cloud?
       config = SniplineCli.config
-      toml = TOML.parse(File.read(File.expand_path("#{config.get("general.temp_dir")}/temp.toml")))
+      toml = TOML.parse(File.read(expand_path("#{config.get("general.temp_dir")}/temp.toml")))
       toml["sync_to_cloud"].as(Bool)
     end
 
     def delete
       config = SniplineCli.config
-      if File.exists?(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"))
-        File.delete(File.expand_path("#{config.get("general.temp_dir")}/temp.toml"))
+      if File.exists?(expand_path("#{config.get("general.temp_dir")}/temp.toml"))
+        File.delete(expand_path("#{config.get("general.temp_dir")}/temp.toml"))
       end
     end
   end

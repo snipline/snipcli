@@ -2,14 +2,15 @@ require "db"
 require "sqlite3"
 require "json"
 require "crecto"
+require "../helpers/*"
 
 module SniplineCli::Services
   # Keeps the database structure up to date
   class Migrator
     def self.run
       config = SniplineCli.config
-      File.write(File.expand_path(config.get("general.db")), "", mode: "w") unless File.exists?(File.expand_path(config.get("general.db")))
-      DB.open "sqlite3:#{File.expand_path(config.get("general.db"))}" do |db|
+      File.write(expand_path(config.get("general.db")), "", mode: "w") unless File.exists?(expand_path(config.get("general.db")))
+      DB.open "sqlite3:#{expand_path(config.get("general.db"))}" do |db|
         db.exec "create table if not exists snippets (
 					local_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 					cloud_id TEXT NULL,
@@ -31,9 +32,9 @@ module SniplineCli::Services
         end
 
         # Import 0.2.0 snippets from JSON file
-        if File.exists?(File.expand_path(config.get("general.file")))
+        if File.exists?(expand_path(config.get("general.file")))
           # Get the snippets
-          json = File.read(File.expand_path(config.get("general.file")))
+          json = File.read(expand_path(config.get("general.file")))
           # import into DB
           p "Importing JSON snippets into SQLite Database"
           Array(SnippetParser).from_json(json).each do |snippet_json|
@@ -61,7 +62,7 @@ module SniplineCli::Services
               Repo.insert(changeset)
             end
           end
-          File.delete(File.expand_path(config.get("general.file")))
+          File.delete(expand_path(config.get("general.file")))
         end
       end
     end
