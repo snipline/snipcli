@@ -13,8 +13,6 @@ module SniplineCli
       define_help description: "Initialise Snipline CLI without logging in"
 
       def run
-        puts "Migrating Database..."
-        Migrator.run
         config = SniplineCli.config
         toml_contents = <<-TOML
         title = "Snipline"
@@ -36,6 +34,8 @@ module SniplineCli
           File.write(expand_path(config.get("general.db")), "", mode: "w")
           puts "Created SQLite file in #{expand_path(config.get("general.db")).colorize.mode(:bold)}"
         end
+        puts "Migrating Database..."
+        Migrator.run
         puts ""
         puts "Run #{"snipcli new".colorize.mode(:bold)} to create your first snippet"
         puts "Search snippets with #{"snipcli search".colorize.mode(:bold)}"
