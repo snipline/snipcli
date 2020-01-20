@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2
+
+* Make compatible with Crystal 0.32.1 and 0.31.1
+
 ## 0.3.1
 
 ### Changes

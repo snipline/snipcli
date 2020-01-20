@@ -1,4 +1,5 @@
 require "toml"
+require "../helpers/expand_path"
 
 module SniplineCli
   class Command < Admiral::Command
@@ -8,6 +9,7 @@ module SniplineCli
     # By default this location is ~/.config/snipline/config.toml
     class Login < Admiral::Command
       include SniplineCli::Models
+      include SniplineCli::Helpers
       define_help description: "Log-in into your Snipline account"
 
       def run
@@ -60,8 +62,8 @@ module SniplineCli
             TOML
 
             CreateConfigDirectory.run(SniplineCli.config_file)
-            File.write(File.expand_path(SniplineCli.config_file), toml_contents, mode: "w")
-            puts "Configuration saved to #{File.expand_path(SniplineCli.config_file).colorize.mode(:bold)}"
+            File.write(expand_path(SniplineCli.config_file), toml_contents, mode: "w")
+            puts "Configuration saved to #{expand_path(SniplineCli.config_file).colorize.mode(:bold)}"
             puts "To fetch your snippets run #{"snipcli sync".colorize.mode(:bold)}"
           end
         rescue ex : Crest::NotFound

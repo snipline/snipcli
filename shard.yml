@@ -1,5 +1,5 @@
 name: cli
-version: 0.3.1
+version: 0.3.2
 
 authors:
   - Mitchell Stanley <mitchell.stanley@isev.co.uk>
@@ -8,7 +8,7 @@ targets:
   cli2:
     main: src/cli.cr
 
-crystal: 0.31.1
+crystal: < 0.33
 
 license: MIT
 

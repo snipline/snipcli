@@ -37,8 +37,10 @@ git checkout <tagname - e.g. 0.3.1>
 crystal -v
 # Install dependencies
 shards
-# Build app
+# Build app for Crystal 0.32.1 / MacOS
 crystal build src/snipline_cli.cr -o snipcli --release -o snipcli
+# Build app for Crystal 0.31.1 / Linux (Alpine)
+crystal build src/snipline_cli.cr -o snipcli --release -o snipcli -Dstatic_linux
 ./snipcli --version
 ```
 
