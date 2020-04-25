@@ -10,8 +10,7 @@ module SniplineCli
     class EditSnippet
       def self.run(snippet : Snippet, input, output)
         config = SniplineCli.config
-        log = SniplineCli.log
-        log.info("editing snippet #{snippet.name}")
+        Log.info { "editing snippet #{snippet.name}" }
         temp_file = TempSnippetEditorFile.new(snippet)
         temp_file.create
         loop do
@@ -19,8 +18,8 @@ module SniplineCli
           snippet_attributes = temp_file.read
           snippet.name = snippet_attributes.name
           snippet.real_command = snippet_attributes.real_command.strip
-          log.info(snippet.real_command.not_nil!)
-          log.info(snippet_attributes.real_command.not_nil!)
+          Log.info { snippet.real_command.not_nil! }
+          Log.info { snippet_attributes.real_command.not_nil! }
           snippet.documentation = snippet_attributes.documentation
           snippet.tags = (snippet_attributes.tags.nil?) ? nil : snippet_attributes.tags.not_nil!.join(",")
           snippet.snippet_alias = snippet_attributes.snippet_alias

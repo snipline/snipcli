@@ -14,7 +14,6 @@ module SniplineCli
 
       def run
         config = SniplineCli.config
-        log = SniplineCli.log
         puts "What's your Snipline email account?".colorize.mode(:bold)
         puts "Register at #{"https://account.snipline.io/register".colorize.mode(:underline)} if you don't have an account."
         print "Email:"
@@ -30,7 +29,7 @@ module SniplineCli
         puts "Please enter the verification code that was sent to your email:"
         print "Verification Code:"
         verification_code = gets
-        log.debug("verification_code: #{verification_code}")
+        Log.debug { "verification_code: #{verification_code}" }
         if verification_code.nil? || verification_code.empty?
           puts "Code not entered. Please try again."
           return
@@ -46,9 +45,9 @@ module SniplineCli
               :length => "year",
             }
           ) do |response|
-            log.debug("response body")
+            Log.debug { "response body" }
             json_string = response.body_io.gets_to_end
-            log.debug(json_string.inspect)
+            Log.debug { json_string.inspect }
             token = Token.from_json(json_string)
             toml_contents = <<-TOML
             title = "Snipline"

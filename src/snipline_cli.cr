@@ -5,6 +5,7 @@ require "json"
 require "ncurses"
 require "sqlite3"
 require "crecto"
+require "log"
 
 require "./snipline_cli/config"
 require "./snipline_cli/helpers/*"
@@ -16,6 +17,8 @@ require "./snipline_cli/services/*"
 require "./snipline_cli/commands/*"
 
 include SniplineCli::Services
+
+Log.setup_from_env
 
 module Repo
   extend Crecto::Repo
@@ -35,10 +38,6 @@ module SniplineCli
 
   def self.config_file
     ENV.has_key?("CONFIG_FILE") ? ENV["CONFIG_FILE"] : "~/.config/snipline/config.toml"
-  end
-
-  def self.log
-    Log.log
   end
 
   # The base Command Class that inherits from [Admiral](https://github.com/jwaldrip/admiral.cr)

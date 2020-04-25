@@ -35,6 +35,7 @@ module SniplineCli::Services
           break if codepoint == 17 # C+q - quit
           break if run_character_key(ch, codepoint) == false
           @left_pane.filter(@search.search_text)
+				else
         end
         @search.window.refresh
       end

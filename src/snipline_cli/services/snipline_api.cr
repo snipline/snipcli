@@ -37,7 +37,7 @@ module SniplineCli::Services
           # :tags => snippet.tags
           # }
         },
-        logging: ENV["LOG_LEVEL"] == "DEBUG" ? true : false
+        logging: ENV["CRYSTAL_LOG_LEVEL"] == "DEBUG" ? true : false
       )
       SingleSnippetDataParser.from_json(resp.body).data
     end
@@ -61,7 +61,7 @@ module SniplineCli::Services
           # :tags => snippet.tags
           # }
         },
-        logging: ENV["LOG_LEVEL"] == "DEBUG" ? true : false
+        logging: ENV["CRYSTAL_LOG_LEVEL"] == "DEBUG" ? true : false
       )
       response = SingleSnippetDataParser.from_json(resp.body).data
       snippet.name = response.name.not_nil!
@@ -90,7 +90,7 @@ module SniplineCli::Services
             # "Accept" => "application/vnd.api+json",
             "Authorization" => "Bearer #{config.get("api.token")}",
           },
-          logging: ENV["LOG_LEVEL"] == "DEBUG" ? true : false
+					logging: ENV["CRYSTAL_LOG_LEVEL"] == "DEBUG" ? true : false
         )
         true
       rescue ex

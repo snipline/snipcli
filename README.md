@@ -132,7 +132,7 @@ Set log levels for additional development output.
 
 ```bash
 crystal build src/snipline_cli.cr -o snipcli
-env LOG_LEVEL=DEBUG ./snipcli search git
+env CRYSTAL_LOG_LEVEL=INFO ./snipcli search git
 ```
 
 To change the config file location (For testing) use the `CONFIG_FILE` environment variable.
