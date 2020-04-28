@@ -55,19 +55,27 @@ module SniplineCli::Services
         @left_pane.select_lower
         refresh_right_pane
       elsif codepoint == 67 || codepoint == 10 # Shift+c / Enter - copy
-        output = build_snippet
-        copy_snippet(output)
-        return false
+				unless @left_pane.results.size <= 0
+					output = build_snippet
+					copy_snippet(output)
+					return false
+				end
       elsif codepoint == 68 # Shift+d - delete
-        delete_snippet
-        return false
+				unless @left_pane.results.size <= 0
+					delete_snippet
+					return false
+				end
       elsif codepoint == 69 # Shift+e - edit
-        edit_snippet
-        return false
+				unless @left_pane.results.size <= 0
+					edit_snippet
+					return false
+				end
       elsif codepoint == 82 # Shift+r - run
-        output = build_snippet
-        run_snippet(output)
-        return false
+				unless @left_pane.results.size <= 0
+					output = build_snippet
+					run_snippet(output)
+					return false
+				end
       else
         @search.write(ch)
         @left_pane.filter(@search.search_text)
