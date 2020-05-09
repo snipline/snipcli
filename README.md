@@ -26,7 +26,7 @@ sudo snap install snipcli --beta
 
 ### From source
 
-Snipline CLI requires Crystal 0.30.1 to be installed to install from source
+Snipline CLI requires Crystal 0.34.0 to be installed to install from source
 
 ```bash
 # Clone the repo
@@ -37,9 +37,9 @@ git checkout <tagname - e.g. 0.3.1>
 crystal -v
 # Install dependencies
 shards
-# Build app for Crystal 0.32.1 / MacOS
+# Build app for Crystal 0.34.0 / MacOS
 crystal build src/snipline_cli.cr -o snipcli --release -o snipcli
-# Build app for Crystal 0.31.1 / Linux (Alpine)
+# Build app for Crystal 0.34.0 / Linux (Alpine)
 crystal build src/snipline_cli.cr -o snipcli --release -o snipcli -Dstatic_linux
 ./snipcli --version
 ```
@@ -132,7 +132,7 @@ Set log levels for additional development output.
 
 ```bash
 crystal build src/snipline_cli.cr -o snipcli
-env LOG_LEVEL=DEBUG ./snipcli search git
+env CRYSTAL_LOG_LEVEL=INFO ./snipcli search git
 ```
 
 To change the config file location (For testing) use the `CONFIG_FILE` environment variable.

@@ -1,5 +1,5 @@
 name: cli
-version: 0.3.3
+version: 0.4.0
 
 authors:
   - Mitchell Stanley <mitchell.stanley@isev.co.uk>
@@ -8,7 +8,7 @@ targets:
   cli2:
     main: src/cli.cr
 
-crystal: < 0.33
+crystal: 0.34.0
 
 license: MIT
 
@@ -17,7 +17,7 @@ dependencies:
     github: jwaldrip/admiral.cr
   crest:
     github: mamantoha/crest
-    version: ~> 0.22.0
+    version: ~> 0.25.0
   toml:
     github: crystal-community/toml.cr
     branch: master
@@ -38,4 +38,4 @@ dependencies:
 development_dependencies:
   ameba:
     github: veelenga/ameba
-    version: ~> 0.11.0
+    version: ~> 0.12.1
