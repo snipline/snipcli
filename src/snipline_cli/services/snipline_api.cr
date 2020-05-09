@@ -90,7 +90,7 @@ module SniplineCli::Services
             # "Accept" => "application/vnd.api+json",
             "Authorization" => "Bearer #{config.get("api.token")}",
           },
-					logging: ENV["CRYSTAL_LOG_LEVEL"] == "DEBUG" ? true : false
+          logging: ENV["CRYSTAL_LOG_LEVEL"] == "DEBUG" ? true : false
         )
         true
       rescue ex

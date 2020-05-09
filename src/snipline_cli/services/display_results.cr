@@ -35,7 +35,7 @@ module SniplineCli::Services
           break if codepoint == 17 # C+q - quit
           break if run_character_key(ch, codepoint) == false
           @left_pane.filter(@search.search_text)
-				else
+        else
         end
         @search.window.refresh
       end
@@ -55,27 +55,27 @@ module SniplineCli::Services
         @left_pane.select_lower
         refresh_right_pane
       elsif codepoint == 67 || codepoint == 10 # Shift+c / Enter - copy
-				unless @left_pane.results.size <= 0
-					output = build_snippet
-					copy_snippet(output)
-					return false
-				end
+        unless @left_pane.results.size <= 0
+          output = build_snippet
+          copy_snippet(output)
+          return false
+        end
       elsif codepoint == 68 # Shift+d - delete
-				unless @left_pane.results.size <= 0
-					delete_snippet
-					return false
-				end
+        unless @left_pane.results.size <= 0
+          delete_snippet
+          return false
+        end
       elsif codepoint == 69 # Shift+e - edit
-				unless @left_pane.results.size <= 0
-					edit_snippet
-					return false
-				end
+        unless @left_pane.results.size <= 0
+          edit_snippet
+          return false
+        end
       elsif codepoint == 82 # Shift+r - run
-				unless @left_pane.results.size <= 0
-					output = build_snippet
-					run_snippet(output)
-					return false
-				end
+        unless @left_pane.results.size <= 0
+          output = build_snippet
+          run_snippet(output)
+          return false
+        end
       else
         @search.write(ch)
         @left_pane.filter(@search.search_text)
