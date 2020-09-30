@@ -18,6 +18,8 @@ require "./snipline_cli/commands/*"
 
 include SniplineCli::Services
 
+Log.setup_from_env
+
 module Repo
   extend Crecto::Repo
 
