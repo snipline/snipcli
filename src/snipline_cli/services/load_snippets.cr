@@ -12,10 +12,9 @@ module SniplineCli
     class LoadSnippets
       def self.run : Array(Snippet)
         config = SniplineCli.config
-        log = SniplineCli.log
-        log.info("Looking through file #{config.get("general.db")}")
+        Log.info { "Looking through file #{config.get("general.db")}" }
         unless File.readable?(expand_path(config.get("general.db")))
-          log.warn("Could not read #{config.get("general.db")}")
+          Log.warn { "Could not read #{config.get("general.db")}" }
           abort("Run #{"snipline-cli sync".colorize(:green)} first")
         end
         # File.open(File.expand_path(config.get("general.db"))) do |file|

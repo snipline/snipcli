@@ -1,42 +1,46 @@
-version: 1.0
+version: 2.0
 shards:
   admiral:
-    github: jwaldrip/admiral.cr
-    version: 1.9.0
+    git: https://github.com/jwaldrip/admiral.cr.git
+    version: 1.11.2
 
   ameba:
-    github: veelenga/ameba
-    version: 0.11.0
+    git: https://github.com/veelenga/ameba.git
+    version: 0.13.2
 
   crecto:
-    github: Crecto/crecto
-    version: 0.11.2
+    git: https://github.com/Crecto/crecto.git
+    version: 0.11.3
 
   crest:
-    github: mamantoha/crest
-    version: 0.22.0
+    git: https://github.com/mamantoha/crest.git
+    version: 0.26.1
 
   db:
-    github: crystal-lang/crystal-db
-    version: 0.7.0
+    git: https://github.com/crystal-lang/crystal-db.git
+    version: 0.9.0
 
   fuzzy_match:
-    github: acoustep/fuzzy_match.cr
-    commit: fe9eed429118adc8f0f9f6c91de4f11cdca5840e
+    git: https://github.com/acoustep/fuzzy_match.cr.git
+    version: 0.3.0+git.commit.3834b23deab80c4554ce15b015b804f010e2b768
 
   http-client-digest_auth:
-    github: mamantoha/http-client-digest_auth
-    version: 0.3.0
+    git: https://github.com/mamantoha/http-client-digest_auth.git
+    version: 0.4.0
+
+  http_proxy:
+    git: https://github.com/mamantoha/http_proxy.git
+    version: 0.7.1
 
   ncurses:
-    github: JohnDowson/ncurses
-    commit: d0e46f673b6a443255269ce610d598a0fdc7d159
+    git: https://github.com/JohnDowson/ncurses.git
+    version: 0.0.3+git.commit.d0e46f673b6a443255269ce610d598a0fdc7d159
 
   sqlite3:
-    github: crystal-lang/crystal-sqlite3
-    version: 0.14.0
+    git: https://github.com/crystal-lang/crystal-sqlite3.git
+    version: 0.16.0
 
   toml:
-    github: crystal-community/toml.cr
-    commit: d02de85eed68a70dc97ab6d6e52831a4d0e890fe
+    git: https://github.com/crystal-community/toml.cr.git
+    version: 0.6.1+git.commit.d02de85eed68a70dc97ab6d6e52831a4d0e890fe
 

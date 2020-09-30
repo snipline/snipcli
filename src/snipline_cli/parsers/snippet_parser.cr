@@ -5,11 +5,22 @@ module SniplineCli::Parsers
   #
   # Note how most attributes are contained within the `attribute` attribute. This is to conform to the JSON-API specification.
   class SnippetParser
-    JSON.mapping({
-      id:         String | Nil,
-      type:       String,
-      attributes: SnippetAttributeParser,
-    })
+		include JSON::Serializable
+
+		@[JSON::Field(key: "id")]
+		property id : String | Nil
+
+		@[JSON::Field(key: "type")]
+		property type : String
+
+		@[JSON::Field(key: "attributes")]
+		property attributes : SnippetAttributeParser
+
+    # JSON.mapping({
+    #   id:         String | Nil,
+    #   type:       String,
+    #   attributes: SnippetAttributeParser,
+    # })
 
     def initialize(@id : String | Nil, @type : String, @attributes : SnippetAttributeParser)
     end
