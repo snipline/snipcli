@@ -128,11 +128,12 @@ As of 0.3.0 the web interface has been removed infavour of the new TUI.
 
 See the Installation section on building from source. 
 
-Set log levels for additional development output.
+Set log levels for additional development output and specifiy different config files for testing
 
 ```bash
 crystal build src/snipline_cli.cr -o snipcli
-env CRYSTAL_LOG_LEVEL=INFO ./snipcli search git
+env CONFIG_FILE=~/.config/snipline/config.dev.toml ./snipcli search login
+env CONFIG_FILE=~/.config/snipline/config.dev.toml env CRYSTAL_LOG_LEVEL=INFO ./snipcli search git
 ```
 
 To change the config file location (For testing) use the `CONFIG_FILE` environment variable.

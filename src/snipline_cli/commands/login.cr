@@ -30,14 +30,14 @@ module SniplineCli
 				password = STDIN.noecho &.gets.try &.chomp
 				password = password.as?(String) || ""
 
-				Log.debug { 
+				Log.debug {
 
 					password_length = password.size
-					hidden_password = password.chars.map_with_index { |c, i| 
-						unless i == 0 || i == (password_length - 1)
-							'*'
-						else
+					hidden_password = password.chars.map_with_index { |c, i|
+						if i == 0 || i == (password_length - 1)
 							c
+						else
+							'*'
 						end
 					}.to_s
 
