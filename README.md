@@ -32,7 +32,7 @@ Snipline CLI requires Crystal 0.35.1 to be installed to install from source
 # Clone the repo
 git clone git@github.com:snipline/snipcli.git
 # Checkout the latest release
-git checkout <tagname - e.g. 0.4.0>
+git checkout <tagname - e.g. 0.5.0>
 # Make sure you have the same Crystal installed that's required in shard.yml
 crystal -v
 # Install dependencies
