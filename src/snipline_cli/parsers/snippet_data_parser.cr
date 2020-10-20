@@ -1,28 +1,36 @@
 module SniplineCli::Parsers
   class SnippetDataParser
-    JSON.mapping({
-      data: Array(SnippetParser),
-    })
+		include JSON::Serializable
+
+		@[JSON::Field(key: "data")]
+		property data : Array(SnippetParser)
   end
 
   class SingleSnippetDataParser
-    JSON.mapping({
-      data: SnippetParser,
-    })
+		include JSON::Serializable
+
+		@[JSON::Field(key: "data")]
+		property data : SnippetParser
   end
 
   class SnippetError
-    JSON.mapping({
-      detail: String,
-      source: Hash(String, String),
-      title:  String,
-    })
+		include JSON::Serializable
+
+		@[JSON::Field(key: "detail")]
+		property detail : String
+
+		@[JSON::Field(key: "source")]
+		property source : Hash(String, String)
+
+		@[JSON::Field(key: "title")]
+		property title : String
   end
 
   class SnippetErrorResponse
-    JSON.mapping({
-      errors: Array(SnippetError),
-    })
+		include JSON::Serializable
+
+		@[JSON::Field(key: "errors")]
+		property errors : Array(SnippetError)
 
     def has_key?(key)
       @errors.any? { |error|

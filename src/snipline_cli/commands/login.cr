@@ -14,41 +14,52 @@ module SniplineCli
 
       def run
         config = SniplineCli.config
-        log = SniplineCli.log
         puts "What's your Snipline email account?".colorize.mode(:bold)
         puts "Register at #{"https://account.snipline.io/register".colorize.mode(:underline)} if you don't have an account."
+				Log.debug { "Test debug" }
         print "Email:"
         email = gets
-        spawn do
-          Crest.post(
-            "#{config.get("api.url")}/sessions",
-            form: {:email => email}
-          )
-        end
-        puts "Thanks, we're sending you a verification code..."
-        sleep 1
-        puts "Please enter the verification code that was sent to your email:"
-        print "Verification Code:"
-        verification_code = gets
-        log.debug("verification_code: #{verification_code}")
-        if verification_code.nil? || verification_code.empty?
-          puts "Code not entered. Please try again."
+        # spawn do
+        #   Crest.post(
+        #     "#{config.get("api.url")}/sessions",
+        #     form: {:email => email}
+        #   )
+        # end
+        print "Enter your Snipline Account password:"
+        # password = gets
+				password = STDIN.noecho &.gets.try &.chomp
+				password = password.as?(String) || ""
+
+				Log.debug {
+
+					password_length = password.size
+					hidden_password = password.chars.map_with_index { |c, i|
+						if i == 0 || i == (password_length - 1)
+							c
+						else
+							'*'
+						end
+					}.to_s
+
+					"password: #{hidden_password}"
+				}
+        if password.empty?
+          puts "Password not entered. Please try again."
           return
         end
+        puts ""
         puts "One moment..."
-        puts "URL: #{config.get("api.url")}"
         begin
           Crest.post(
-            "#{config.get("api.url")}/tokens/create",
+            "#{config.get("api.url")}/v2/sessions",
             form: {
-              :id     => email,
-              :token  => verification_code,
-              :length => "year",
+              :email     => email,
+              :password  => password
             }
           ) do |response|
-            log.debug("response body")
+            Log.debug { "response body" }
             json_string = response.body_io.gets_to_end
-            log.debug(json_string.inspect)
+            Log.debug { json_string.inspect }
             token = Token.from_json(json_string)
             toml_contents = <<-TOML
             title = "Snipline"
@@ -68,13 +79,12 @@ module SniplineCli
           end
         rescue ex : Crest::NotFound
           puts "404 Not Found :("
-          ex.response
         rescue ex : Crest::InternalServerError
           puts "Internal server error"
-          ex.response
         rescue ex : Crest::Forbidden
-          puts "Incorrect Token"
-          ex.response
+          puts "Incorrect password"
+				rescue
+					puts "Unknown error"
         end
       end
     end
