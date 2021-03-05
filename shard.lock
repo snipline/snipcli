@@ -6,15 +6,15 @@ shards:
 
   ameba:
     git: https://github.com/veelenga/ameba.git
-    version: 0.13.2
+    version: 0.14.0
 
   crecto:
     git: https://github.com/Crecto/crecto.git
-    version: 0.11.3
+    version: 0.11.2+git.commit.95788d451029ccf7f56d125fb11adb51db81cf3d
 
   crest:
     git: https://github.com/mamantoha/crest.git
-    version: 0.26.1
+    version: 0.26.7
 
   db:
     git: https://github.com/crystal-lang/crystal-db.git
@@ -26,11 +26,11 @@ shards:
 
   http-client-digest_auth:
     git: https://github.com/mamantoha/http-client-digest_auth.git
-    version: 0.4.0
+    version: 0.6.0
 
   http_proxy:
     git: https://github.com/mamantoha/http_proxy.git
-    version: 0.7.1
+    version: 0.8.0
 
   ncurses:
     git: https://github.com/JohnDowson/ncurses.git
@@ -42,5 +42,5 @@ shards:
 
   toml:
     git: https://github.com/crystal-community/toml.cr.git
-    version: 0.6.1+git.commit.d02de85eed68a70dc97ab6d6e52831a4d0e890fe
+    version: 0.7.0+git.commit.7852db986976679bd39a8b3b3172cae5a8c6a2b3
 

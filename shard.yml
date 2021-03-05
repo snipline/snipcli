@@ -26,7 +26,7 @@ dependencies:
     branch: borders_and_lines
   crecto:    
     github: Crecto/crecto
-    version: ~> 0.11.3
+    branch: master
   sqlite3:
     github: crystal-lang/crystal-sqlite3
     version: ~> 0.16.0
@@ -39,4 +39,4 @@ dependencies:
 development_dependencies:
   ameba:
     github: veelenga/ameba
-    version: ~> 0.13.2
+    version: ~> 0.14.0
